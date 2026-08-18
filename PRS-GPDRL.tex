@@ -27,8 +27,8 @@
 
 \begin{document}
 
-\title{Preference-Conditioned Deep Reinforcement Learning with Risk-Augmented
-GP-Evolved Actions for Dynamic Workflow Scheduling in Cloud--Edge Computing}
+\title{Deep Reinforcement Learning with Genetic Programming-Evolved Actions for
+Dynamic Workflow Scheduling in Cloud--Edge Computing}
 \author{Anonymous Authors}
 \maketitle
 
@@ -48,14 +48,13 @@ resource-selection rules for dynamic workflow scheduling, but usually apply
 them as fixed policies. Deep reinforcement learning enables adaptive control,
 yet directly treating a variable set of feasible resources as actions while
 handling multiple preferences complicates policy learning. We propose a
-preference-conditioned deep reinforcement learning framework with risk-augmented
-GP-evolved actions, termed PRS-GPDRL. Cooperative coevolution genetic programming
+preference-aware deep reinforcement learning framework with risk-augmented
+GP-evolved actions (PRS-GPDRL). Cooperative coevolution genetic programming
 first evolves coupled task- and resource-selection rules. Quality- and
 behaviour-aware filtering then retains a compact resource-selection rule pool
-from the final CCGP archive. Each retained rule is augmented with base and
-preference-conditioned risk modes. A
-preference-conditioned multi-objective double deep Q-network then selects a
-rule-mode action at each allocation decision. Across 12 scenarios and 30
+from the final CCGP archive. Each retained rule is augmented with base and risk
+modes. A multi-objective double deep Q-network then selects a rule-mode action
+under the requested preference at each allocation decision. Across 12 scenarios and 30
 independent runs, PRS-GPDRL achieves the best average ranks for both HV and IGD
 and is statistically better than or comparable to CCGP in 11 scenarios for
 each metric.
@@ -142,7 +141,7 @@ scheduling, He et al. use GP to construct a diverse action set and DRL to select
 evolved actions online, but learn a single-objective tardiness policy
 \cite{he2026evolved}. These studies improve the quality and behavioural
 diversity of rule actions, but their online policies target a single scheduling
-objective. Preference-conditioned multi-objective reinforcement learning (MORL)
+objective. Preference-aware multi-objective reinforcement learning (MORL)
 shows that one policy can respond to different objective weights
 \cite{roijers2013morl,hayes2022morl,abels2019morl,yang2019morl}, while PSLGP
 embeds preferences into a GP heuristic for multi-objective dynamic job-shop
@@ -150,14 +149,13 @@ scheduling \cite{xu2026pslgp}. Consequently, accommodating changing user
 priorities within one online scheduler remains an open issue for dynamic
 Cloud--Edge workflows.
 
-To address this gap, we propose PRS-GPDRL, a preference-conditioned deep
+To address this gap, we propose PRS-GPDRL, a preference-aware deep
 reinforcement learning framework with risk-augmented GP-evolved actions. CCGP
 first evolves coupled tree-based task- and resource-selection rules.
 A quality- and behaviour-aware extraction procedure then retains a compact pool
 of complementary resource-selection rules from the final CCGP archive. Pairing
-this rule pool with the base and preference-conditioned risk modes gives a
-fixed-dimensional rule-mode action space. Finally, a preference-conditioned
-multi-objective double deep Q-network
+this rule pool with the base and risk modes gives a fixed-dimensional rule-mode
+action space. Finally, a multi-objective double deep Q-network
 (DDQN) learns when to select each rule-mode action, while a fixed upward-rank
 rule orders ready tasks. Evolutionary search discovers interpretable
 resource-selection rules, while the DDQN selects among them according to the
@@ -173,10 +171,10 @@ The main contributions are as follows:
     from the DDQN output.
 
     \item We introduce risk-stratified action augmentation to complement
-    rule-level GP selection with local, preference-conditioned
-    resource-priority adjustment. A preference-conditioned multi-objective DDQN
+    rule-level GP selection with local, preference-guided resource-priority
+    adjustment. A multi-objective DDQN
     combines
-    this action design with FiLM-based preference conditioning, vector-valued
+    this action design with FiLM-based preference modulation, vector-valued
     action costs, and augmented weighted Tchebycheff scalarisation, enabling one
     network to represent different tardiness--energy trade-offs.
 
@@ -238,16 +236,16 @@ evolution, but primarily address single-objective scheduling or optimise for a
 fixed objective setting; continuously changing tardiness--energy preferences
 are outside their scope.
 
-\subsection{Preference-Conditioned Multi-Objective Learning}
+\subsection{Preference-Aware Multi-Objective Learning}
 
 Multi-objective reinforcement learning (MORL) addresses sequential decisions
 with vector-valued outcomes by representing more than one objective trade-off
 \cite{roijers2013morl,hayes2022morl}. One line learns explicit policy sets or a
 continuous Pareto manifold, providing coverage across non-dominated behaviours
-\cite{vanmoffaert2014pareto,parisi2016pareto}. A second line conditions a shared
-value function or policy on the requested preference. Dynamic weights, desired
+\cite{vanmoffaert2014pareto,parisi2016pareto}. A second line incorporates the
+requested preference into a shared value function or policy. Dynamic weights, desired
 returns, objective-specific action distributions, and preference-controllable
-meta-policies are different conditioning signals for the same purpose: adapting
+meta-policies are different preference representations for the same purpose: adapting
 one learned model without retraining it for every trade-off
 \cite{abels2019morl,yang2019morl,abdolmaleki2020mopo,reymond2022pcn,
 yang2025pcrl}.
@@ -255,7 +253,7 @@ yang2025pcrl}.
 Pareto set learning develops a related preference-to-solution view. Augmented
 Tchebycheff scalarisation can train a model that maps preferences to approximate
 Pareto solutions \cite{lin2022psl}, and PSLGP carries this principle into
-preference-conditioned GP heuristics for multi-objective dynamic scheduling
+preference-aware GP heuristics for multi-objective dynamic scheduling
 \cite{xu2026pslgp}. Collectively, these studies establish how a model can respond
 continuously to changing preferences. Its extension to dynamic Cloud--Edge
 workflow scheduling has received limited attention.
@@ -517,8 +515,8 @@ Eq.~\eqref{Eq: Objective Energy}.
 Fig.~\ref{Fig: PRS-GPDRL framework} shows the overall framework, which contains
 offline training and online scheduling. For each training scenario, CCGP produces
 the final CCGP archive, from which action extraction retains a compact
-resource-selection rule pool $\mathcal{G}$. The base and preference-conditioned
-risk modes form the mode set $\mathcal{M}$; pairing the two sets gives the
+resource-selection rule pool $\mathcal{G}$. The base and risk modes form the
+mode set $\mathcal{M}$; pairing the two sets gives the
 rule-mode action space
 $\mathcal{A}$. Using this action space, the state features, and the preference
 weights, the multi-objective DDQN is trained to form the PRS-GPDRL agent. The
@@ -691,7 +689,7 @@ behaviours, and the DDQN selects among their complete GP-induced priority
 rankings at rule level. PRS-GPDRL augments each rule with \textit{base} and
 \textit{risk} modes. The selected resource-selection rule provides the base
 priorities,
-while the risk mode adds a bounded, preference-conditioned local correction.
+while the risk mode adds a bounded, preference-aware local correction.
 The resulting action space combines rule-level behaviour selection with local
 preference adaptation over feasible resources.
 
@@ -862,18 +860,18 @@ decision point to the next. The stored cost is
 where $\kappa$ aligns the numerical scales of the two components during
 training; evaluation uses the original objective values.
 
-\subsection{Preference-Conditioned Multi-Objective DDQN}
+\subsection{Preference-Aware Multi-Objective DDQN}
 \label{Sec: MO-DDQN}
 
-PRS-GPDRL uses a preference-conditioned multi-objective DDQN
+PRS-GPDRL uses a multi-objective DDQN
 \cite{vanhasselt2016} to select rule-mode actions. At each decision point, the
-observation is first encoded into a preference-conditioned representation and
+observation is first encoded into a state representation and
 then fed to a vector-valued DDQN. The resulting two-objective action-cost
 estimates are scalarised by the current preference for action selection and
 DDQN updates.
 
-Fig.~\ref{Fig: PRS-GPDRL DDQN} illustrates the preference-conditioned state
-encoder and rule-mode action selection. The raw observation $s_t$ contains task
+Fig.~\ref{Fig: PRS-GPDRL DDQN} illustrates the state encoder and rule-mode
+action selection. The raw observation $s_t$ contains task
 features, candidate-resource features, and preference weights. The state encoder
 maps $s_t$ to embedding $\mathbf{z}_t$, and the DDQN estimates vector action costs over
 $\mathcal{A}$. Augmented weighted Tchebycheff scalarisation selects
@@ -884,8 +882,7 @@ $r_t^*$.
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=0.98\textwidth]{figures/DRL.pdf}
-\caption{Preference-conditioned multi-objective DDQN for rule-mode action
-selection in PRS-GPDRL.}
+\caption{Multi-objective DDQN for rule-mode action selection in PRS-GPDRL.}
 \label{Fig: PRS-GPDRL DDQN}
 \end{figure*}
 
@@ -905,8 +902,8 @@ The task embedding and the two tier-level representations are concatenated and
 passed through two 128-unit fusion layers, with an ELU activation after the
 first, to produce $\mathbf{h}_{\mathrm{fuse}}\in\mathbb{R}^{128}$.
 
-A feature-wise linear modulation (FiLM) layer \cite{perez2018film} conditions
-the fused representation on the preference. A two-layer conditioning MLP maps
+A feature-wise linear modulation (FiLM) layer \cite{perez2018film} modulates
+the fused representation according to the preference. A two-layer preference MLP maps
 the two preference weights through a 32-unit ELU hidden layer to a
 256-dimensional output, which is split into 128-dimensional raw-scale and shift
 vectors. The scale is parameterised as
@@ -965,7 +962,7 @@ augmentation term reduces ties. The greedy action is
 \end{equation}
 
 \begin{algorithm}[!t]
-\caption{Online preference-conditioned resource selection}
+\caption{Online preference-aware resource selection}
 \label{Alg: online resource selection}
 \KwIn{State $s_t$ containing preference $\mathbf{w}$; ready task $\alpha_t$;
 feasible resource set $\mathcal{R}_t$}
@@ -987,7 +984,7 @@ Return $r_t^*=\arg\min_{r\in\mathcal{R}_t}
 p_{\mathrm{risk}}(r;g^*)$ using Eq.~\eqref{Eq: risk priority}\;
 \end{algorithm}
 
-The preference-conditioned vector action-cost function is trained using Double
+The vector action-cost function is trained using Double
 DQN \cite{vanhasselt2016} with experience replay and a periodically updated target
 network. At each episode, a preference vector is sampled and included in the
 state. The remaining training parameters are reported in Section~V-C.
@@ -1451,7 +1448,7 @@ heterogeneous Cloud--Edge systems, with total weighted tardiness and energy as
 the two objectives. PRS-GPDRL connects evolutionary rule discovery with online
 reinforcement learning: CCGP evolves coupled scheduling rules, a diversity-aware
 procedure extracts a compact resource-selection rule pool, and a
-preference-conditioned multi-objective DDQN selects risk-stratified rule-mode
+multi-objective DDQN selects risk-stratified rule-mode
 actions at task-allocation
 decision points. The resulting design retains the efficient execution of GP
 priority rules while adapting their use to the current state and requested
