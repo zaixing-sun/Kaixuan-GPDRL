@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.11.27)  18 AUG 2026 14:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.11.27)  18 AUG 2026 16:37
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -558,12 +558,12 @@ Package: ninecolors 2022-02-13 v2022D Select colors with proper color contrast
  (/usr/local/texlive/2025/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
 Package: xparse 2024-08-16 L3 Experimental document command parser
 ))
-Underfull \hbox (badness 5050) in paragraph at lines 35--61
+Underfull \hbox (badness 5050) in paragraph at lines 42--68
 []\OT1/ptm/b/it/9 Abstract\OT1/ptm/b/n/9 ---Online work-flow schedul-ing in het-ero-ge-neous
  []
 
 
-Underfull \hbox (badness 1558) in paragraph at lines 63--66
+Underfull \hbox (badness 1558) in paragraph at lines 70--73
 []\OT1/ptm/b/it/9 Index Terms\OT1/ptm/b/n/9 ---Cloud--Edge com-put-ing, dy-namic work-flow
  []
 
@@ -575,15 +575,15 @@ Underfull \hbox (badness 1558) in paragraph at lines 63--66
 
 
 ]
-Underfull \hbox (badness 7704) in paragraph at lines 133--151
+Underfull \hbox (badness 7704) in paragraph at lines 140--158
 []\OT1/ptm/m/n/10 Deep re-in-force-ment learn-ing (DRL) pro-vides state-
  []
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 166.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 173.
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 166.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 173.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
@@ -592,12 +592,12 @@ Underfull \vbox (badness 1024) has occurred while \output is active []
 
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 218--218
+Underfull \hbox (badness 10000) in paragraph at lines 225--225
  \OT1/ptm/m/it/10 B. Rule-Assisted Re-in-force-ment Learn-ing for Dy-namic
  []
 
 
-Underfull \hbox (badness 1603) in paragraph at lines 229--238
+Underfull \hbox (badness 1603) in paragraph at lines 236--245
 []\OT1/ptm/m/n/10 Subsequent re-search re-places the man-ual li-brary with
  []
 
@@ -606,7 +606,7 @@ Underfull \hbox (badness 1603) in paragraph at lines 229--238
 [2]
 
 
-Overfull \hbox (2.18065pt too wide) detected at line 405
+Overfull \hbox (2.18065pt too wide) detected at line 412
 []
  []
 
@@ -617,7 +617,7 @@ Overfull \hbox (2.18065pt too wide) detected at line 405
 <figures/framework.pdf, id=243, 231.74579pt x 162.6075pt>
 File: figures/framework.pdf Graphic file (type pdf)
 <use figures/framework.pdf>
-Package pdftex.def Info: figures/framework.pdf  used on input line 510.
+Package pdftex.def Info: figures/framework.pdf  used on input line 517.
 (pdftex.def)             Requested size: 252.0pt x 176.82678pt.
 
 
@@ -628,59 +628,46 @@ Package pdftex.def Info: figures/framework.pdf  used on input line 510.
 [5]
 
 
-Underfull \hbox (badness 4096) in paragraph at lines 822--828
+Underfull \hbox (badness 4096) in paragraph at lines 835--841
 []\OT1/ptm/m/n/10 The resource-selection prob-lem is for-mu-lated as an
  []
 
 
 
 [6]
-<figures/DRL.pdf, id=307, 1836.8625pt x 535.03888pt>
+<figures/DRL.pdf, id=310, 1836.8625pt x 535.03888pt>
 File: figures/DRL.pdf Graphic file (type pdf)
 <use figures/DRL.pdf>
-Package pdftex.def Info: figures/DRL.pdf  used on input line 884.
-(pdftex.def)             Requested size: 505.6778pt x 147.28717pt.
+Package pdftex.def Info: figures/DRL.pdf  used on input line 897.
+(pdftex.def)             Requested size: 402.47937pt x 117.22723pt.
 
 
 
 
 [7]
-Underfull \hbox (badness 4832) in paragraph at lines 1019--1027
+Underfull \hbox (badness 4832) in paragraph at lines 1032--1040
 \OT1/ptm/m/n/10 and container-scaling GP rules to con-struct non-
  []
 
 
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 1109--1109
+Underfull \hbox (badness 10000) in paragraph at lines 1122--1122
 [][][][]$\OT1/ptm/m/n/8 https : / / engineering . teads . com / sustainability / carbon -[] footprint -[] estimator -[]
  []
 
 
-Underfull \hbox (badness 2460) in paragraph at lines 1125--1134
+Underfull \hbox (badness 2460) in paragraph at lines 1138--1147
 []\OT1/ptm/m/n/10 The main eval-u-a-tion cov-ers the 12 com-bi-na-tions of
  []
 
 
 
 [8 <./figures/DRL.pdf>]
+Underfull \vbox (badness 1874) has occurred while \output is active []
 
-> Step: init table outer spec.
-> Step: parse table options.
-> Step: split table.
-> Step: init table inner spec.
-> Step: parse table inner spec.
-> Step: execute table commands.
-> Step: calculate cell and line sizes.
-> Step: build the whole table.
-> Step: init table outer spec.
-> Step: parse table options.
-> Step: split table.
-> Step: init table inner spec.
-> Step: parse table inner spec.
-> Step: execute table commands.
-> Step: calculate cell and line sizes.
-> Step: build the whole table.
+
+
 
 
 [9]
@@ -714,18 +701,18 @@ Package rerunfilecheck Info: File `PRS-GPDRL.out' has not changed.
 (rerunfilecheck)             Checksum: 8932C1142A304E5A2D17486E6370DB4F;4765.
  ) 
 Here is how much of TeX's memory you used:
- 15219 strings out of 473190
- 263109 string characters out of 5715799
- 821153 words of memory out of 5000000
- 38142 multiletter control sequences out of 15000+600000
- 612946 words of font info for 138 fonts, out of 8000000 for 9000
+ 15002 strings out of 473190
+ 256132 string characters out of 5715799
+ 714107 words of memory out of 5000000
+ 37925 multiletter control sequences out of 15000+600000
+ 608768 words of font info for 132 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,23n,103p,472b,1031s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on PRS-GPDRL.pdf (11 pages, 433122 bytes).
+ 75i,23n,79p,472b,592s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on PRS-GPDRL.pdf (11 pages, 441617 bytes).
 PDF statistics:
- 567 PDF objects out of 1000 (max. 8388607)
- 493 compressed objects within 5 object streams
+ 572 PDF objects out of 1000 (max. 8388607)
+ 496 compressed objects within 5 object streams
  133 named destinations out of 1000 (max. 500000)
  195 words of extra memory for PDF output out of 10000 (max. 10000000)
 

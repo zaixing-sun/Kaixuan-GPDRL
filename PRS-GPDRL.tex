@@ -27,8 +27,15 @@
 
 \begin{document}
 
-\title{Deep Reinforcement Learning with Genetic Programming-Evolved Actions for
-Dynamic Workflow Scheduling in Cloud--Edge Computing}
+% \title{Deep Reinforcement Learning with Genetic Programming-Evolved Actions for
+% Dynamic Workflow Scheduling in Cloud--Edge Computing}
+\title{Preference-Aware Deep Reinforcement Learning with GP-Evolved Actions for Dynamic Workflow Scheduling in Cloud-Edge Computing}
+% \title{Preference-Aware Deep Reinforcement Learning with Genetic Programming for Multi-Objective Dynamic Workflow Scheduling in Cloud-Edge Computing}
+% % \title{Preference-Aware Deep Reinforcement Learning with GP-Evolved Actions for Dynamic Workflow Scheduling in Cloud-Edge Computing}
+
+% \title{Preference-Aware Evolutionary Reinforcement Learning with GP-Evolved Actions for Multi-Objective Cloud-Edge Workflow Scheduling}
+% \title{Preference-Conditioned Deep Reinforcement Learning with Risk-Augmented
+% GP-Evolved Actions for Dynamic Workflow Scheduling in Cloud--Edge Computing}
 \author{Anonymous Authors}
 \maketitle
 
@@ -555,17 +562,18 @@ the CCGP rules and the corresponding attributes used by the DRL state encoder.
 The GP and DDQN columns indicate how each attribute is used by the two
 components. Further details of CCGP training are given in~\cite{ccgp}.
 
-\begin{table}[!b]
+\begin{table}[!t]
 \centering
 \caption{Terminal, function, and state-encoder attributes used by PRS-GPDRL.}
 \label{Table:scheduling-attributes}
-\scriptsize
-\setlength{\tabcolsep}{1.5pt}
-\renewcommand{\arraystretch}{0.94}
-\begin{tabular}{@{}cp{0.59\columnwidth}cc@{}}
-\hline
-Notation & Description & GP & DDQN \\
-\hline
+% \scriptsize
+\setlength{\tabcolsep}{.8pt}
+% \renewcommand{\arraystretch}{0.94}
+\begin{tabular}{@{}cp{0.63\columnwidth}cc@{}}
+% \hline
+\toprule
+Notation & Description & GP & DDQN$^a$ \\
+\midrule
 $\mathsf{CAT}$   & Category of a task. & T & T \\
 $\mathsf{SD}$    & Sub-deadline of a task. & T & T \\
 $\mathsf{ET}$    & Execution time of a task on a reference resource. & T & T \\
@@ -579,7 +587,8 @@ $\mathsf{TETQ}$  & Total $\mathsf{ET}$ of tasks in the ready queue. & T & -- \\
 $\mathsf{NRA}$   & Number of remaining tasks in a workflow. & T & T \\
 $\mathsf{TETRA}$ & Total $\mathsf{ET}$ of remaining workflow tasks. & T & T \\
 $\mathsf{VCT}$   & Average communication time for a task. & T & T \\
-\hline
+% \midrule
+\cmidrule(lr){1-4}
 $\mathsf{NEW}$   & Whether the candidate resource is newly created. & -- & R \\
 $\mathsf{WAIT}$  & Waiting time before the task starts on the candidate resource. & R & R \\
 $\mathsf{ETAR}$  & Minimum execution time of a task on a resource. & R & R \\
@@ -592,18 +601,22 @@ $\mathsf{NKW}$   & Number of scheduled tasks from the same workflow in the Cloud
 Edge tier. & R & R \\
 $\mathsf{CPUR}$  & CPU capacity of a resource. & R & R \\
 $\mathsf{CTR}$   & Communication time of a task on a resource. & R & R \\
-\hline
+% \midrule
+\cmidrule(lr){1-4}
 $w_T$ & Preference weight for weighted tardiness. & -- & P \\
 $w_E$ & Preference weight for energy consumption. & -- & P \\
-\hline
+\midrule
 Function set & $+$, $-$, $\times$, protected~/, Max, and Min. & T/R & -- \\
-\hline
+\bottomrule
+\multicolumn{4}{p{0.95\linewidth}}{$^a$~In the GP column, T and R denote task- and resource-selection rule terminals. In the DDQN column, T, R, and P denote task, candidate-resource, and preference attributes, respectively.}
 \end{tabular}
-\vspace{1pt}
+\vspace{-1em}
+% \end{tabular}
+% \vspace{1pt}
 
-\parbox{\columnwidth}{\scriptsize In the GP column, T and R denote task- and
-resource-selection rule terminals. In the DDQN column, T, R, and P denote task,
-candidate-resource, and preference attributes, respectively.}
+% \parbox{\columnwidth}{\scriptsize In the GP column, T and R denote task- and
+% resource-selection rule terminals. In the DDQN column, T, R, and P denote task,
+% candidate-resource, and preference attributes, respectively.}
 \end{table}
 
 \textbf{Action extraction.} After CCGP training, PRS-GPDRL extracts a compact
@@ -881,7 +894,7 @@ them to score the feasible resources and assign ready task $\alpha_t$ to
 $r_t^*$.
 \begin{figure*}[!t]
 \centering
-\includegraphics[width=0.98\textwidth]{figures/DRL.pdf}
+\includegraphics[width=0.78\textwidth]{figures/DRL.pdf}
 \caption{Multi-objective DDQN for rule-mode action selection in PRS-GPDRL.}
 \label{Fig: PRS-GPDRL DDQN}
 \end{figure*}
@@ -1144,11 +1157,11 @@ described in Section~\ref{Sec: compared methods}.
 \label{Table: CCGP parameters}
 \centering
 \footnotesize
-\setlength{\tabcolsep}{5pt}
-\begin{tabular}{c|c}
-\hline
+% \setlength{\tabcolsep}{5pt}
+\begin{tabular}{cl}
+\toprule
 \textbf{Parameter} & \textbf{Value} \\
-\hline
+\midrule
 Population size & 2 subpopulations of 50 \\
 Number of generations & 51 \\
 Method for initialising population & Ramped-half-and-half \\
@@ -1158,7 +1171,7 @@ Maximal depth & 8 \\
 Crossover/mutation/reproduction rate & 0.80/0.15/0.05 \\
 Terminal/non-terminal selection rate & 10\%/90\% \\
 Environmental selection & NSGA-II \\
-\hline
+\bottomrule
 \end{tabular}
 \end{table}
 
@@ -1168,11 +1181,11 @@ augmentation.}
 \label{Table: DDQN risk parameters}
 \centering
 \footnotesize
-\setlength{\tabcolsep}{5pt}
-\begin{tabular}{c|c}
-\hline
+% \setlength{\tabcolsep}{5pt}
+\begin{tabular}{cl}
+\toprule
 \textbf{Parameter} & \textbf{Value} \\
-\hline
+\midrule
 Training-step budget & $1{,}000{,}000$ \\
 Exploration rate $\epsilon$ & 1.0 decays to 0.01 \\
 Discount factor $\gamma$ & 1.0 \\
@@ -1186,7 +1199,7 @@ Maximum resource-selection rule-pool size $K_{\max}$ & 5 \\
 Maximum risk mixing $\beta_{\max}$ & 0.75 \\
 Energy-cost scaling $\kappa$ & $4.7\times10^5$ \\
 Tchebycheff augmentation $\zeta$ & 0.05 \\
-\hline
+\bottomrule
 \end{tabular}
 \end{table}
 
@@ -1242,24 +1255,28 @@ representative of the pooled reference front.
   \centering
   \setlength{\abovecaptionskip}{0cm}
   \setlength{\belowcaptionskip}{-0.2cm}
+  \setlength{\tabcolsep}{0.5mm}
   \caption{The mean and standard deviation of the HV values over the 30
   independent runs of the compared algorithms.}
   \label{Table: HV main results}
-  \SetTblrInner{colsep=1.0mm}
-  \resizebox{\linewidth}{!}{%
-  \begin{tblr}{
-      width = 1.22\linewidth,
-      colspec = {ccccc},
-      hline{1,Z} = {0.8pt},
-      hline{2,14} = {0.5pt},
-      row{2,3,4,5,6,7,8,9,10,11,12,13,15} = {fg=black},
-      stretch = 1.1,
-      abovesep = 0pt,
-      belowsep = 0pt,
-      rowsep = 0pt,
-    }
+%   \SetTblrInner{colsep=1.0mm}
+  \resizebox{\linewidth}{!}%
+%   {\begin{tblr}{
+%       width = 1.22\linewidth,
+%       colspec = {ccccc},
+%       hline{1,Z} = {0.8pt},
+%       hline{2,14} = {0.5pt},
+%       row{2,3,4,5,6,7,8,9,10,11,12,13,15} = {fg=black},
+%       stretch = 1.1,
+%       abovesep = 0pt,
+%       belowsep = 0pt,
+%       rowsep = 0pt,
+%     }
+    {\begin{tabular}{ccccc}
+        \toprule
       $\left\langle \rm wfNum, \lambda\right\rangle$ & GATES & LWFF & CCGP
       & PRS-GPDRL \\
+        \midrule
       $\left\langle 10,0.2\right\rangle$ & 0.525$\pm$0.196
       & 0.590$\pm$0.138($\approx$)
       & 0.772$\pm$0.105($\uparrow$)($\uparrow$)
@@ -1308,9 +1325,11 @@ representative of the pooled reference front.
       & 0.861$\pm$0.065($\uparrow$)
       & 0.842$\pm$0.078($\uparrow$)($\downarrow$)
       & 0.804$\pm$0.090($\approx$)($\downarrow$)($\downarrow$) \\
+      \midrule
       W/D/L & 0/1/11 & 1/0/11 & 1/1/10 & N/A \\
       AverageRank & 3.597 & 3.008 & 1.992 & 1.403 \\
-  \end{tblr}}
+      \bottomrule
+  \end{tabular}}
   \vspace{-1em}
 \end{table}
 
@@ -1318,24 +1337,28 @@ representative of the pooled reference front.
   \centering
   \setlength{\abovecaptionskip}{0cm}
   \setlength{\belowcaptionskip}{-0.2cm}
+  \setlength{\tabcolsep}{0.5mm}
   \caption{The mean and standard deviation of the IGD values over the 30
   independent runs of the compared algorithms.}
   \label{Table: IGD main results}
-  \SetTblrInner{colsep=1.0mm}
+%   \SetTblrInner{colsep=1.0mm}
   \resizebox{\linewidth}{!}{%
-  \begin{tblr}{
-      width = 1.22\linewidth,
-      colspec = {ccccc},
-      hline{1,Z} = {0.8pt},
-      hline{2,14} = {0.5pt},
-      row{2,3,4,5,6,7,8,9,10,11,12,13,15} = {fg=black},
-      stretch = 1.1,
-      abovesep = 0pt,
-      belowsep = 0pt,
-      rowsep = 0pt,
-    }
+%   \begin{tblr}{
+%       width = 1.22\linewidth,
+%       colspec = {ccccc},
+%       hline{1,Z} = {0.8pt},
+%       hline{2,14} = {0.5pt},
+%       row{2,3,4,5,6,7,8,9,10,11,12,13,15} = {fg=black},
+%       stretch = 1.1,
+%       abovesep = 0pt,
+%       belowsep = 0pt,
+%       rowsep = 0pt,
+%     }
+    \begin{tabular}{ccccc}
+    \toprule
       $\left\langle \rm wfNum, \lambda\right\rangle$ & GATES & LWFF & CCGP
       & PRS-GPDRL \\
+      \midrule
       $\left\langle 10,0.2\right\rangle$ & 0.317$\pm$0.138
       & 0.257$\pm$0.078($\uparrow$)
       & 0.104$\pm$0.040($\uparrow$)($\uparrow$)
@@ -1384,9 +1407,11 @@ representative of the pooled reference front.
       & 0.088$\pm$0.048($\uparrow$)
       & 0.069$\pm$0.028($\uparrow$)($\approx$)
       & 0.140$\pm$0.067($\uparrow$)($\downarrow$)($\downarrow$) \\
+        \midrule
       W/D/L & 0/0/12 & 1/0/11 & 1/4/7 & N/A \\
       AverageRank & 3.778 & 2.869 & 1.828 & 1.525 \\
-  \end{tblr}}
+        \bottomrule
+  \end{tabular}}
   \vspace{-1em}
 \end{table}
 
