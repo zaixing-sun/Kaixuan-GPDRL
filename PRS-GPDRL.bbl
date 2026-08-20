@@ -20,16 +20,6 @@
 \providecommand{\BIBdecl}{\relax}
 \BIBdecl
 
-\bibitem{IDC2025EdgeSpending}
-\BIBentryALTinterwordspacing
-{International Data Corporation}, ``{IDC} estimates global spending on edge computing to grow at 13.8\%, reaching nearly \$380 billion by 2028,'' 2025, accessed: Aug. 10, 2026. [Online]. Available: \url{https://www.idc.com/resource-center/press-releases/idc-estimates-global-spending-on-edge-computing-to-grow-at-13-8-reaching-nearly-380-billion-by-2028/}
-\BIBentrySTDinterwordspacing
-
-\bibitem{IEA2025EnergyAI}
-\BIBentryALTinterwordspacing
-{International Energy Agency}, ``Energy and {AI},'' 2025, accessed: Jul. 27, 2026. [Online]. Available: \url{https://www.iea.org/reports/energy-and-ai}
-\BIBentrySTDinterwordspacing
-
 \bibitem{Li2026}
 S.~Li, W.~Wu, H.~Zhang, Y.~Liu, W.~Lin, and K.~Li, ``Revisiting workflow scheduling with the power of edge computing: Taxonomy, review, and open challenges,'' \emph{Comput. Sci. Rev.}, vol.~60, p. 100887, 2026.
 
@@ -38,6 +28,21 @@ R.~Bouabdallah and F.~Fakhfakh, ``Workflow scheduling in cloud--fog computing en
 
 \bibitem{Coleman2022WfCommons}
 T.~Coleman, H.~Casanova, L.~Pottier, M.~Kaushik, E.~Deelman, and R.~{Ferreira da Silva}, ``{WfCommons}: A framework for enabling scientific workflow research and development,'' \emph{Future Gener. Comput. Syst.}, vol. 128, pp. 16--27, 2022.
+
+\bibitem{Gartner2025AgenticAI}
+\BIBentryALTinterwordspacing
+{Gartner}, ``Gartner predicts 40\% of enterprise apps will feature task-specific {AI} agents by 2026, up from less than 5\% in 2025,'' 2025, accessed: Jul. 27, 2026. [Online]. Available: \url{https://www.gartner.com/en/newsroom/press-releases/2025-08-26-gartner-predicts-40-percent-of-enterprise-apps-will-feature-task-specific-ai-agents-by-2026-up-from-less-than-5-percent-in-2025}
+\BIBentrySTDinterwordspacing
+
+\bibitem{IEA2025EnergyAI}
+\BIBentryALTinterwordspacing
+{International Energy Agency}, ``Energy and {AI},'' 2025, accessed: Jul. 27, 2026. [Online]. Available: \url{https://www.iea.org/reports/energy-and-ai}
+\BIBentrySTDinterwordspacing
+
+\bibitem{CSO2026DataCentres}
+\BIBentryALTinterwordspacing
+{Central Statistics Office}, ``Data centres metered electricity consumption 2025,'' 2026, accessed: Aug. 18, 2026. [Online]. Available: \url{https://www.cso.ie/en/releasesandpublications/ep/p-dcmec/datacentresmeteredelectricityconsumption2025/}
+\BIBentrySTDinterwordspacing
 
 \bibitem{Ranjan2020}
 R.~Ranjan, I.~S. Thakur, G.~S. Aujla, N.~Kumar, and A.~Y. Zomaya, ``Energy-efficient workflow scheduling using container-based virtualization in software-defined data centers,'' \emph{IEEE Trans. Ind. Informat.}, vol.~16, no.~12, pp. 7646--7657, 2020.
@@ -57,11 +62,20 @@ R.~Ranjan, I.~S. Thakur, G.~S. Aujla, N.~Kumar, and A.~Y. Zomaya, ``Energy-effic
 ------, ``Resource constraints,'' accessed: Jul. 27, 2026. [Online]. Available: \url{https://docs.docker.com/engine/containers/resource_constraints/}
 \BIBentrySTDinterwordspacing
 
-\bibitem{jayanetti2022}
-A.~Jayanetti, S.~Halgamuge, and R.~Buyya, ``Deep reinforcement learning for energy and time optimized scheduling of precedence-constrained tasks in edge--cloud computing environments,'' \emph{Future Gener. Comput. Syst.}, vol. 137, pp. 14--30, 2022.
+\bibitem{ohds}
+G.~Fan, X.~Chen, Z.~Li, H.~Yu, and Y.~Zhang, ``An energy-efficient dynamic scheduling method of deadline-constrained workflows in a cloud environment,'' \emph{IEEE Trans. Netw. Service Manag.}, vol.~20, no.~3, pp. 3089--3103, 2023.
 
-\bibitem{zhang2024}
-J.~Zhang, Z.~Ning, M.~Waqas, H.~Alasmary, S.~Tu, and S.~Chen, ``Hybrid edge-cloud collaborator resource scheduling approach based on deep reinforcement learning and multiobjective optimization,'' \emph{IEEE Trans. Comput.}, vol.~73, no.~1, pp. 192--205, 2024.
+\bibitem{rmes}
+Z.~Sun, H.~Huang, Z.~Li, and C.~Gu, ``Energy-efficient real-time multi-workflow scheduling in container-based cloud,'' \emph{J. Comb. Optim.}, vol.~49, no.~2, pp. 1--21, 2025.
+
+\bibitem{li2024}
+K.~Li, ``Energy-constrained {DAG} scheduling on edge and cloud servers with overlapped communication and computation,'' \emph{J. Grid Comput.}, vol.~22, no.~3, p.~60, 2024.
+
+\bibitem{lou2023}
+J.~Lou, Z.~Tang, S.~Zhang, W.~Jia, W.~Zhao, and J.~Li, ``Cost-effective scheduling for dependent tasks with tight deadline constraints in mobile edge computing,'' \emph{IEEE Trans. Mobile Comput.}, vol.~22, no.~10, pp. 5829--5845, 2023.
+
+\bibitem{lwff}
+H.~M. Fard, R.~Prodan, and F.~Wolf, ``Dynamic multi-objective scheduling of microservices in the cloud,'' in \emph{Proc. IEEE/ACM Int. Conf. Utility Cloud Comput.}, 2020, pp. 386--393.
 
 \bibitem{escott2020gphh}
 K.-R. Escott, H.~Ma, and G.~Chen, ``A genetic programming hyper-heuristic approach to design high-level heuristics for dynamic workflow scheduling in cloud,'' in \emph{Proc. IEEE Symp. Ser. Comput. Intell.}, 2020, pp. 3141--3148.
@@ -80,6 +94,9 @@ Y.~Yang, G.~Chen, H.~Ma, S.~Hartmann, and M.~Zhang, ``Dual-tree genetic programm
 
 \bibitem{ccgp}
 Z.~Sun, F.~Zhang, Y.~Mei, H.~Huang, C.~Gu, B.~Wang, and M.~Zhang, ``Cooperative coevolution genetic programming for dynamic joint workflow scheduling and container scaling in cloud-fog computing,'' \emph{IEEE Trans. Serv. Comput.}, vol.~19, no.~1, pp. 225--239, 2026.
+
+\bibitem{jayanetti2022}
+A.~Jayanetti, S.~Halgamuge, and R.~Buyya, ``Deep reinforcement learning for energy and time optimized scheduling of precedence-constrained tasks in edge--cloud computing environments,'' \emph{Future Gener. Comput. Syst.}, vol. 137, pp. 14--30, 2022.
 
 \bibitem{xiao2025}
 B.~Xiao, C.~Yu, X.~Chen, Z.~Chen, and G.~Min, ``Multi-agent collaboration for workflow task offloading in end-edge-cloud environments using deep reinforcement learning,'' \emph{IEEE Trans. Parallel Distrib. Syst.}, vol.~36, no.~11, pp. 2281--2296, 2025.
@@ -111,23 +128,14 @@ A.~Abels, D.~M. Roijers, T.~Lenaerts, A.~Now{\'{e}}, and D.~Steckelmacher, ``Dyn
 \bibitem{yang2019morl}
 R.~Yang, X.~Sun, and K.~Narasimhan, ``A generalized algorithm for multi-objective reinforcement learning and policy adaptation,'' in \emph{Adv. Neural Inf. Process. Syst.}, vol.~32, 2019.
 
+\bibitem{lin2022psl}
+X.~Lin, Z.~Yang, X.~Zhang, and Q.~Zhang, ``{Pareto} set learning for expensive multi-objective optimization,'' in \emph{Adv. Neural Inf. Process. Syst.}, vol.~35, 2022.
+
 \bibitem{xu2026pslgp}
 M.~Xu, Y.~Mei, F.~Zhang, Y.~S. Ong, and M.~Zhang, ``Pareto set learning through genetic programming for multiobjective dynamic scheduling,'' \emph{IEEE Trans. Evol. Comput.}, vol.~30, no.~3, pp. 942--956, 2026.
 
-\bibitem{ohds}
-G.~Fan, X.~Chen, Z.~Li, H.~Yu, and Y.~Zhang, ``An energy-efficient dynamic scheduling method of deadline-constrained workflows in a cloud environment,'' \emph{IEEE Trans. Netw. Service Manag.}, vol.~20, no.~3, pp. 3089--3103, 2023.
-
-\bibitem{rmes}
-Z.~Sun, H.~Huang, Z.~Li, and C.~Gu, ``Energy-efficient real-time multi-workflow scheduling in container-based cloud,'' \emph{J. Comb. Optim.}, vol.~49, no.~2, pp. 1--21, 2025.
-
-\bibitem{li2024}
-K.~Li, ``Energy-constrained {DAG} scheduling on edge and cloud servers with overlapped communication and computation,'' \emph{J. Grid Comput.}, vol.~22, no.~3, p.~60, 2024.
-
-\bibitem{lou2023}
-J.~Lou, Z.~Tang, S.~Zhang, W.~Jia, W.~Zhao, and J.~Li, ``Cost-effective scheduling for dependent tasks with tight deadline constraints in mobile edge computing,'' \emph{IEEE Trans. Mobile Comput.}, vol.~22, no.~10, pp. 5829--5845, 2023.
-
-\bibitem{lwff}
-H.~M. Fard, R.~Prodan, and F.~Wolf, ``Dynamic multi-objective scheduling of microservices in the cloud,'' in \emph{Proc. IEEE/ACM Int. Conf. Utility Cloud Comput.}, 2020, pp. 386--393.
+\bibitem{zhang2024}
+J.~Zhang, Z.~Ning, M.~Waqas, H.~Alasmary, S.~Tu, and S.~Chen, ``Hybrid edge-cloud collaborator resource scheduling approach based on deep reinforcement learning and multiobjective optimization,'' \emph{IEEE Trans. Comput.}, vol.~73, no.~1, pp. 192--205, 2024.
 
 \bibitem{vanmoffaert2014pareto}
 K.~Van~Moffaert and A.~Now{\'{e}}, ``Multi-objective reinforcement learning using sets of {Pareto} dominating policies,'' \emph{J. Mach. Learn. Res.}, vol.~15, pp. 3663--3692, 2014.
@@ -143,9 +151,6 @@ M.~Reymond, E.~Bargiacchi, and A.~Now{\'{e}}, ``{Pareto} conditioned networks,''
 
 \bibitem{yang2025pcrl}
 Y.~Yang, T.~Zhou, M.~Pechenizkiy, and M.~Fang, ``Preference controllable reinforcement learning with advanced multi-objective optimization,'' in \emph{Proc. 42nd Int. Conf. Mach. Learn.}, vol. 267, 2025, pp. 71\,612--71\,647.
-
-\bibitem{lin2022psl}
-X.~Lin, Z.~Yang, X.~Zhang, and Q.~Zhang, ``{Pareto} set learning for expensive multi-objective optimization,'' in \emph{Adv. Neural Inf. Process. Syst.}, vol.~35, 2022.
 
 \bibitem{Topcuoglu2002}
 H.~Topcuoglu, S.~Hariri, and M.-Y. Wu, ``Performance-effective and low-complexity task scheduling for heterogeneous computing,'' \emph{IEEE Trans. Parallel Distrib. Syst.}, vol.~13, no.~3, pp. 260--274, 2002.

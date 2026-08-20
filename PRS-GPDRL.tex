@@ -99,122 +99,22 @@ deep reinforcement learning, multi-objective optimisation.
 
 \section{Introduction}
 \label{Sec: introduction}
+\IEEEPARstart{C}{loud--Edge} computing provides a heterogeneous execution environment for workflow applications by combining latency-proximate Edge Nodes with elastic Cloud Servers. These applications include scientific workflows, data analytics pipelines, Internet of Things (IoT) services, and emerging artificial intelligence (AI) agent orchestration services \cite{Li2026,Bouabdallah2024,Coleman2022WfCommons,Gartner2025AgenticAI}. Many workflow applications are represented as directed acyclic graphs (DAGs), where tasks are constrained by precedence and data dependencies \cite{Li2026,Bouabdallah2024,Coleman2022WfCommons}. As workflows arrive dynamically, a scheduler must order ready tasks and allocate heterogeneous resources without knowing future arrivals. Energy consumption has also become an important system-level constraint. Data centres consumed around 415~TWh worldwide in 2024, accounting for about 1.5\% of global electricity demand, and their share of metered electricity consumption reached 23\% in Ireland in 2025 \cite{IEA2025EnergyAI,CSO2026DataCentres}. These trends make dynamic workflow scheduling in Cloud--Edge computing a key problem for improving quality of service while controlling resource use and energy consumption.
 
-The continuing growth of digital services is increasing demand for computing
-capacity both in centralised Cloud data centres and at the network Edge.
-IDC estimated worldwide spending on Edge computing at nearly USD~261 billion
-in 2025 and projected it to reach USD~380 billion by 2028
-\cite{IDC2025EdgeSpending}. At the same time, the energy footprint of computing
-infrastructure is becoming substantial. The International Energy Agency reports
-that data centres consumed
-approximately 415~TWh of electricity in 2024 and projects this consumption to
-more than double to around 945~TWh by 2030 \cite{IEA2025EnergyAI}. These trends
-make the timely and energy-efficient use of distributed computing capacity an
-increasingly important systems problem.
+The main difficulty is that each resource allocation must be evaluated in the current workflow and resource state, because its effects may propagate beyond the task being assigned. \emph{First}, workflow dependencies make task completion times affect downstream execution. The finish time of a task determines when its successors can be released and may further affect workflow completion and service quality. \emph{Second}, Cloud--Edge heterogeneity creates different trade-offs between latency and capacity. Edge Nodes can shorten data paths and avoid Cloud provisioning, but their computing capacity is limited. Cloud Servers provide elastic capacity, but may introduce additional communication and provisioning overheads. \emph{Third}, the CPU-sharing model considered in this paper couples the progress of tasks running on the same resource. Container virtualisation provides a practical execution substrate for workflow tasks \cite{Ranjan2020}, and modern platforms support runtime resource adjustment through mechanisms such as Kubernetes in-place resource resizing and Docker CPU share or quota updates \cite{Kubernetes2026Resize,DockerUpdate2026,DockerResourceConstraints2026}. In our model, multiple tasks may execute on one resource and share its CPU capacity. Assigning a new task changes the running-task set, so the CPU allocated to CPU-sensitive tasks may be recomputed. This can change remaining execution times, successor release times, resource active duration, and energy consumption. Therefore, an effective scheduler should consider dependency-driven task urgency, heterogeneous resource effects, and runtime CPU allocation when making online decisions. In a multi-objective setting, resource selection should also adapt to the requested tardiness--energy preference.
 
-Cloud--Edge computing addresses this demand by combining latency-proximate Edge
-Nodes with elastic and powerful Cloud Servers. It provides a heterogeneous
-execution environment for workflows in scientific computing, data analytics,
-and Internet of Things services
-\cite{Li2026,Bouabdallah2024,Coleman2022WfCommons}. Such applications are
-commonly represented as directed acyclic graphs (DAGs), in which tasks are
-linked by precedence and data dependencies. In an online system, workflows
-arrive dynamically and their future information is unavailable. The scheduler
-must therefore order ready tasks and allocate resources from the currently
-observed workflow and system states.
+Many dynamic workflow scheduling studies use manual rules or genetic programming (GP) hyper-heuristics to support online decisions. Manual rules often combine task priorities, sub-deadlines, resource reuse, cost or energy estimates, and candidate filtering to guide task sequencing and resource allocation \cite{ohds,rmes,li2024,lou2023,lwff}. Their scheduling logic is explicit, but their performance depends on expert knowledge in selecting and combining task, workflow, and resource attributes. When the execution environment, resource model, workload pattern, or objective preference changes, these rules often require redesign or careful adjustment. GP hyper-heuristics reduce this manual design effort by automatically evolving priority rules from selected attributes. Instead of searching for one schedule for one instance, GP searches the heuristic space and produces rules that can be applied to new dynamic instances. GP has been used to evolve single-tree, multi-objective, multi-tree, dual-tree, and cooperative rules for task selection, resource selection, and related workflow scheduling decisions \cite{escott2020gphh,yu2022mogp,xu2023mtgp,sun2024mtgp,yang2025dtgp,ccgp}. However, most GP hyper-heuristic methods deploy one evolved heuristic or a fixed set of cooperating rules throughout an online scheduling run. They do not decide online which evolved resource-selection rule is more suitable for the current task urgency, resource availability, CPU allocation, and objective preference.
 
-Container-based virtualisation provides the execution substrate for these
-workflows. It packages each task with its software dependencies into a
-lightweight execution unit that can be deployed across heterogeneous Edge Nodes
-and Cloud Servers
-\cite{Ranjan2020}. Modern container platforms also permit CPU resources to
-be adjusted after deployment. Kubernetes supports in-place resizing of CPU
-requests and limits for running Pods, while Docker can update container CPU
-shares and quotas through cgroup-backed controls
-\cite{Kubernetes2026Resize,DockerUpdate2026,DockerResourceConstraints2026}.
-These capabilities provide practical support for concurrent container
-execution with runtime CPU reallocation. In the considered system, co-located
-task containers share the CPU capacity of their resource, and their allocations
-are updated as tasks start or complete. Consequently, a new placement may alter
-the execution rates of running tasks and propagate its effects through workflow
-dependencies.
+Deep reinforcement learning (DRL) offers a way to learn online selection policies from scheduling experience, but two issues must be addressed in this setting. \emph{First}, directly using feasible resources as actions is difficult for dynamic workflow scheduling in Cloud--Edge computing because the action set changes with task requirements, resource availability, and on-demand Cloud provisioning \cite{jayanetti2022,xiao2025,gates}. Rule-assisted DRL avoids this issue by using scheduling rules as fixed actions, where the selected rule ranks feasible candidates at the current decision point. Existing rule-assisted studies use manual rules or GP-evolved rules in dynamic scheduling \cite{liu2022rules,xu2024niching,zhao2025tdrl}, and GP-evolved actions have also been applied to dynamic Fog workflow scheduling \cite{he2026evolved}. However, these studies mainly address single-objective or fixed-objective settings, and rule sets based on manual rules still depend on expert design. \emph{Second}, different users or scenarios may require different tardiness--energy trade-offs. Multi-objective reinforcement learning (MORL) and Pareto set learning can condition decisions on preferences \cite{roijers2013morl,hayes2022morl,abels2019morl,yang2019morl,lin2022psl,xu2026pslgp}. However, they do not provide a rule-mode action design that combines a compact pool of GP-evolved resource-selection rules with preference-aware online selection. These observations motivate combining GP-based generation of complementary resource-selection rules with DRL-based preference-aware online selection.
 
-These interactions make a placement consequential beyond the task being
-assigned. It changes the capacity available to co-located tasks, the release
-times of successors, and the period over which resources remain active. Its
-tardiness and energy effects therefore unfold over subsequent events rather
-than being determined by the immediate execution time alone. Moreover, a
-placement that is favourable under one workload state or objective weighting
-may be undesirable under another. Since weighted tardiness and energy must be
-considered jointly \cite{jayanetti2022,zhang2024}, online scheduling requires a
-policy that can vary its resource-selection behaviour with both the observed
-state and the requested tardiness--energy preference.
-
-Genetic programming hyper-heuristics (GPHHs) are attractive for dynamic
-scheduling because they evolve executable priority rules offline and apply them
-quickly online. They have been developed from single-tree Cloud workflow rules
-to multi-objective rule sets and interacting multi-tree or dual-tree rules
-\cite{escott2020gphh,yu2022mogp,xu2023mtgp,sun2024mtgp,yang2025dtgp}.
-Cooperative coevolution genetic programming (CCGP) further decomposes coupled
-task-selection and resource-management rules into cooperating subpopulations
-\cite{ccgp}. However, once an evolved heuristic is deployed, its component
-rules are normally fixed throughout a scheduling run. Different rules may be
-effective for different system states or objective preferences, but a fixed
-heuristic cannot learn when to switch among their complementary behaviours.
-
-Deep reinforcement learning (DRL) provides state-dependent control, but direct
-resource-selection actions are difficult to represent because the set of
-feasible resources changes over time \cite{jayanetti2022,xiao2025,gates}.
-Rule-assisted DRL avoids this difficulty by selecting a scheduling rule from a
-fixed action set. This principle has been explored with manually designed or
-GP-evolved rules in dynamic job-shop scheduling
-\cite{liu2022rules,xu2024niching,zhao2025tdrl}. For dynamic Fog workflow
-scheduling, He et al. use GP to construct a diverse action set and DRL to select
-evolved actions online, but learn a single-objective tardiness policy
-\cite{he2026evolved}. These studies improve the quality and behavioural
-diversity of rule actions, but their online policies target a single scheduling
-objective. Preference-aware multi-objective reinforcement learning (MORL)
-shows that one policy can respond to different objective weights
-\cite{roijers2013morl,hayes2022morl,abels2019morl,yang2019morl}, while PSLGP
-embeds preferences into a GP heuristic for multi-objective dynamic job-shop
-scheduling \cite{xu2026pslgp}. Consequently, accommodating changing user
-priorities within one online scheduler remains an open issue for dynamic
-Cloud--Edge workflows.
-
-To address this gap, we propose PRS-GPDRL, a preference-aware deep
-reinforcement learning framework with risk-augmented GP-evolved actions. CCGP
-first evolves coupled tree-based task- and resource-selection rules.
-A quality- and behaviour-aware extraction procedure then retains a compact pool
-of complementary resource-selection rules from the final CCGP archive. Pairing
-this rule pool with the base and risk modes gives a fixed-dimensional rule-mode
-action space. Finally, a multi-objective double deep Q-network
-(DDQN) learns when to select each rule-mode action, while a fixed upward-rank
-rule orders ready tasks. Evolutionary search discovers interpretable
-resource-selection rules, while the DDQN selects among them according to the
-current system state and requested objective trade-off.
-
+To address this gap, this paper proposes PRS-GPDRL, a preference-aware deep reinforcement learning framework with risk-stratified GP-evolved actions. Cooperative coevolution genetic programming (CCGP) first evolves coupled task-selection and resource-selection rules, so each resource-selection rule is evaluated together with a cooperating task-selection rule. A quality- and behaviour-aware extraction procedure then constructs a compact pool of complementary resource-selection rules from the final CCGP archive. Each retained resource-selection rule is paired with a base mode and a risk mode. The base mode follows the selected GP rule, while the risk mode adds a bounded preference-aware local correction. Pairing the retained rules with these two modes gives a fixed rule-mode action space for the DRL agent. A multi-objective double deep Q-network (DDQN) learns to select rule-mode actions according to the current system state and requested preference. A fixed upward-rank rule orders ready tasks, allowing the learned policy to focus on resource selection.
 The main contributions are as follows:
 \begin{itemize}
-    \item We propose a CCGP-to-DRL scheduling framework that evolves coupled GP
-    rules offline and extracts complementary resource-selection rules into a
-    compact pool.
-    Pairing this pool with two modes creates a fixed rule-mode action space for
-    each trained agent while separating the variable candidate-resource set
-    from the DDQN output.
+    \item We propose a CCGP-to-DRL scheduling framework that evolves coupled GP rules offline and extracts complementary resource-selection rules into a compact pool. Pairing this pool with two modes creates a fixed rule-mode action space for the DDQN, while the selected rule-mode action ranks the variable set of feasible resources at each decision point.
 
-    \item We introduce risk-stratified action augmentation to complement
-    rule-level GP selection with local, preference-guided resource-priority
-    adjustment. A multi-objective DDQN
-    combines
-    this action design with FiLM-based preference modulation, vector-valued
-    action costs, and augmented weighted Tchebycheff scalarisation, enabling one
-    network to represent different tardiness--energy trade-offs.
+    \item We introduce risk-stratified action augmentation to complement rule-level GP selection with local, preference-guided resource-priority adjustment. A multi-objective DDQN combines this action design with feature-wise linear modulation (FiLM), vector-valued action costs, and augmented weighted Tchebycheff scalarisation, enabling one network to represent different tardiness--energy trade-offs.
 
-    \item Across 12 dynamic scheduling scenarios and 30 independent runs,
-    PRS-GPDRL obtains the best average ranks for both HV (1.403) and
-    IGD (1.525). It is statistically better than or comparable to CCGP in 11 of
-    12 scenarios and to GATES and LWFF in at least 11 of 12 scenarios for each
-    metric.
+    \item Across 12 dynamic scheduling scenarios and 30 independent runs, PRS-GPDRL obtains the best average ranks for both hypervolume (HV, 1.403) and inverted generational distance (IGD, 1.525). It is statistically better than or comparable to CCGP in 11 of 12 scenarios and to GATES and LWFF in at least 11 of 12 scenarios for each metric.
 \end{itemize}
 
 \section{Related Work}
@@ -222,63 +122,66 @@ The main contributions are as follows:
 
 \subsection{Dynamic Workflow Scheduling in Cloud--Edge Systems}
 
-Research on dynamic Cloud--Edge workflow scheduling can be distinguished by
-where its decision structure originates. Constructive schedulers encode domain
-knowledge through task ranks, sub-deadlines, resource reuse, incremental costs,
-or non-dominated candidate construction. These mechanisms support deadline,
-energy, and monetary objectives without policy training and retain low online
-decision cost \cite{ohds,rmes,li2024,lou2023,lwff}. Their behaviour, however, is
-governed by manually specified scoring and selection structures, which restricts
-how scheduling attributes can be recombined as system states and objective
-preferences change.
+Dynamic workflow scheduling in Cloud--Edge systems has been studied from both
+rule-based and learning-based perspectives. Manual rules commonly use task
+ranks, sub-deadlines, resource reuse, incremental costs, or non-dominated
+candidate construction for task sequencing and resource allocation
+\cite{ohds,rmes,li2024,lou2023,lwff}. These methods support deadline, energy,
+cost, or utilisation objectives with explicit scheduling logic. Their
+performance, however, depends on expert knowledge and may require redesign when
+the execution environment, resource model, workload pattern, or objective
+preference changes.
 
-Learning-based schedulers move this combination into a learned policy. DRL and
-multi-agent DRL have consequently been applied to time--energy scheduling,
-multi-objective resource allocation, and collaborative workflow offloading across
-the Cloud--Edge continuum \cite{jayanetti2022,zhang2024,xiao2025}. GATES further
-uses heterogeneous-graph attention to represent varying ready-task and
-virtual-machine sets, with an evolution strategy learning the allocation policy
-\cite{gates}. GP hyper-heuristics take a different route: they search directly
-for executable priority rules rather than a neural allocation mapping. In this
-line, CCGP coevolves task-selection, resource-selection, and container-scaling
-trees and returns non-dominated scheduling heuristics for dynamic Cloud--Fog
-workflows \cite{ccgp}. The resulting heuristics offer diverse trade-offs, but
-each applies a fixed combination of component rules during execution; they do
-not provide state-dependent switching among complementary resource rules under
-a continuously varying bi-objective preference.
+Learning-based methods learn scheduling decisions from data or simulation
+experience. DRL and multi-agent DRL have been applied to time--energy
+scheduling, multi-objective resource allocation, and collaborative workflow
+offloading across the Cloud--Edge continuum
+\cite{jayanetti2022,zhang2024,xiao2025}. GATES uses heterogeneous-graph
+attention to represent varying ready-task and virtual-machine sets, and learns a
+direct allocation policy through an evolution strategy \cite{gates}. GP
+hyper-heuristics follow a different route by evolving executable priority rules.
+CCGP coevolves task-selection, resource-selection, and container-scaling trees
+and returns non-dominated scheduling heuristics for dynamic Cloud--Fog workflows
+\cite{ccgp}. These studies provide useful methods for dynamic workflow
+scheduling. However, they either rely on manual rules, learn direct
+resource-selection policies, or deploy a fixed GP heuristic after training. They
+do not focus on preference-aware online selection among GP-evolved
+resource-selection rules.
 
 \subsection{Rule-Assisted Reinforcement Learning for Dynamic Scheduling}
 
-Rule-assisted DRL separates high-level adaptation from the concrete scheduling
-decision. Instead of exposing a variable set of jobs or resources as actions,
-the agent selects a fixed-dimensional rule that subsequently ranks the feasible
-candidates. Liu et al. establish this indirect action representation using
-manually designed dispatching rules in dynamic flexible job shops
-\cite{liu2022rules}. Although the representation accommodates changing candidate
-sets, the manual rule library places an inherent limit on the quality and
-behavioural diversity available to the agent \cite{xu2024niching}.
+Rule-assisted DRL uses scheduling rules as actions to handle variable candidate
+sets in dynamic scheduling. Instead of selecting directly from a changing set of
+jobs or resources, the agent selects a rule from a fixed action set, and the
+selected rule ranks the feasible candidates. Liu et al. used this indirect
+action representation with manual dispatching rules in dynamic
+flexible job shops \cite{liu2022rules}. This representation accommodates
+changing candidate sets, but a manual rule library still depends on expert
+design and may limit the quality and diversity of available actions
+\cite{xu2024niching}.
 
-Subsequent research replaces the manual library with evolved rules. Niching and
-behaviour clustering preserve distinct scheduling behaviours, while GP supplies
-executable routing or sequencing actions for online DRL selection
-\cite{xu2024niching,zhao2025tdrl}. The same evolutionary action principle has
-also been applied to tardiness minimisation in dynamic Fog workflow scheduling
-\cite{he2026evolved}. These studies broaden the source of rule actions through
-evolution, but primarily address single-objective scheduling or optimise for a
-fixed objective setting; continuously changing tardiness--energy preferences
-are outside their scope.
+Subsequent studies replace manual rules with evolved rules. Niching
+and behaviour clustering preserve different scheduling behaviours, while GP
+provides executable routing or sequencing actions for online DRL selection
+\cite{xu2024niching,zhao2025tdrl}. The same principle has also been applied to
+dynamic Fog workflow scheduling with GP-evolved actions \cite{he2026evolved}.
+These studies broaden the source of rule actions through evolution, but they
+mainly address single-objective scheduling or fixed objective settings. They do
+not combine a GP-evolved resource-selection rule pool with preference-aware
+multi-objective action selection for dynamic workflow scheduling in Cloud--Edge
+computing.
 
 \subsection{Preference-Aware Multi-Objective Learning}
 
 Multi-objective reinforcement learning (MORL) addresses sequential decisions
 with vector-valued outcomes by representing more than one objective trade-off
-\cite{roijers2013morl,hayes2022morl}. One line learns explicit policy sets or a
-continuous Pareto manifold, providing coverage across non-dominated behaviours
-\cite{vanmoffaert2014pareto,parisi2016pareto}. A second line incorporates the
-requested preference into a shared value function or policy. Dynamic weights, desired
-returns, objective-specific action distributions, and preference-controllable
-meta-policies are different preference representations for the same purpose: adapting
-one learned model without retraining it for every trade-off
+\cite{roijers2013morl,hayes2022morl}. One group of methods learns explicit
+policy sets or a continuous Pareto manifold, providing coverage across
+non-dominated behaviours \cite{vanmoffaert2014pareto,parisi2016pareto}. Another
+group incorporates the requested preference into a shared value function or
+policy. Dynamic weights, desired returns, objective-specific action
+distributions, and preference-controllable meta-policies are different ways to
+adapt one learned model without retraining it for every trade-off
 \cite{abels2019morl,yang2019morl,abdolmaleki2020mopo,reymond2022pcn,
 yang2025pcrl}.
 
@@ -286,9 +189,11 @@ Pareto set learning develops a related preference-to-solution view. Augmented
 Tchebycheff scalarisation can train a model that maps preferences to approximate
 Pareto solutions \cite{lin2022psl}, and PSLGP carries this principle into
 preference-aware GP heuristics for multi-objective dynamic scheduling
-\cite{xu2026pslgp}. Collectively, these studies establish how a model can respond
-continuously to changing preferences. Its extension to dynamic Cloud--Edge
-workflow scheduling has received limited attention.
+\cite{xu2026pslgp}. These studies show how a learned model can respond to
+different objective preferences. However, they do not provide the rule-mode
+action design needed to let a DRL agent select among GP-evolved
+resource-selection rules for dynamic workflow scheduling in Cloud--Edge
+computing.
 
 \section{Problem Modelling}
 \label{Sec: problem modelling}
