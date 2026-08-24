@@ -7,11 +7,11 @@
 \citation{IEA2025EnergyAI,CSO2026DataCentres}
 \citation{Ranjan2020}
 \citation{Kubernetes2026Resize,DockerUpdate2026,DockerResourceConstraints2026}
-\citation{ohds,rmes,li2024,lou2023,lwff}
-\citation{escott2020gphh,yu2022mogp,xu2023mtgp,sun2024mtgp,yang2025dtgp,ccgp}
 \providecommand \oddpage@label [2]{}
 \@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{section.1}\protected@file@percent }
 \newlabel{Sec: introduction}{{I}{1}{Introduction}{section.1}{}}
+\citation{ohds,rmes,li2024,lou2023,lwff}
+\citation{escott2020gphh,yu2022mogp,xu2023mtgp,sun2024mtgp,yang2025dtgp,ccgp}
 \citation{jayanetti2022,xiao2025,gates}
 \citation{liu2022rules,xu2024niching,zhao2025tdrl}
 \citation{he2026evolved}
@@ -20,12 +20,11 @@
 \citation{jayanetti2022,zhang2024,xiao2025}
 \citation{gates}
 \citation{ccgp}
-\citation{liu2022rules}
-\citation{xu2024niching}
 \@writefile{toc}{\contentsline {section}{\numberline {II}Related Work}{2}{section.2}\protected@file@percent }
 \newlabel{Sec: related work}{{II}{2}{Related Work}{section.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-A}}Dynamic Workflow Scheduling in Cloud--Edge Systems}{2}{subsection.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-B}}Rule-Assisted Reinforcement Learning for Dynamic Scheduling}{2}{subsection.2.2}\protected@file@percent }
+\citation{liu2022rules}
+\citation{xu2024niching}
 \citation{xu2024niching,zhao2025tdrl}
 \citation{he2026evolved}
 \citation{roijers2013morl,hayes2022morl}
@@ -33,10 +32,11 @@
 \citation{abels2019morl,yang2019morl,abdolmaleki2020mopo,reymond2022pcn,yang2025pcrl}
 \citation{lin2022psl}
 \citation{xu2026pslgp}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-B}}Rule-Assisted Reinforcement Learning for Dynamic Scheduling}{3}{subsection.2.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-C}}Preference-Aware Multi-Objective Learning}{3}{subsection.2.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {III}Problem Modelling}{3}{section.3}\protected@file@percent }
 \newlabel{Sec: problem modelling}{{III}{3}{Problem Modelling}{section.3}{}}
-\newlabel{Eq: Objective Energy}{{1}{3}{Problem Modelling}{equation.1}{}}
+\newlabel{Eq: Objective Energy}{{1}{4}{Problem Modelling}{equation.1}{}}
 \newlabel{Eq: Objective Tardiness}{{2}{4}{Problem Modelling}{equation.2}{}}
 \newlabel{Eq: Arrival time constraint}{{3}{4}{Problem Modelling}{equation.3}{}}
 \newlabel{Eq: Dependency constraint}{{4}{4}{Problem Modelling}{equation.4}{}}
@@ -51,19 +51,19 @@
 \newlabel{Eq: cpu allocation}{{13}{4}{Problem Modelling}{equation.13}{}}
 \newlabel{Eq: Utilisation at time t}{{14}{4}{Problem Modelling}{equation.14}{}}
 \newlabel{Eq: power at time t}{{15}{4}{Problem Modelling}{equation.15}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Overall framework of PRS-GPDRL.}}{4}{figure.1}\protected@file@percent }
-\newlabel{Fig: PRS-GPDRL framework}{{1}{4}{Overall framework of PRS-GPDRL}{figure.1}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {IV}The Proposed PRS-GPDRL Algorithm}{4}{section.4}\protected@file@percent }
 \newlabel{Sec: PRS-GPDRL}{{IV}{4}{The Proposed PRS-GPDRL Algorithm}{section.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Overall Framework of PRS-GPDRL}{4}{subsection.4.1}\protected@file@percent }
 \newlabel{Sec: PRS-GPDRL overall}{{\mbox  {IV-A}}{4}{Overall Framework of PRS-GPDRL}{subsection.4.1}{}}
 \citation{Topcuoglu2002}
 \citation{ccgp}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Overall framework of PRS-GPDRL.}}{5}{figure.1}\protected@file@percent }
+\newlabel{Fig: PRS-GPDRL framework}{{1}{5}{Overall framework of PRS-GPDRL}{figure.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}CCGP Training and Action Extraction}{5}{subsection.4.2}\protected@file@percent }
 \newlabel{Sec: CCGP action extraction}{{\mbox  {IV-B}}{5}{CCGP Training and Action Extraction}{subsection.4.2}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {I}{\ignorespaces Terminal, function, and state-encoder attributes used by PRS-GPDRL.}}{5}{table.1}\protected@file@percent }
 \newlabel{Table:scheduling-attributes}{{I}{5}{Terminal, function, and state-encoder attributes used by PRS-GPDRL}{table.1}{}}
-\newlabel{Eq: behaviour vector}{{16}{5}{CCGP Training and Action Extraction}{equation.16}{}}
+\newlabel{Eq: behaviour vector}{{16}{6}{CCGP Training and Action Extraction}{equation.16}{}}
 \newlabel{Eq: balanced anchor}{{17}{6}{CCGP Training and Action Extraction}{equation.17}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Risk-Stratified Action Augmentation}{6}{subsection.4.3}\protected@file@percent }
 \newlabel{Sec: risk stratified actions}{{\mbox  {IV-C}}{6}{Risk-Stratified Action Augmentation}{subsection.4.3}{}}
@@ -73,11 +73,10 @@
 \newlabel{Eq: energy local cost}{{21}{6}{Risk-Stratified Action Augmentation}{equation.21}{}}
 \newlabel{Eq: preference-weighted auxiliary score}{{22}{6}{Risk-Stratified Action Augmentation}{equation.22}{}}
 \newlabel{Eq: risk strata}{{23}{6}{Risk-Stratified Action Augmentation}{equation.23}{}}
-\newlabel{Eq: risk mix}{{24}{6}{Risk-Stratified Action Augmentation}{equation.24}{}}
-\newlabel{Eq: risk priority}{{25}{6}{Risk-Stratified Action Augmentation}{equation.25}{}}
 \citation{vanhasselt2016}
 \citation{perez2018film}
-\citation{vanhasselt2016}
+\newlabel{Eq: risk mix}{{24}{7}{Risk-Stratified Action Augmentation}{equation.24}{}}
+\newlabel{Eq: risk priority}{{25}{7}{Risk-Stratified Action Augmentation}{equation.25}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}MDP Formulation for Preference-Aware Rule Selection}{7}{subsection.4.4}\protected@file@percent }
 \newlabel{Sec: PRS-GPDRL MDP}{{\mbox  {IV-D}}{7}{MDP Formulation for Preference-Aware Rule Selection}{subsection.4.4}{}}
 \newlabel{Eq: action pair}{{26}{7}{MDP Formulation for Preference-Aware Rule Selection}{equation.26}{}}
@@ -86,60 +85,60 @@
 \newlabel{Sec: MO-DDQN}{{\mbox  {IV-E}}{7}{Preference-Aware Multi-Objective DDQN}{subsection.4.5}{}}
 \newlabel{Eq: film state embedding}{{28}{7}{Preference-Aware Multi-Objective DDQN}{equation.28}{}}
 \newlabel{Eq: vector Q}{{29}{7}{Preference-Aware Multi-Objective DDQN}{equation.29}{}}
-\newlabel{Eq: tchebycheff scalarisation}{{30}{7}{Preference-Aware Multi-Objective DDQN}{equation.30}{}}
-\newlabel{Eq: greedy action}{{31}{7}{Preference-Aware Multi-Objective DDQN}{equation.31}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Training and Inference Procedure}{7}{subsection.4.6}\protected@file@percent }
-\newlabel{Sec: training inference}{{\mbox  {IV-F}}{7}{Training and Inference Procedure}{subsection.4.6}{}}
+\citation{vanhasselt2016}
 \citation{ccgp}
 \citation{gates}
 \citation{lwff}
 \citation{ccgp}
-\citation{Ranjan2020}
-\citation{Goudarzi2021,Pallewatta2022}
-\citation{Hi2015ousgp}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Multi-objective DDQN for rule-mode action selection in PRS-GPDRL.}}{8}{figure.2}\protected@file@percent }
 \newlabel{Fig: PRS-GPDRL DDQN}{{2}{8}{Multi-objective DDQN for rule-mode action selection in PRS-GPDRL}{figure.2}{}}
 \@writefile{loa}{\contentsline {algocf}{\numberline {1}{\ignorespaces Online preference-aware resource selection}}{8}{algocf.1}\protected@file@percent }
 \newlabel{Alg: online resource selection}{{1}{8}{Preference-Aware Multi-Objective DDQN}{algocf.1}{}}
+\newlabel{Eq: tchebycheff scalarisation}{{30}{8}{Preference-Aware Multi-Objective DDQN}{equation.30}{}}
+\newlabel{Eq: greedy action}{{31}{8}{Preference-Aware Multi-Objective DDQN}{equation.31}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Training and Inference Procedure}{8}{subsection.4.6}\protected@file@percent }
+\newlabel{Sec: training inference}{{\mbox  {IV-F}}{8}{Training and Inference Procedure}{subsection.4.6}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {V}Performance Evaluation}{8}{section.5}\protected@file@percent }
 \newlabel{Sec: performance evaluation}{{V}{8}{Performance Evaluation}{section.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Compared Algorithms}{8}{subsection.5.1}\protected@file@percent }
 \newlabel{Sec: compared methods}{{\mbox  {V-A}}{8}{Compared Algorithms}{subsection.5.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Cloud--Edge Environment and Workloads}{8}{subsection.5.2}\protected@file@percent }
 \newlabel{Sec: experimental environment}{{\mbox  {V-B}}{8}{Cloud--Edge Environment and Workloads}{subsection.5.2}{}}
+\citation{Ranjan2020}
+\citation{Goudarzi2021,Pallewatta2022}
+\citation{Hi2015ousgp}
 \citation{Sahoo2021}
 \citation{ccgp}
 \citation{ccgp}
-\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Configurations of Edge Nodes and Cloud Servers\textsuperscript  {1,2}.}}{9}{table.2}\protected@file@percent }
-\newlabel{Table: resource configurations}{{II}{9}{Configurations of Edge Nodes and Cloud Servers\textsuperscript {1,2}}{table.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces The parameter settings of CCGP.}}{9}{table.3}\protected@file@percent }
-\newlabel{Table: CCGP parameters}{{III}{9}{The parameter settings of CCGP}{table.3}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}Training and Test Protocol}{9}{subsection.5.3}\protected@file@percent }
 \newlabel{Sec: training test protocol}{{\mbox  {V-C}}{9}{Training and Test Protocol}{subsection.5.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces The parameter configuration of DDQN and risk-stratified action augmentation.}}{9}{table.4}\protected@file@percent }
-\newlabel{Table: DDQN risk parameters}{{IV}{9}{The parameter configuration of DDQN and risk-stratified action augmentation}{table.4}{}}
 \newlabel{Eq: evaluation preference grid}{{32}{9}{Training and Test Protocol}{equation.32}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-D}}Evaluation Metrics}{9}{subsection.5.4}\protected@file@percent }
 \newlabel{Sec: evaluation metrics}{{\mbox  {V-D}}{9}{Evaluation Metrics}{subsection.5.4}{}}
 \newlabel{Eq: objective normalisation}{{33}{9}{Evaluation Metrics}{equation.33}{}}
+\newlabel{Eq: IGD}{{34}{9}{Evaluation Metrics}{equation.34}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-E}}Overall Performance}{9}{subsection.5.5}\protected@file@percent }
+\newlabel{Sec: overall performance}{{\mbox  {V-E}}{9}{Overall Performance}{subsection.5.5}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {V-E}1}Comparison of Hypervolume}{9}{subsubsection.5.5.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Configurations of Edge Nodes and Cloud Servers\textsuperscript  {1,2}.}}{10}{table.2}\protected@file@percent }
+\newlabel{Table: resource configurations}{{II}{10}{Configurations of Edge Nodes and Cloud Servers\textsuperscript {1,2}}{table.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces The parameter settings of CCGP.}}{10}{table.3}\protected@file@percent }
+\newlabel{Table: CCGP parameters}{{III}{10}{The parameter settings of CCGP}{table.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces The parameter configuration of DDQN and risk-stratified action augmentation.}}{10}{table.4}\protected@file@percent }
+\newlabel{Table: DDQN risk parameters}{{IV}{10}{The parameter configuration of DDQN and risk-stratified action augmentation}{table.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces The mean and standard deviation of the HV values over the 30 independent runs of the compared algorithms.}}{10}{table.5}\protected@file@percent }
+\newlabel{Table: HV main results}{{V}{10}{The mean and standard deviation of the HV values over the 30 independent runs of the compared algorithms}{table.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces The mean and standard deviation of the IGD values over the 30 independent runs of the compared algorithms.}}{10}{table.6}\protected@file@percent }
+\newlabel{Table: IGD main results}{{VI}{10}{The mean and standard deviation of the IGD values over the 30 independent runs of the compared algorithms}{table.6}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {V-E}2}Comparison of Inverted Generational Distance}{10}{subsubsection.5.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Conclusion}{10}{section.6}\protected@file@percent }
+\newlabel{Sec: conclusion}{{VI}{10}{Conclusion}{section.6}{}}
 \bibstyle{IEEEtran}
 \bibdata{Bibliography}
 \bibcite{Li2026}{1}
 \bibcite{Bouabdallah2024}{2}
 \bibcite{Coleman2022WfCommons}{3}
 \bibcite{Gartner2025AgenticAI}{4}
-\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces The mean and standard deviation of the HV values over the 30 independent runs of the compared algorithms.}}{10}{table.5}\protected@file@percent }
-\newlabel{Table: HV main results}{{V}{10}{The mean and standard deviation of the HV values over the 30 independent runs of the compared algorithms}{table.5}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces The mean and standard deviation of the IGD values over the 30 independent runs of the compared algorithms.}}{10}{table.6}\protected@file@percent }
-\newlabel{Table: IGD main results}{{VI}{10}{The mean and standard deviation of the IGD values over the 30 independent runs of the compared algorithms}{table.6}{}}
-\newlabel{Eq: IGD}{{34}{10}{Evaluation Metrics}{equation.34}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-E}}Overall Performance}{10}{subsection.5.5}\protected@file@percent }
-\newlabel{Sec: overall performance}{{\mbox  {V-E}}{10}{Overall Performance}{subsection.5.5}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {V-E}1}Comparison of Hypervolume}{10}{subsubsection.5.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {V-E}2}Comparison of Inverted Generational Distance}{10}{subsubsection.5.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VI}Conclusion}{10}{section.6}\protected@file@percent }
-\newlabel{Sec: conclusion}{{VI}{10}{Conclusion}{section.6}{}}
-\@writefile{toc}{\contentsline {section}{References}{10}{section*.1}\protected@file@percent }
 \bibcite{IEA2025EnergyAI}{5}
 \bibcite{CSO2026DataCentres}{6}
 \bibcite{Ranjan2020}{7}
@@ -175,6 +174,7 @@
 \bibcite{parisi2016pareto}{37}
 \bibcite{abdolmaleki2020mopo}{38}
 \bibcite{reymond2022pcn}{39}
+\@writefile{toc}{\contentsline {section}{References}{11}{section*.1}\protected@file@percent }
 \bibcite{yang2025pcrl}{40}
 \bibcite{Topcuoglu2002}{41}
 \bibcite{vanhasselt2016}{42}
@@ -183,4 +183,4 @@
 \bibcite{Pallewatta2022}{45}
 \bibcite{Hi2015ousgp}{46}
 \bibcite{Sahoo2021}{47}
-\gdef \@abspage@last{11}
+\gdef \@abspage@last{12}

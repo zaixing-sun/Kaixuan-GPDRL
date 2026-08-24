@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.11.27)  20 AUG 2026 17:02
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.11.27)  21 AUG 2026 11:12
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**PRS-GPDRL
-(./PRS-GPDRL.tex
+**/Users/zaixing/Github/Kaixuan-GPDRL/PRS-GPDRL.tex
+(/Users/zaixing/Github/Kaixuan-GPDRL/PRS-GPDRL.tex
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
 (/usr/local/texlive/2025/texmf-dist/tex/latex/ieeetran/IEEEtran.cls
@@ -560,12 +560,12 @@ Package: ninecolors 2022-02-13 v2022D Select colors with proper color contrast
  (/usr/local/texlive/2025/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
 Package: xparse 2024-08-16 L3 Experimental document command parser
 ))
-Underfull \hbox (badness 5050) in paragraph at lines 67--93
+Underfull \hbox (badness 5050) in paragraph at lines 82--108
 []\OT1/ptm/b/it/9 Abstract\OT1/ptm/b/n/9 ---Online work-flow schedul-ing in het-ero-ge-neous
  []
 
 
-Underfull \hbox (badness 1558) in paragraph at lines 95--98
+Underfull \hbox (badness 1558) in paragraph at lines 110--113
 []\OT1/ptm/b/it/9 Index Terms\OT1/ptm/b/n/9 ---Cloud--Edge com-put-ing, dy-namic work-flow
  []
 
@@ -577,79 +577,81 @@ Underfull \hbox (badness 1558) in paragraph at lines 95--98
 
 
 ]
-LaTeX Font Info:    Trying to load font information for U+msa on input line 113.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 128.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 113.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 128.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 151--151
+
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 166--166
  \OT1/ptm/m/it/10 B. Rule-Assisted Re-in-force-ment Learn-ing for Dy-namic
  []
 
 
 
-[2]
 
 
-Overfull \hbox (2.18065pt too wide) detected at line 342
+[3]
+Overfull \hbox (2.18065pt too wide) detected at line 357
 []
  []
 
 
 
-[3]
-
-<figures/framework.pdf, id=245, 231.74579pt x 162.6075pt>
+<figures/framework.pdf, id=242, 231.74579pt x 162.6075pt>
 File: figures/framework.pdf Graphic file (type pdf)
 <use figures/framework.pdf>
-Package pdftex.def Info: figures/framework.pdf  used on input line 447.
+Package pdftex.def Info: figures/framework.pdf  used on input line 462.
 (pdftex.def)             Requested size: 252.0pt x 176.82678pt.
 
 
-[4 <./figures/framework.pdf>]
+[4]
 
 
 
-[5]
-
-
-Underfull \hbox (badness 4096) in paragraph at lines 765--771
-[]\OT1/ptm/m/n/10 The resource-selection prob-lem is for-mu-lated as an
- []
+[5 <./figures/framework.pdf>]
 
 
 
 [6]
-<figures/DRL.pdf, id=320, 1836.8625pt x 535.03888pt>
+Underfull \hbox (badness 4096) in paragraph at lines 780--786
+[]\OT1/ptm/m/n/10 The resource-selection prob-lem is for-mu-lated as an
+ []
+
+<figures/DRL.pdf, id=316, 1836.8625pt x 535.03888pt>
 File: figures/DRL.pdf Graphic file (type pdf)
 <use figures/DRL.pdf>
-Package pdftex.def Info: figures/DRL.pdf  used on input line 827.
+Package pdftex.def Info: figures/DRL.pdf  used on input line 842.
 (pdftex.def)             Requested size: 402.47937pt x 117.22723pt.
 
 
 
+Underfull \vbox (badness 1205) has occurred while \output is active []
+
+
 
 [7]
-Underfull \hbox (badness 4832) in paragraph at lines 962--970
+
+
+Underfull \hbox (badness 4832) in paragraph at lines 977--985
 \OT1/ptm/m/n/10 and container-scaling GP rules to con-struct non-
  []
 
 
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 1052--1052
+[8 <./figures/DRL.pdf>]
+Underfull \hbox (badness 10000) in paragraph at lines 1067--1067
 [][][][]$\OT1/ptm/m/n/8 https : / / engineering . teads . com / sustainability / carbon -[] footprint -[] estimator -[]
  []
 
 
-
-[8 <./figures/DRL.pdf>]
-Underfull \hbox (badness 2460) in paragraph at lines 1068--1077
+Underfull \hbox (badness 2460) in paragraph at lines 1083--1092
 []\OT1/ptm/m/n/10 The main eval-u-a-tion cov-ers the 12 com-bi-na-tions of
  []
 
@@ -659,7 +661,9 @@ Underfull \hbox (badness 2460) in paragraph at lines 1068--1077
 
 [9]
 
-(./PRS-GPDRL.bbl
+
+
+[10] (./PRS-GPDRL.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 34--36
 []$\OT1/ptm/m/n/8 https : / / www . gartner . com / en / newsroom / press -[] releases / 2025 -[] 08 -[] 26 -[]
  []
@@ -671,11 +675,15 @@ Underfull \hbox (badness 10000) in paragraph at lines 34--36
 
 
 
-[10]
 
-)
 
-[11] (./PRS-GPDRL.aux)
+[11])
+
+
+
+[12
+
+] (./PRS-GPDRL.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -684,18 +692,18 @@ Package rerunfilecheck Info: File `PRS-GPDRL.out' has not changed.
 (rerunfilecheck)             Checksum: 8932C1142A304E5A2D17486E6370DB4F;4765.
  ) 
 Here is how much of TeX's memory you used:
- 15070 strings out of 473190
- 257245 string characters out of 5715799
- 716739 words of memory out of 5000000
+ 15072 strings out of 473190
+ 257358 string characters out of 5715799
+ 724878 words of memory out of 5000000
  37992 multiletter control sequences out of 15000+600000
  610599 words of font info for 134 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,23n,79p,1832b,592s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,23n,79p,1872b,590s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on PRS-GPDRL.pdf (11 pages, 442616 bytes).
+Output written on PRS-GPDRL.pdf (12 pages, 444508 bytes).
 PDF statistics:
- 584 PDF objects out of 1000 (max. 8388607)
- 507 compressed objects within 6 object streams
- 134 named destinations out of 1000 (max. 500000)
+ 588 PDF objects out of 1000 (max. 8388607)
+ 510 compressed objects within 6 object streams
+ 135 named destinations out of 1000 (max. 500000)
  195 words of extra memory for PDF output out of 10000 (max. 10000000)
 
