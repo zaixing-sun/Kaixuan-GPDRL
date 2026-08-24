@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex PRS-GPDRL"] 1787280559.19743 "PRS-GPDRL.aux" "PRS-GPDRL.bbl" "PRS-GPDRL" 1787281978.07682 0
-  "./Bibliography.bib" 1787109371.33029 21729 2bf4e1df98012ec453bc54eb2f4cec75 ""
+["bibtex PRS-GPDRL"] 1787539041.61832 "PRS-GPDRL.aux" "PRS-GPDRL.bbl" "PRS-GPDRL" 1787539264.72605 0
+  "./Bibliography.bib" 1787533800.90502 21797 99c2a48e5ff5ff1aca19f48081211ba1 ""
   "/usr/local/texlive/2025/texmf-dist/bibtex/bst/ieeetran/IEEEtran.bst" 1440712899 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "PRS-GPDRL.aux" 1787281977.8667 13332 fc8e9831371b92dcc437d5c408efc61d "pdflatex"
+  "PRS-GPDRL.aux" 1787539264.3661 18081 82340d576f1d0724b19dc8c56116dd22 "pdflatex"
   (generated)
   "PRS-GPDRL.bbl"
   "PRS-GPDRL.blg"
   (rewritten before read)
-["pdflatex"] 1787281977.21782 "/Users/zaixing/Github/Kaixuan-GPDRL/PRS-GPDRL.tex" "PRS-GPDRL.pdf" "PRS-GPDRL" 1787281978.07694 0
-  "/Users/zaixing/Github/Kaixuan-GPDRL/PRS-GPDRL.tex" 1787281976.96123 76321 7971268f3dbc2a9ba64ee0ae985537e1 ""
+["pdflatex"] 1787539263.51727 "/Users/zaixing/Github/Kaixuan-GPDRL/PRS-GPDRL.tex" "PRS-GPDRL.pdf" "PRS-GPDRL" 1787539264.72621 0
+  "/Users/zaixing/Github/Kaixuan-GPDRL/PRS-GPDRL.tex" 1787539263.3132 92303 f4f080ab1202f73d6d529a081cd15bdd ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/adobe/times/ptmb7t.tfm" 1136768653 2172 fd0c924230362ff848a33632ed45dc23 ""
@@ -133,6 +133,7 @@
   "/usr/local/texlive/2025/texmf-dist/tex/latex/l3packages/xparse/xparse.sty" 1724879202 9783 ab4bee47700c04aadedb8da27591b0ab ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg" 1279039959 678 4792914a8f45be57bb98413425e4c7af ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/makecell/makecell.sty" 1249334690 15773 2dd7dde1ec1c2a3d0c85bc3b273e04d8 ""
+  "/usr/local/texlive/2025/texmf-dist/tex/latex/multirow/multirow.sty" 1731446765 6696 886c9f3087d0b973ed2c19aa79cb3023 ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/ninecolors/ninecolors.sty" 1644787553 24994 276ffd1a92e69ec7402483b3bf3318d2 ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/placeins/placeins.sty" 1137110565 4087 636308456f60d2b31cbf97867db5708d ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/psnfss/ot1ptm.fd" 1137110629 961 15056f4a61917ceed3a44e4ac11fcc52 ""
@@ -148,12 +149,17 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1764217084 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1764216991 3345743 b04ff687d4f756991bfe26707a94f6dd ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "PRS-GPDRL.aux" 1787281977.8667 13332 fc8e9831371b92dcc437d5c408efc61d "pdflatex"
-  "PRS-GPDRL.bbl" 1787280559.28162 12535 e3262073b615cb0f869785e4f2f5046c "bibtex PRS-GPDRL"
-  "PRS-GPDRL.out" 1787281977.86763 4765 8932c1142a304e5a2d17486e6370db4f "pdflatex"
-  "PRS-GPDRL.tex" 1787281976.96123 76321 7971268f3dbc2a9ba64ee0ae985537e1 ""
-  "figures/DRL.pdf" 1786968454.30319 66151 24278feba380a77e726e604adf66bbf0 ""
-  "figures/framework.pdf" 1786968454.3044 19063 6cfc7c69d606ff64c571b744f4cf5d6d ""
+  "PRS-GPDRL.aux" 1787539264.3661 18081 82340d576f1d0724b19dc8c56116dd22 "pdflatex"
+  "PRS-GPDRL.bbl" 1787539041.71363 12559 bc496204d31ac788335ca86e1f04626e "bibtex PRS-GPDRL"
+  "PRS-GPDRL.out" 1787539264.36715 6373 c1d85834f7efa1649394a9c56673052a "pdflatex"
+  "PRS-GPDRL.tex" 1787539263.3132 92303 f4f080ab1202f73d6d529a081cd15bdd ""
+  "figures/DRL.pdf" 1787533775.98222 61386 f1709b63c4662bb6bb4f20874da9f541 ""
+  "figures/framework.pdf" 1787533775.98365 19063 6cfc7c69d606ff64c571b744f4cf5d6d ""
+  "figures/preference_response_energy.pdf" 1787533775.99551 17360 5a85af8b5086347282635967ffa067d9 ""
+  "figures/preference_response_tardiness.pdf" 1787533776.03972 16795 f1419bf35cfaab16f8d957b6f7a8734c ""
+  "figures/risk_frequency.pdf" 1787533776.06456 21363 c771f0cdab9dda4f56dc9f7d22e56e95 ""
+  "figures/tradeoff_profile_50.pdf" 1787533776.0651 21556 5f3cf05bc869daef770b78e14a7c2e3f ""
+  "figures/tree_role_frequency.pdf" 1787533776.06566 28589 c425d70aa78a334071f011729409a943 ""
   (generated)
   "PRS-GPDRL.aux"
   "PRS-GPDRL.log"

@@ -66,7 +66,7 @@ R.~Ranjan, I.~S. Thakur, G.~S. Aujla, N.~Kumar, and A.~Y. Zomaya, ``Energy-effic
 G.~Fan, X.~Chen, Z.~Li, H.~Yu, and Y.~Zhang, ``An energy-efficient dynamic scheduling method of deadline-constrained workflows in a cloud environment,'' \emph{IEEE Trans. Netw. Service Manag.}, vol.~20, no.~3, pp. 3089--3103, 2023.
 
 \bibitem{rmes}
-Z.~Sun, H.~Huang, Z.~Li, and C.~Gu, ``Energy-efficient real-time multi-workflow scheduling in container-based cloud,'' \emph{J. Comb. Optim.}, vol.~49, no.~2, pp. 1--21, 2025.
+Z.~Sun, H.~Huang, Z.~Li, and C.~Gu, ``{Energy-efficient real-time multi-workflow scheduling in container-based cloud},'' \emph{J. Comb. Optim.}, vol.~49, no.~2, pp. 1--21, 2025.
 
 \bibitem{li2024}
 K.~Li, ``Energy-constrained {DAG} scheduling on edge and cloud servers with overlapped communication and computation,'' \emph{J. Grid Comput.}, vol.~22, no.~3, p.~60, 2024.
@@ -129,7 +129,7 @@ A.~Abels, D.~M. Roijers, T.~Lenaerts, A.~Now{\'{e}}, and D.~Steckelmacher, ``Dyn
 R.~Yang, X.~Sun, and K.~Narasimhan, ``A generalized algorithm for multi-objective reinforcement learning and policy adaptation,'' in \emph{Adv. Neural Inf. Process. Syst.}, vol.~32, 2019.
 
 \bibitem{lin2022psl}
-X.~Lin, Z.~Yang, X.~Zhang, and Q.~Zhang, ``{Pareto} set learning for expensive multi-objective optimization,'' in \emph{Adv. Neural Inf. Process. Syst.}, vol.~35, 2022.
+X.~Lin, Z.~Yang, X.~Zhang, and Q.~Zhang, ``{Pareto} set learning for expensive multi-objective optimization,'' in \emph{Adv. Neural Inf. Process. Syst.}, vol.~35, 2022, pp. 19\,231--19\,247.
 
 \bibitem{xu2026pslgp}
 M.~Xu, Y.~Mei, F.~Zhang, Y.~S. Ong, and M.~Zhang, ``Pareto set learning through genetic programming for multiobjective dynamic scheduling,'' \emph{IEEE Trans. Evol. Comput.}, vol.~30, no.~3, pp. 942--956, 2026.

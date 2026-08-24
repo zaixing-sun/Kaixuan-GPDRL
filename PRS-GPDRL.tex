@@ -3,7 +3,7 @@
 
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
-\usepackage[nocompress]{cite}
+\usepackage{cite}
 \usepackage{url}
 \makeatletter
 \g@addto@macro\UrlBreaks{\do\-}
@@ -11,7 +11,8 @@
 \usepackage{hyperref}
 \usepackage{booktabs}
 \usepackage{makecell}
-% \usepackage{xcolor}
+\usepackage{multirow}
+\usepackage{xcolor}
 \usepackage{tabularray}
 \usepackage{placeins}
 \usepackage[ruled,vlined,linesnumbered]{algorithm2e}
@@ -48,19 +49,10 @@
 
 \allowdisplaybreaks
 
-\newcommand{\wfNum}{\mathrm{wfNum}}
-
 \begin{document}
 
-% \title{Deep Reinforcement Learning with Genetic Programming-Evolved Actions for
-% Dynamic Workflow Scheduling in Cloud--Edge Computing}
 \title{Preference-Aware Deep Reinforcement Learning with GP-Evolved Actions for Dynamic Workflow Scheduling in Cloud-Edge Computing}
-% \title{Preference-Aware Deep Reinforcement Learning with Genetic Programming for Multi-Objective Dynamic Workflow Scheduling in Cloud-Edge Computing}
-% % \title{Preference-Aware Deep Reinforcement Learning with GP-Evolved Actions for Dynamic Workflow Scheduling in Cloud-Edge Computing}
 
-% \title{Preference-Aware Evolutionary Reinforcement Learning with GP-Evolved Actions for Multi-Objective Cloud-Edge Workflow Scheduling}
-% \title{Preference-Conditioned Deep Reinforcement Learning with Risk-Augmented
-% GP-Evolved Actions for Dynamic Workflow Scheduling in Cloud--Edge Computing}
 % \author{Anonymous Authors}
 
 
@@ -76,8 +68,8 @@ This work was supported in part by the Major Key Project of PCL, China under Gra
 \thanks{~~Kaixuan Ma, Chonglin Gu and Hejiao Huang are with the Shenzhen Key Laboratory of Internet Information Collaboration, School of Computer Science and Technology, Harbin Institute of Technology (Shenzhen), Shenzhen, 518055, China. E-mail: m2018617714@gmail.com, guchonglin@hit.edu.cn, huanghejiao@hit.edu.cn.}
 \thanks{~~Meng Xu is with Beijing Key Laboratory of Lightweight Intelligent System, Beijing Institute of Technology, Beijing, 100081, China. E-mail: mengxu@bit.edu.cn.}
 }
-
 \maketitle
+
 
 \begin{abstract}
 Online workflow scheduling in heterogeneous Cloud--Edge systems must allocate
@@ -94,42 +86,45 @@ programming (GP) hyper-heuristics have demonstrated effectiveness in evolving
 resource-selection rules for dynamic workflow scheduling, but usually apply
 them as fixed policies. Deep reinforcement learning enables adaptive control,
 yet directly treating a variable set of feasible resources as actions while
-handling multiple preferences complicates policy learning. We propose a
-preference-aware deep reinforcement learning framework with risk-augmented
-GP-evolved actions (PRS-GPDRL). Cooperative coevolution genetic programming
+handling multiple preferences complicates policy learning. We propose
+Preference-aware Risk-Stratified Genetic Programming-assisted Deep
+Reinforcement Learning (PRS-GPDRL). Cooperative coevolution genetic programming
 first evolves coupled task- and resource-selection rules. Quality- and
-behaviour-aware filtering then retains a compact resource-selection rule pool
-from the final CCGP archive. Each retained rule is augmented with base and risk
+behavior-aware filtering then retains a compact resource-selection rule pool
+from the final CCGP archive. Each retained rule is paired with base and risk
 modes. A multi-objective double deep Q-network then selects a rule-mode action
-under the requested preference at each allocation decision. Across 12 scenarios and 30
-independent runs, PRS-GPDRL achieves the best average ranks for both HV and IGD
-and is statistically better than or comparable to CCGP in 11 scenarios for
-each metric.
+under the requested preference at each allocation decision. Across 12 scenarios
+(30 independent runs each), PRS-GPDRL achieves the best average ranks (HV:
+1.406; IGD: 1.478) and
+statistically outperforms or matches CCGP in 11 scenarios per metric. Gains are
+clearest on small- and medium-scale sets; selected large-scale scenarios show
+additional HV gains. Behavioral and ablation evidence supports
+preference-dependent rule selection and risk-stratified adjustment.
 \end{abstract}
 
 \begin{IEEEkeywords}
 Cloud--Edge computing, dynamic workflow scheduling, genetic programming,
-deep reinforcement learning, multi-objective optimisation.
+deep reinforcement learning, multi-objective optimization.
 \end{IEEEkeywords}
 
 \section{Introduction}
 \label{Sec: introduction}
-\IEEEPARstart{C}{loud--Edge} computing provides a heterogeneous execution environment for workflow applications by combining latency-proximate Edge Nodes with elastic Cloud Servers. These applications include scientific workflows, data analytics pipelines, Internet of Things (IoT) services, and emerging artificial intelligence (AI) agent orchestration services \cite{Li2026,Bouabdallah2024,Coleman2022WfCommons,Gartner2025AgenticAI}. Many workflow applications are represented as directed acyclic graphs (DAGs), where tasks are constrained by precedence and data dependencies \cite{Li2026,Bouabdallah2024,Coleman2022WfCommons}. As workflows arrive dynamically, a scheduler must order ready tasks and allocate heterogeneous resources without knowing future arrivals. Energy consumption has also become an important system-level constraint. Data centres consumed around 415~TWh worldwide in 2024, accounting for about 1.5\% of global electricity demand, and their share of metered electricity consumption reached 23\% in Ireland in 2025 \cite{IEA2025EnergyAI,CSO2026DataCentres}. These trends make dynamic workflow scheduling in Cloud--Edge computing a key problem for improving quality of service while controlling resource use and energy consumption.
+\IEEEPARstart{C}{loud--Edge} computing provides a heterogeneous execution environment for workflow applications by combining latency-proximate Edge Nodes with elastic Cloud Servers. These applications include scientific workflows, data analytics pipelines, Internet of Things (IoT) services, and emerging artificial intelligence (AI) agent orchestration services \cite{Li2026,Bouabdallah2024,Coleman2022WfCommons,Gartner2025AgenticAI}. Many workflow applications are represented as directed acyclic graphs (DAGs), where tasks are constrained by precedence and data dependencies \cite{Li2026,Bouabdallah2024,Coleman2022WfCommons}. As workflows arrive dynamically, a scheduler must order ready tasks and allocate heterogeneous resources without knowing future arrivals. Energy consumption has also become an important system-level constraint. Data centers consumed around 415~TWh worldwide in 2024, accounting for about 1.5\% of global electricity demand, and their share of metered electricity consumption reached 23\% in Ireland in 2025 \cite{IEA2025EnergyAI,CSO2026DataCentres}. These trends make dynamic workflow scheduling in Cloud--Edge computing a key problem for improving quality of service while controlling resource use and energy consumption.
 
-The main difficulty is that each resource allocation must be evaluated in the current workflow and resource state, because its effects may propagate beyond the task being assigned. \emph{First}, workflow dependencies make task completion times affect downstream execution. The finish time of a task determines when its successors can be released and may further affect workflow completion and service quality. \emph{Second}, Cloud--Edge heterogeneity creates different trade-offs between latency and capacity. Edge Nodes can shorten data paths and avoid Cloud provisioning, but their computing capacity is limited. Cloud Servers provide elastic capacity, but may introduce additional communication and provisioning overheads. \emph{Third}, the CPU-sharing model considered in this paper couples the progress of tasks running on the same resource. Container virtualisation provides a practical execution substrate for workflow tasks \cite{Ranjan2020}, and modern platforms support runtime resource adjustment through mechanisms such as Kubernetes in-place resource resizing and Docker CPU share or quota updates \cite{Kubernetes2026Resize,DockerUpdate2026,DockerResourceConstraints2026}. In our model, multiple tasks may execute on one resource and share its CPU capacity. Assigning a new task changes the running-task set, so the CPU allocated to CPU-sensitive tasks may be recomputed. This can change remaining execution times, successor release times, resource active duration, and energy consumption. Therefore, an effective scheduler should consider dependency-driven task urgency, heterogeneous resource effects, and runtime CPU allocation when making online decisions. In a multi-objective setting, resource selection should also adapt to the requested tardiness--energy preference.
+The main difficulty is that each resource allocation must be evaluated in the current workflow and resource state, because its effects may propagate beyond the task being assigned. \emph{First}, workflow dependencies make task completion times affect downstream execution. The finish time of a task determines when its successors can be released and may further affect workflow completion and service quality. \emph{Second}, Cloud--Edge heterogeneity creates different trade-offs between latency and capacity. Edge Nodes can shorten data paths and avoid Cloud provisioning, but their computing capacity is limited. Cloud Servers provide elastic capacity, but may introduce additional communication and provisioning overheads. \emph{Third}, the CPU-sharing model considered in this paper couples the progress of tasks running on the same resource. Container virtualization provides a practical execution substrate for workflow tasks \cite{Ranjan2020}, and modern platforms support runtime resource adjustment through mechanisms such as Kubernetes in-place resource resizing and Docker CPU share or quota updates \cite{Kubernetes2026Resize,DockerUpdate2026,DockerResourceConstraints2026}. In our model, multiple tasks may execute on one resource and share its CPU capacity. Assigning a new task changes the running-task set, so the CPU allocated to CPU-sensitive tasks may be recomputed. This can change remaining execution times, successor release times, resource active duration, and energy consumption. Therefore, an effective scheduler should consider dependency-driven task urgency, heterogeneous resource effects, and runtime CPU allocation when making online decisions. In a multi-objective setting, resource selection should also adapt to the requested tardiness--energy preference.
 
 Many dynamic workflow scheduling studies use manual rules or genetic programming (GP) hyper-heuristics to support online decisions. Manual rules often combine task priorities, sub-deadlines, resource reuse, cost or energy estimates, and candidate filtering to guide task sequencing and resource allocation \cite{ohds,rmes,li2024,lou2023,lwff}. Their scheduling logic is explicit, but their performance depends on expert knowledge in selecting and combining task, workflow, and resource attributes. When the execution environment, resource model, workload pattern, or objective preference changes, these rules often require redesign or careful adjustment. GP hyper-heuristics reduce this manual design effort by automatically evolving priority rules from selected attributes. Instead of searching for one schedule for one instance, GP searches the heuristic space and produces rules that can be applied to new dynamic instances. GP has been used to evolve single-tree, multi-objective, multi-tree, dual-tree, and cooperative rules for task selection, resource selection, and related workflow scheduling decisions \cite{escott2020gphh,yu2022mogp,xu2023mtgp,sun2024mtgp,yang2025dtgp,ccgp}. However, most GP hyper-heuristic methods deploy one evolved heuristic or a fixed set of cooperating rules throughout an online scheduling run. They do not decide online which evolved resource-selection rule is more suitable for the current task urgency, resource availability, CPU allocation, and objective preference.
 
 Deep reinforcement learning (DRL) offers a way to learn online selection policies from scheduling experience, but two issues must be addressed in this setting. \emph{First}, directly using feasible resources as actions is difficult for dynamic workflow scheduling in Cloud--Edge computing because the action set changes with task requirements, resource availability, and on-demand Cloud provisioning \cite{jayanetti2022,xiao2025,gates}. Rule-assisted DRL avoids this issue by using scheduling rules as fixed actions, where the selected rule ranks feasible candidates at the current decision point. Existing rule-assisted studies use manual rules or GP-evolved rules in dynamic scheduling \cite{liu2022rules,xu2024niching,zhao2025tdrl}, and GP-evolved actions have also been applied to dynamic Fog workflow scheduling \cite{he2026evolved}. However, these studies mainly address single-objective or fixed-objective settings, and rule sets based on manual rules still depend on expert design. \emph{Second}, different users or scenarios may require different tardiness--energy trade-offs. Multi-objective reinforcement learning (MORL) and Pareto set learning can condition decisions on preferences \cite{roijers2013morl,hayes2022morl,abels2019morl,yang2019morl,lin2022psl,xu2026pslgp}. However, they do not provide a rule-mode action design that combines a compact pool of GP-evolved resource-selection rules with preference-aware online selection. These observations motivate combining GP-based generation of complementary resource-selection rules with DRL-based preference-aware online selection.
 
-To address this gap, this paper proposes PRS-GPDRL, a preference-aware deep reinforcement learning framework with risk-stratified GP-evolved actions. Cooperative coevolution genetic programming (CCGP) first evolves coupled task-selection and resource-selection rules, so each resource-selection rule is evaluated together with a cooperating task-selection rule. A quality- and behaviour-aware extraction procedure then constructs a compact pool of complementary resource-selection rules from the final CCGP archive. Each retained resource-selection rule is paired with a base mode and a risk mode. The base mode follows the selected GP rule, while the risk mode adds a bounded preference-aware local correction. Pairing the retained rules with these two modes gives a fixed rule-mode action space for the DRL agent. A multi-objective double deep Q-network (DDQN) learns to select rule-mode actions according to the current system state and requested preference. A fixed upward-rank rule orders ready tasks, allowing the learned policy to focus on resource selection.
+To address this gap, this paper proposes Preference-aware Risk-Stratified Genetic Programming-assisted Deep Reinforcement Learning (PRS-GPDRL). Cooperative coevolution genetic programming (CCGP) first evolves coupled task-selection and resource-selection rules, so each resource-selection rule is evaluated together with a cooperating task-selection rule. A quality- and behavior-aware extraction procedure then constructs a compact pool of complementary resource-selection rules from the final CCGP archive. Each retained resource-selection rule is paired with a base mode and a risk mode. The base mode follows the selected GP rule, while the risk mode adds a bounded preference-aware local correction. Pairing the retained rules with these two modes gives a fixed rule-mode action space for the DRL agent. A multi-objective double deep Q-network (DDQN) learns to select rule-mode actions according to the current system state and requested preference. Fixed upward-rank ordering sequences ready tasks, allowing the learned policy to focus on resource selection.
 The main contributions are as follows:
 \begin{itemize}
-    \item We propose a CCGP-to-DRL scheduling framework that evolves coupled GP rules offline and extracts complementary resource-selection rules into a compact pool. Pairing this pool with two modes creates a fixed rule-mode action space for the DDQN, while the selected rule-mode action ranks the variable set of feasible resources at each decision point.
+    \item We propose a CCGP-to-DRL scheduling framework that extracts high-quality and behaviorally complementary resource-selection rules from the CCGP archive. Pairing the resulting compact pool with base and risk modes creates a fixed rule-mode action space whose actions rank the variable set of feasible resources at each allocation decision.
 
-    \item We introduce risk-stratified action augmentation to complement rule-level GP selection with local, preference-guided resource-priority adjustment. A multi-objective DDQN combines this action design with feature-wise linear modulation (FiLM), vector-valued action costs, and augmented weighted Tchebycheff scalarisation, enabling one network to represent different tardiness--energy trade-offs.
+    \item We introduce risk-stratified action augmentation, in which a GP rule supplies a global resource ranking and the risk mode applies a bounded local correction based on the current state and requested preference. FiLM conditioning, vector-valued action costs, and augmented weighted Tchebycheff scalarization enable one DDQN to respond to different tardiness--energy preferences.
 
-    \item Across 12 dynamic scheduling scenarios and 30 independent runs, PRS-GPDRL obtains the best average ranks for both hypervolume (HV, 1.403) and inverted generational distance (IGD, 1.525). It is statistically better than or comparable to CCGP in 11 of 12 scenarios and to GATES and LWFF in at least 11 of 12 scenarios for each metric.
+    \item Across 12 dynamic scheduling scenarios, with 30 independent runs conducted per scenario, PRS-GPDRL obtains the best average ranks for hypervolume (HV, 1.406) and inverted generational distance (IGD, 1.478). It is statistically better than or comparable to CCGP in 11 of 12 scenarios and to GATES and LWFF in at least 11 of 12 scenarios for each metric. The clearest advantages occur on small- and medium-scale workflow sets, with additional HV gains in selected large-scale scenarios.
 \end{itemize}
 
 \section{Related Work}
@@ -142,7 +137,7 @@ rule-based and learning-based perspectives. Manual rules commonly use task
 ranks, sub-deadlines, resource reuse, incremental costs, or non-dominated
 candidate construction for task sequencing and resource allocation
 \cite{ohds,rmes,li2024,lou2023,lwff}. These methods support deadline, energy,
-cost, or utilisation objectives with explicit scheduling logic. Their
+cost, or utilization objectives with explicit scheduling logic. Their
 performance, however, depends on expert knowledge and may require redesign when
 the execution environment, resource model, workload pattern, or objective
 preference changes.
@@ -176,7 +171,7 @@ design and may limit the quality and diversity of available actions
 \cite{xu2024niching}.
 
 Subsequent studies replace manual rules with evolved rules. Niching
-and behaviour clustering preserve different scheduling behaviours, while GP
+and behavior clustering preserve different scheduling behaviors, while GP
 provides executable routing or sequencing actions for online DRL selection
 \cite{xu2024niching,zhao2025tdrl}. The same principle has also been applied to
 dynamic Fog workflow scheduling with GP-evolved actions \cite{he2026evolved}.
@@ -192,7 +187,7 @@ Multi-objective reinforcement learning (MORL) addresses sequential decisions
 with vector-valued outcomes by representing more than one objective trade-off
 \cite{roijers2013morl,hayes2022morl}. One group of methods learns explicit
 policy sets or a continuous Pareto manifold, providing coverage across
-non-dominated behaviours \cite{vanmoffaert2014pareto,parisi2016pareto}. Another
+non-dominated behaviors \cite{vanmoffaert2014pareto,parisi2016pareto}. Another
 group incorporates the requested preference into a shared value function or
 policy. Dynamic weights, desired returns, objective-specific action
 distributions, and preference-controllable meta-policies are different ways to
@@ -201,7 +196,7 @@ adapt one learned model without retraining it for every trade-off
 yang2025pcrl}.
 
 Pareto set learning develops a related preference-to-solution view. Augmented
-Tchebycheff scalarisation can train a model that maps preferences to approximate
+Tchebycheff scalarization can train a model that maps preferences to approximate
 Pareto solutions \cite{lin2022psl}, and PSLGP carries this principle into
 preference-aware GP heuristics for multi-objective dynamic scheduling
 \cite{xu2026pslgp}. These studies show how a learned model can respond to
@@ -210,8 +205,8 @@ action design needed to let a DRL agent select among GP-evolved
 resource-selection rules for dynamic workflow scheduling in Cloud--Edge
 computing.
 
-\section{Problem Modelling}
-\label{Sec: problem modelling}
+\section{Problem Modeling}
+\label{Sec: problem modeling}
 
 We consider a standard distributed and heterogeneous Cloud--Edge computing
 environment. Let $R=C\cup E$ be the set of heterogeneous computing resources,
@@ -264,7 +259,7 @@ container. Tasks fall into the following two categories.
 \end{itemize}
 
 We formulate the dynamic workflow scheduling problem with workflow deadlines as an
-optimisation problem aiming to minimise the system-oriented total energy consumption and
+optimization problem aiming to minimize the system-oriented total energy consumption and
 workflow-oriented total weighted tardiness, subject to the following scheduling and resource
 constraints:
 \begin{itemize}
@@ -288,7 +283,7 @@ The problem can then be formulated as
 \begin{align}
     \min~ & \mathbb{E} =
     \sum_{r\in R}\int_{\mathcal{T}} P(r,t)dt,
-    \label{Eq: Objective Energy} \\ 
+    \label{Eq: Objective Energy} \\
     \min~ & \mathbb{T} =
     \sum_{\omega\in\mathcal{W}}
     \rho^w(\omega)\times
@@ -328,12 +323,12 @@ The problem can then be formulated as
     &
     \nu^c(\alpha,t)\geq \mu^c(\alpha),
     ~\hfill \forall t\in\mathcal{T},
-    \label{Eq: task requirement constrain}\\
+    \label{Eq: task requirement constraint}\\
     &
     \sum_{\alpha\in A_r(t)} \nu^c(\alpha,t)
     \leq \Gamma^c(r),
     ~\hfill \forall r\in R,\forall t\in\mathcal{T},
-    \label{Eq: resource constrain}\\
+    \label{Eq: resource constraint}\\
     &
     x^l(\alpha)=
     \begin{cases}
@@ -395,16 +390,16 @@ For each running task $\alpha\in A_r(t)$, the CPU allocation is calculated as
 Thus, CPU-insensitive tasks always use their minimum CPU requirements, while CPU-sensitive
 tasks equally share the remaining CPU capacity.
 
-The CPU utilisation of resource $r$ at time $t$ is
+The CPU utilization of resource $r$ at time $t$ is
 \begin{equation}
     U^c(r,t)=
     \frac{
     \sum_{\alpha\in A_r(t)}
     \nu^c(\alpha,t)}
     {\Gamma^c(r)}.
-    \label{Eq: Utilisation at time t}
+    \label{Eq: Utilization at time t}
 \end{equation}
-The instantaneous power consumption of resource $r$ is modelled as
+The instantaneous power consumption of resource $r$ is modeled as
 \begin{equation}
     P(r,t)=
     p^s(r)+p^{dc}(r)\left(U^c(r,t)\right)^3.
@@ -427,9 +422,9 @@ output data have arrived.
 Eq.~\eqref{Eq: Start-Finish time} governs the two task categories and ensures
 that task $\alpha$ completes workload $\tau^l(\alpha)$ during
 $[x^s(\alpha),x^f(\alpha)]$ under the corresponding CPU allocation.
-Constraint~\eqref{Eq: task requirement constrain} ensures that a container's
+Constraint~\eqref{Eq: task requirement constraint} ensures that a container's
 CPU allocation satisfies the task's minimum requirement.
-Constraint~\eqref{Eq: resource constrain} ensures that allocated container CPU
+Constraint~\eqref{Eq: resource constraint} ensures that allocated container CPU
 does not exceed resource capacity at time $t$.
 Eq.~\eqref{Eq: task latency} defines the network latency $x^l(\alpha)$, which
 depends on whether the task is assigned to an Edge Node or a Cloud Server.
@@ -440,12 +435,12 @@ Eq.~\eqref{Eq: sensitive set} defines the set of CPU-sensitive running tasks on 
 Eq.~\eqref{Eq: remaining cpu} calculates the remaining CPU capacity after the
 minimum requirements of all running tasks have been satisfied.
 Eq.~\eqref{Eq: cpu allocation} defines the CPU allocation of containers after task-start or task-completion events.
-Eq.~\eqref{Eq: Utilisation at time t} is the CPU-based resource utilisation.
+Eq.~\eqref{Eq: Utilization at time t} is the CPU-based resource utilization.
 Eq.~\eqref{Eq: power at time t} models the instantaneous power consumption $P(r,t)$ of a resource $r$ at time $t$.
 The power consists of the static power $p^s(r)$ and the CPU-based dynamic power, which
-scales cubically with CPU utilisation.
+scales cubically with CPU utilization.
 For on-demand Cloud Servers, Eq.~\eqref{Eq: power at time t} is evaluated only
-over recorded utilisation intervals of provisioned resources. Unprovisioned
+over recorded utilization intervals of provisioned resources. Unprovisioned
 Cloud Servers do not contribute to the energy integral in
 Eq.~\eqref{Eq: Objective Energy}.
 
@@ -455,8 +450,6 @@ Eq.~\eqref{Eq: Objective Energy}.
 \subsection{Overall Framework of PRS-GPDRL}
 \label{Sec: PRS-GPDRL overall}
 
-% TODO: In Fig. 1, replace "ResourceTree pool" with "Resource-Selection" on
-% the first line and "Rule Pool $\mathcal{G}$" on the second line.
 \begin{figure}[!t]
 \centering
 \includegraphics[width=\linewidth]{figures/framework.pdf}
@@ -471,11 +464,10 @@ resource-selection rule pool $\mathcal{G}$. The base and risk modes form the
 mode set $\mathcal{M}$; pairing the two sets gives the
 rule-mode action space
 $\mathcal{A}$. Using this action space, the state features, and the preference
-weights, the multi-objective DDQN is trained to form the PRS-GPDRL agent. The
-formal action-space definition is given in Section~\ref{Sec: PRS-GPDRL MDP}.
+weights, the multi-objective DDQN is trained to form the PRS-GPDRL agent.
 
-During online scheduling, when multiple tasks are simultaneously ready, the
-fixed upward-rank rule determines their scheduling order \cite{Topcuoglu2002}.
+During online scheduling, when multiple tasks are simultaneously ready, fixed
+upward-rank ordering sequences them \cite{Topcuoglu2002}.
 For the task currently being scheduled, the PRS-GPDRL agent first selects a
 resource-selection rule and mode; the selected action then scores the feasible
 resources and assigns the task to the resource with the lowest priority.
@@ -492,9 +484,8 @@ scheduling heuristic is evaluated using energy consumption and weighted
 tardiness. During CCGP evolution, evaluated complete scheduling heuristics are
 recorded in an archive. Until the stopping criterion is met, CCGP updates the
 subpopulations by elitism, reproduction,
-crossover, and mutation; during crossover, a subtree from an archive individual
-replaces a subtree of the parent rule. At the final generation, duplicate solutions
-are removed from the archive set (AS), and its first non-dominated front is retained
+crossover, and mutation. At the final generation, duplicate solutions
+are removed from the archive set ($AS$), and its first non-dominated front is retained
 as the candidate set for subsequent resource-selection rule extraction.
 
 \textbf{Rule representation.} The tree-based rules are represented by terminal
@@ -502,10 +493,11 @@ and function nodes. Terminal nodes provide scheduling attributes observed from
 the current workflow, task, candidate resource, and system state, while
 function nodes combine these values to compute priority scores. The task- and
 resource-selection rules use different terminal subsets and share the same function
-set. Table~\ref{Table:scheduling-attributes} summarises the terminals used by
+set. Table~\ref{Table:scheduling-attributes} summarizes the terminals used by
 the CCGP rules and the corresponding attributes used by the DRL state encoder.
 The GP and DDQN columns indicate how each attribute is used by the two
-components. Further details of CCGP training are given in~\cite{ccgp}.
+components. Further details of CCGP training and the computation of GP terminal
+values are given in~\cite{ccgp}.
 
 \begin{table}[!t]
 \centering
@@ -517,14 +509,14 @@ components. Further details of CCGP training are given in~\cite{ccgp}.
 \begin{tabular}{@{}cp{0.63\columnwidth}cc@{}}
 % \hline
 \toprule
-Notation & Description & GP & DDQN$^a$ \\
+Notation & Description & GP & DDQN \\
 \midrule
 $\mathsf{CAT}$   & Category of a task. & T & T \\
 $\mathsf{SD}$    & Sub-deadline of a task. & T & T \\
 $\mathsf{ET}$    & Execution time of a task on a reference resource. & T & T \\
 $\mathsf{CPUA}$  & Minimum CPU requirement of a task. & T & T \\
 $\mathsf{WT}$    & Weight of a workflow. & T & T \\
-$\mathsf{UR}$    & Upward rank of a task. & T & T \\
+$\mathsf{UR}$    & Task upward-rank value. & T & T \\
 $\mathsf{NSA}$   & Number of direct successors of a task. & T & T \\
 $\mathsf{NPA}$   & Number of direct predecessors of a task. & T & -- \\
 $\mathsf{NKQ}$   & Number of tasks in the ready queue. & T & -- \\
@@ -553,7 +545,7 @@ $w_E$ & Preference weight for energy consumption. & -- & P \\
 \midrule
 Function set & $+$, $-$, $\times$, protected~/, Max, and Min. & T/R & -- \\
 \bottomrule
-\multicolumn{4}{p{0.95\linewidth}}{$^a$~In the GP column, T and R denote task- and resource-selection rule terminals. In the DDQN column, T, R, and P denote task, candidate-resource, and preference attributes, respectively.}
+\multicolumn{4}{p{0.95\linewidth}}{In the GP column, T and R denote task- and resource-selection rule terminals. In the DDQN column, T, R, and P denote task, candidate-resource, and preference attributes, respectively.}
 \end{tabular}
 \vspace{-1em}
 % \end{tabular}
@@ -576,42 +568,42 @@ of random seeds to obtain a coarse bi-objective performance estimate for anchor
 selection. Its validation performance is represented by the mean energy
 consumption and mean weighted tardiness over three independent runs. Let
 $S_i^{\mathrm{val}}=\widehat{\mathbb{E}}_i^{\mathrm{val}}+
-\widehat{\mathbb{T}}_i^{\mathrm{val}}$ denote the normalised validation score
+\widehat{\mathbb{T}}_i^{\mathrm{val}}$ denote the normalized validation score
 of individual $i$, where $\widehat{\mathbb{E}}_i^{\mathrm{val}}$ and
-$\widehat{\mathbb{T}}_i^{\mathrm{val}}$ are its min--max normalised validation
+$\widehat{\mathbb{T}}_i^{\mathrm{val}}$ are its min--max normalized validation
 energy and tardiness, respectively.
 
 \textbf{Decision-point sampling.} A reference CCGP individual is selected from the
-validation-evaluated candidates by minimising $S_i^{\mathrm{val}}$. The
+validation-evaluated candidates by minimizing $S_i^{\mathrm{val}}$. The
 reference individual is then executed to collect representative resource-allocation
 decision points. At each sampled decision point, all feasible resources
 are recorded with their current terminal attributes.
 
-\textbf{Behavioural representation.} For each candidate resource-selection rule,
-its behaviour is measured by replaying it on the sampled decision points. At
+\textbf{Behavioral representation.} For each candidate resource-selection rule,
+its behavior is measured by replaying it on the sampled decision points. At
 decision point $d$, the rule scores all feasible resources and selects the
-resource with the best priority. The behaviour vector of $g_i$ is
+resource with the best priority. The behavior vector of $g_i$ is
 \begin{equation}
     \mathbf{b}_i = \left( \pi_i(d_1), \pi_i(d_2), \ldots, \pi_i(d_M) \right),
-    \label{Eq: behaviour vector}
+    \label{Eq: behavior vector}
 \end{equation}
 where $\pi_i(d_m)$ is the resource index selected by $g_i$ at sampled decision
 point $d_m$, and $M=20$ is the number of sampled decision points. In
 implementation, $\pi_i(d_m)$ is encoded as a resource-selection indicator
 vector, so tied best resources are represented as the same selected set. Rules
-producing identical behaviour vectors are grouped together, and the
-representative minimising $S_i^{\mathrm{val}}$ is retained.
+producing identical behavior vectors are grouped together, and the
+representative minimizing $S_i^{\mathrm{val}}$ is retained.
 
-\textbf{Anchor selection.} If the number of behaviourally unique rules
-does not exceed the requested pool size, all representatives are retained. For
-the default maximum pool size $K_{\max}=5$, the validation front otherwise
-supplies the minimum-energy
-endpoint, a low-energy neighbour, a balanced-knee rule, a low-tardiness
-neighbour, and the minimum-tardiness endpoint. The endpoints minimise
+\textbf{Anchor selection.} Let $K$ denote the maximum requested rule-pool size.
+If the number of behaviorally unique rules does not exceed $K$, all
+representatives are retained. For the default $K=5$, the validation front
+otherwise supplies the minimum-energy
+endpoint, a low-energy neighbor, a balanced-knee rule, a low-tardiness
+neighbor, and the minimum-tardiness endpoint. The endpoints minimize
 $\widehat{\mathbb{E}}_i^{\mathrm{val}}$ and
 $\widehat{\mathbb{T}}_i^{\mathrm{val}}$, respectively. After excluding the
-endpoints, each neighbour is drawn from the corresponding 5\% normalised
-objective band, i.e., its corresponding normalised value does not exceed 0.05;
+endpoints, each neighbor is drawn from the corresponding 5\% normalized
+objective band, i.e., its corresponding normalized value does not exceed 0.05;
 leading candidates under that objective ranking are also considered when the
 band is sparse. Let $i_E$ and $i_T$ denote the two endpoint indices. The
 balanced anchor is
@@ -631,24 +623,26 @@ balanced anchor is
 \end{aligned}
     \label{Eq: balanced anchor}
 \end{equation}
-The five anchors are considered in the stated order. If an anchor candidate
-duplicates an already selected behaviour, the next behaviourally distinct
+For the $K=3$ ablation, the minimum-energy endpoint, the balanced-knee rule,
+and the minimum-tardiness endpoint are retained. If an anchor candidate
+duplicates an already selected behavior, the next behaviorally distinct
 candidate from the same region or objective ranking is used.
 
-The retained resource-selection rules form the compact GP rule pool
-$\mathcal{G}=\{g_1,\ldots,g_K\}$. Combining $\mathcal{G}$ with the two modes
-gives the rule-mode action space $\mathcal{A}$.
+For a given CCGP run $b$, the retained resource-selection rules form the compact
+GP rule pool $\mathcal{G}=\{g_1,\ldots,g_{K_b}\}$, where $K_b\leq K$ is the
+actual number retained. Combining $\mathcal{G}$ with the two modes gives the
+rule-mode action space $\mathcal{A}$.
 
 \subsection{Risk-Stratified Action Augmentation}
 \label{Sec: risk stratified actions}
 
 The extracted GP rule pool provides complementary global resource-scoring
-behaviours, and the DDQN selects among their complete GP-induced priority
+behaviors, and the DDQN selects among their complete GP-induced priority
 rankings at rule level. PRS-GPDRL augments each rule with \textit{base} and
 \textit{risk} modes. The selected resource-selection rule provides the base
 priorities,
 while the risk mode adds a bounded, preference-aware local correction.
-The resulting action space combines rule-level behaviour selection with local
+The resulting action space combines rule-level behavior selection with local
 preference adaptation over feasible resources.
 
 Let $\mathbf{w}=(w_T,w_E)$ be the current preference vector, where $w_T$ and $w_E$ are the
@@ -656,9 +650,9 @@ weights for weighted tardiness and energy consumption, respectively, and $w_T+w_
 resource-selection decision point, let $\mathcal{R}_t$ be the set of feasible resources
 and let $n=|\mathcal{R}_t|$. For a selected resource-selection rule
 $g_i\in\mathcal{G}$, let $\hat{g}_i(r)$ denote its min--max
-normalised priority score for resource
-$r\in\mathcal{R}_t$. For all min--max normalisations in this work, if all
-resources have the same value, the corresponding normalised score is set to
+normalized priority score for resource
+$r\in\mathcal{R}_t$. For all min--max normalizations in this work, if all
+resources have the same value, the corresponding normalized score is set to
 zero for all resources.
 
 PRS-GPDRL then estimates two objective-specific local costs for each resource in
@@ -683,10 +677,10 @@ with the workflow-weighted tardiness relative to the sub-deadline:
 
 For the energy-oriented local cost, PRS-GPDRL compares the resource state before
 and after assigning the current task. Let $U_r^0$ and $U_r^1$ be its
-CPU utilisation before and after assignment, and let $H_r^0$ and $H_r^1$ be the
+CPU utilization before and after assignment, and let $H_r^0$ and $H_r^1$ be the
 corresponding busy horizons measured from $t_{\alpha_t,r}^{\mathrm{ava}}$ to its
 tail completion time. Using the power terms defined in
-Section~\ref{Sec: problem modelling}, the dynamic energy increment is
+Section~\ref{Sec: problem modeling}, the dynamic energy increment is
 \begin{equation}
     \Delta E_r^{\mathrm{dyn}} =
     p^{dc}(r)
@@ -695,7 +689,7 @@ Section~\ref{Sec: problem modelling}, the dynamic energy increment is
     -
     (U_r^0)^3 H_r^0
     \right).
-    \label{Eq: dynamic energy risk}
+    \label{Eq: dynamic energy increment}
 \end{equation}
 \(\Delta E_r^{\mathrm{dyn}}\) is a lightweight estimate of the dynamic-energy
 increment caused by assigning the current task to resource $r$.
@@ -710,19 +704,19 @@ already active, or idle:
     p^s(r)\left(t_{\alpha_t,r}^{\mathrm{ava}}-t_r^{\mathrm{last}}+H_r^1\right),
     & \text{idle},
     \end{cases}
-    \label{Eq: static energy risk}
+    \label{Eq: static energy increment}
 \end{equation}
 where $t_r^{\mathrm{tail},0}$ and $t_r^{\mathrm{tail},1}$ are the tail completion times
-before and after assignment, and $t_r^{\mathrm{last}}$ is the last utilisation event time of
+before and after assignment, and $t_r^{\mathrm{last}}$ is the last utilization event time of
 $r$. For an idle resource, the static-energy increment includes the idle
-interval since its last utilisation event and the new busy horizon caused by
+interval since its last utilization event and the new busy horizon caused by
 assigning the current task. The energy-oriented local cost is
 \begin{equation}
     c_E(r)=\Delta E_r^{\mathrm{dyn}}+\Delta E_r^{\mathrm{sta}}.
     \label{Eq: energy local cost}
 \end{equation}
 
-Let $\hat{c}_T(r)$ and $\hat{c}_E(r)$ be the min--max normalised
+Let $\hat{c}_T(r)$ and $\hat{c}_E(r)$ be the min--max normalized
 objective-specific local costs used to make tardiness and energy comparable within the
 current feasible-resource set. A preference-weighted auxiliary score is then defined as
 \begin{equation}
@@ -757,7 +751,7 @@ coefficient is
 \end{equation}
 Here, $|w_T-w_E|$ measures the departure from the balanced preference. When
 $w_T=w_E=0.5$, the risk correction is disabled and the risk mode reduces to the
-base mode. Its influence increases smoothly towards either objective endpoint,
+base mode. Its influence increases smoothly toward either objective endpoint,
 reaching $\beta_{\max}$ at an extreme preference.
 
 The final priority score of the resource-selection rule $g_i$ under mode $m$ is
@@ -800,7 +794,8 @@ space is
     g_i\in\mathcal{G},~m\in\mathcal{M}.
     \label{Eq: action pair}
 \end{equation}
-Retaining $K$ resource-selection rules therefore yields $2K$ rule-mode actions.
+An actual pool size of $K_b$ therefore yields $2K_b$ rule-mode actions in run
+$b$.
 Executing $a_t$ applies the selected rule and mode to the feasible resources as
 defined in Section~\ref{Sec: risk stratified actions} and assigns the current
 task to $r_t^*$. The scheduling process then advances to the next task-ready
@@ -825,14 +820,14 @@ PRS-GPDRL uses a multi-objective DDQN
 \cite{vanhasselt2016} to select rule-mode actions. At each decision point, the
 observation is first encoded into a state representation and
 then fed to a vector-valued DDQN. The resulting two-objective action-cost
-estimates are scalarised by the current preference for action selection and
+estimates are scalarized by the current preference for action selection and
 DDQN updates.
 
 Fig.~\ref{Fig: PRS-GPDRL DDQN} illustrates the state encoder and rule-mode
 action selection. The raw observation $s_t$ contains task
 features, candidate-resource features, and preference weights. The state encoder
 maps $s_t$ to embedding $\mathbf{z}_t$, and the DDQN estimates vector action costs over
-$\mathcal{A}$. Augmented weighted Tchebycheff scalarisation selects
+$\mathcal{A}$. Augmented weighted Tchebycheff scalarization selects
 $a_t^*=(g^*,m^*)$, where $g^*\in\mathcal{G}$ and $m^*\in\mathcal{M}$ are the
 selected rule and mode. Algorithm~\ref{Alg: online resource selection} applies
 them to score the feasible resources and assign ready task $\alpha_t$ to
@@ -864,7 +859,7 @@ A feature-wise linear modulation (FiLM) layer \cite{perez2018film} modulates
 the fused representation according to the preference. A two-layer preference MLP maps
 the two preference weights through a 32-unit ELU hidden layer to a
 256-dimensional output, which is split into 128-dimensional raw-scale and shift
-vectors. The scale is parameterised as
+vectors. The scale is parameterized as
 $\boldsymbol{\gamma}_{\mathrm{film}}(\mathbf{w})=
 1+0.3\tanh(\widetilde{\boldsymbol{\gamma}}_{\mathrm{film}}(\mathbf{w}))$,
 which bounds its elements between 0.7 and 1.3 and prevents multiplicative
@@ -893,13 +888,13 @@ produces a two-dimensional cost estimate for every rule-mode action:
 \end{equation}
 Here, $Q_{\theta}^{T}$ and $Q_{\theta}^{E}$ estimate cumulative tardiness and
 energy costs, respectively, preserving both dimensions for preference-dependent
-scalarisation.
+scalarization.
 
-Since lower values are better for both objectives, action selection minimises an
+Since lower values are better for both objectives, action selection minimizes an
 augmented weighted Tchebycheff cost. For state $s$, the estimated ideal
 component for objective $j$ is
 $q_{\theta}^{j,\min}(s)=\min_{a'\in\mathcal{A}}Q_{\theta}^{j}(s,a')$, where
-$j\in\{T,E\}$. The scalarised cost is
+$j\in\{T,E\}$. The scalarized cost is
 \begin{equation}
 \begin{aligned}
     \psi_{\mathbf{w}}\!\left(\mathbf{Q}_{\theta}(s,a)\right)
@@ -908,11 +903,14 @@ $j\in\{T,E\}$. The scalarised cost is
     &+\zeta\sum_{j\in\{T,E\}}
     w_j\!\left(Q_{\theta}^{j}(s,a)-q_{\theta}^{j,\min}(s)\right),
 \end{aligned}
-    \label{Eq: tchebycheff scalarisation}
+    \label{Eq: tchebycheff scalarization}
 \end{equation}
 where $\zeta$ is the augmentation coefficient. The estimated ideal point gives
 objective-wise deviations from the best predicted action costs, and the
-augmentation term reduces ties. The greedy action is
+augmentation term reduces ties. During training,
+Eq.~\eqref{Eq: tchebycheff scalarization} is the preference-conditioned scalar
+objective used for the DDQN update. During action selection, this scalarization
+determines the greedy action:
 \begin{equation}
     a_t^{*} = \arg\min_{a\in\mathcal{A}}
     \psi_{\mathbf{w}}\left(\mathbf{Q}_{\theta}(s_t,a)\right).
@@ -920,18 +918,18 @@ augmentation term reduces ties. The greedy action is
 \end{equation}
 
 \begin{algorithm}[!t]
-\caption{Online preference-aware resource selection}
+\caption{Online preference-aware resource selection.}
 \label{Alg: online resource selection}
 \KwIn{State $s_t$ containing preference $\mathbf{w}$; ready task $\alpha_t$;
 feasible resource set $\mathcal{R}_t$}
 \KwOut{Selected resource $r_t^*$}
 Encode $s_t$ and evaluate $\mathbf{Q}_{\theta}(s_t,a)$ for all $a\in\mathcal{A}$\;
-Select $a_t^*=(g^*,m^*)$ by Eqs.~\eqref{Eq: tchebycheff scalarisation}
+Select $a_t^*=(g^*,m^*)$ by Eqs.~\eqref{Eq: tchebycheff scalarization}
 and~\eqref{Eq: greedy action}\;
-Evaluate and normalise $g^*(r)$ over all $r\in\mathcal{R}_t$\;
+Evaluate and normalize $g^*(r)$ over all $r\in\mathcal{R}_t$\;
 \lIf{$m^*=\mathrm{base}$}{Return
 $r_t^*=\arg\min_{r\in\mathcal{R}_t}\hat{g}^*(r)$}
-Estimate the normalised costs $\hat{c}_T(r)$ and $\hat{c}_E(r)$ over
+Estimate the normalized costs $\hat{c}_T(r)$ and $\hat{c}_E(r)$ over
 $\mathcal{R}_t$\;
 Construct the auxiliary score $c_{\mathbf{w}}(r)$ and the four-level
 $\chi_{\mathbf{w}}(r)$ by
@@ -944,20 +942,34 @@ p_{\mathrm{risk}}(r;g^*)$ using Eq.~\eqref{Eq: risk priority}\;
 
 The vector action-cost function is trained using Double
 DQN \cite{vanhasselt2016} with experience replay and a periodically updated target
-network. At each episode, a preference vector is sampled and included in the
-state. The remaining training parameters are reported in Section~V-C.
+network. At the start of each training episode, a preference vector is sampled
+from the discrete grid
+\begin{equation}
+    w_T\in\{0,0.05,\ldots,0.95,1\},
+    \qquad w_E=1-w_T,
+    \label{Eq: evaluation preference grid}
+\end{equation}
+included in the state, and fixed throughout the episode. Checkpoint validation evaluates
+each validation episode under all 21 grid preferences. For preference
+$\mathbf{w}$, the cumulative validation cost is
+$C^{\mathrm{val}}(\mathbf{w})=
+w_T\sum_t\Delta T_t+w_E\kappa\sum_t\Delta E_t$.
+The checkpoint with the lowest mean $C^{\mathrm{val}}(\mathbf{w})$ across the
+validation episodes and grid preferences is retained. The remaining training
+parameters are reported in
+Table~\ref{Table: DDQN risk parameters}.
 
 \subsection{Training and Inference Procedure}
 \label{Sec: training inference}
 
 After CCGP training and action extraction in
 Section~\ref{Sec: CCGP action extraction}, the action space is fixed for offline
-DRL training. A scenario is denoted by $\langle\wfNum,\lambda\rangle$, where
-$\wfNum$ is the number of submitted workflows and $\lambda$ is their arrival
+DRL training. A scenario is denoted by $\langle\mathrm{wfNum},\lambda\rangle$, where
+$\mathrm{wfNum}$ is the number of submitted workflows and $\lambda$ is their arrival
 rate. Training and testing are performed separately for each scenario using the
-fixed action space. Each training episode samples a preference, includes it in
-the state, and learns from vector-cost transitions at ready-task decision
-points.
+fixed action space. For the sampled preference, the DDQN learns from vector-cost
+transitions at ready-task decision points using the scalar objective in
+Eq.~\eqref{Eq: tchebycheff scalarization}.
 The trained DDQN and fixed rule-mode action space constitute the PRS-GPDRL agent.
 
 During inference, the PRS-GPDRL agent uses the DDQN to select a rule-mode action
@@ -965,18 +977,19 @@ and assigns $\alpha_t$ to the feasible resource with the lowest corresponding
 priority. Scheduling then proceeds to the next task-ready decision point.
 \FloatBarrier
 
-\section{Performance Evaluation}
+\section{Performance Evaluation and Results}
 \label{Sec: performance evaluation}
 
-\subsection{Compared Algorithms}
+\subsection{Baselines and Performance Measures}
 \label{Sec: compared methods}
+\label{Sec: evaluation metrics}
 
 PRS-GPDRL is compared with CCGP, GATES, and LWFF.
 
 \begin{itemize}
     \item \textbf{CCGP} \cite{ccgp} coevolves task-selection,
     resource-selection, and container-scaling GP rules to construct
-    non-dominated scheduling heuristics. For the problem model in Section~III,
+    non-dominated scheduling heuristics. For the problem model in Section~\ref{Sec: problem modeling},
     our implementation retains its cooperative task- and resource-rule
     evolution but omits the container-scaling subpopulation because container
     CPU is assigned by Eq.~\eqref{Eq: cpu allocation}. Each combined heuristic
@@ -996,20 +1009,61 @@ PRS-GPDRL is compared with CCGP, GATES, and LWFF.
     resources from non-dominated candidates according to resource waste and
     completion speed. In our implementation, ready tasks are ordered by upward
     rank, and the energy and tardiness estimates of feasible resources are
-    min--max normalised and combined under each requested preference. Expected
+    min--max normalized and combined under each requested preference. Expected
     finish time resolves ties. Applying LWFF over the evaluation preference grid
     and retaining the non-dominated schedules produces its approximation set.
 \end{itemize}
 
-\subsection{Cloud--Edge Environment and Workloads}
+PRS-GPDRL uses the resource-selection rule pool extracted from the corresponding
+CCGP run. In each run, one non-dominated approximation set is obtained for each method:
+solutions over the preference grid for PRS-GPDRL and LWFF, and the final
+heuristics or policies for CCGP and GATES. LWFF produces the same approximation
+set in every run; its non-zero HV and IGD standard deviations arise because this
+set is jointly normalized with those of the other methods in each run. The four
+sets are pooled, and each objective
+$f_j\in\{\mathbb{T},\mathbb{E}\}$ is min--max normalized as
+\begin{equation}
+    \widehat{f}_j(x)=
+    \frac{f_j(x)-f_j^{\min}}
+    {f_j^{\max}-f_j^{\min}},
+    \label{Eq: objective normalization}
+\end{equation}
+where $f_j^{\min}$ and $f_j^{\max}$ are the pooled extrema of the four sets in
+that run; a
+constant objective is assigned zero.
+
+HV evaluates the convergence and coverage of each approximation set and is
+computed against the reference point $(1,1)$. Because the true Pareto front is
+unknown, the IGD reference set $Q$ comprises the jointly non-dominated
+normalized solutions from the four sets in that run. For approximation set $P$,
+\begin{equation}
+    \operatorname{IGD}(P,Q)=
+    \frac{1}{|Q|}
+    \sum_{q\in Q}
+    \min_{p\in P}\lVert p-q\rVert_2.
+    \label{Eq: IGD}
+\end{equation}
+Larger HV and smaller IGD are preferable.
+
+For each scenario and metric, the four algorithms are compared using the
+Iman--Davenport-corrected Friedman test and two-sided paired Wilcoxon
+signed-rank tests at a significance level of 0.05. Within each result cell, the
+arrows denote
+statistically better ($\uparrow$), worse ($\downarrow$), or similar
+($\approx$) performance against the preceding methods. For each baseline
+column, W/D/L gives the number of scenarios in which that baseline is
+statistically better than, similar to, or worse than PRS-GPDRL; the PRS-GPDRL
+column is therefore marked N/A. AverageRank is the mean rank over the 30 runs,
+for which smaller is better.
+
+\subsection{Experimental Setup}
 \label{Sec: experimental environment}
 
 Experiments use the event-driven workflow simulator introduced in \cite{ccgp}.
-Its container-deployment decision is replaced with the deterministic CPU
-allocation rule in Eq.~\eqref{Eq: cpu allocation}, with allocations updated at
-the task events specified in Section~\ref{Sec: problem modelling}. All methods
-use the same workflow instances, feasible resource set, communication model,
-CPU allocation rule, and energy accounting.
+Allocation updates occur at the task events specified in
+Section~\ref{Sec: problem modeling}. All methods use the same workflow
+instances, feasible resource set, communication model, CPU allocation rule, and
+energy accounting.
 
 Table~\ref{Table: resource configurations} lists five representative resource
 types for each tier. The configurations are derived from AWS
@@ -1017,13 +1071,13 @@ EC2\footnotemark[1], and the power parameters follow the Teads
 model\footnotemark[2].
 The Edge tier contains 19 fixed Edge Nodes, whereas Cloud Servers of the listed
 types can be provisioned on demand. Each task incurs a 50-ms container
-initialisation delay \cite{Ranjan2020}, and provisioning a new Cloud Server takes
+initialization delay \cite{Ranjan2020}, and provisioning a new Cloud Server takes
 55.9 s. Following
 \cite{Goudarzi2021,Pallewatta2022}, LAN and WAN bandwidths are set to 2.0 and
 0.5 GB/s, and their communication latencies are 0.5 and 30 ms, respectively.
 
 \begin{table*}[!t]
-\caption{Configurations of Edge Nodes and Cloud Servers\textsuperscript{1,2}.}
+\caption{Configurations of Edge Nodes and Cloud Servers.}
 \label{Table: resource configurations}
 \centering
 \begin{tabular}{@{}lrrrrlrrrr@{}}
@@ -1077,25 +1131,23 @@ $\rho^d(\omega)=\rho^a(\omega)+\delta_{\omega}L_{\omega}$, where the deadline
 factor $\delta_{\omega}$ is
 sampled uniformly from $\{0.8,1.0,1.5,1.8\}$.
 
-\subsection{Training and Test Protocol}
+\textbf{Training and test protocol.}
 \label{Sec: training test protocol}
 
-The main evaluation covers the 12 combinations of
-$\wfNum\in\{10,15,20,30,50,100\}$ and $\lambda\in\{0.2,0.8\}$.
-For each main-evaluation scenario, CCGP, GATES, and PRS-GPDRL are independently
-trained in 30 independent runs. In each run, PRS-GPDRL uses the GP rule pool
-extracted from the corresponding CCGP run. Each trained run is evaluated on the
-same 30 unseen test instances. Objective values are first averaged over these
-test instances within each run, and the means and standard deviations are then
-computed over the 30 independent runs. For each test instance, all methods use
-identical workflow arrivals, DAGs, task attributes, and deadlines.
+Each scenario is denoted by $\langle\mathrm{wfNum},\lambda\rangle$, where
+$\mathrm{wfNum}$ is the total number of submitted workflows and $\lambda$ is
+their arrival rate. The main evaluation covers the 12 combinations of
+$\mathrm{wfNum}\in\{10,15,20,30,50,100\}$ and $\lambda\in\{0.2,0.8\}$.
+For each scenario, 30 independent runs are conducted. Within each run, every
+solution is evaluated on the same 30 unseen test instances, and its objective
+values are averaged over these instances before HV and IGD are calculated. The
+tables report the mean and standard deviation of HV and IGD over the 30 runs.
 
 The parameter settings of CCGP follow \cite{ccgp} and are presented in
 Table~\ref{Table: CCGP parameters}. The DDQN and risk-stratified action
 augmentation configuration is detailed in
 Table~\ref{Table: DDQN risk parameters}. GATES uses a population of 100 policy
-networks and runs for 51 generations; it uses the bi-objective NSGA-II selection
-described in Section~\ref{Sec: compared methods}.
+networks and runs for 51 generations.
 
 \begin{table}[!t]
 \caption{The parameter settings of CCGP.}
@@ -1109,7 +1161,7 @@ described in Section~\ref{Sec: compared methods}.
 \midrule
 Population size & 2 subpopulations of 50 \\
 Number of generations & 51 \\
-Method for initialising population & Ramped-half-and-half \\
+Method for initializing population & Ramped-half-and-half \\
 Initial minimum/maximum depth & 2/7 \\
 Elitism & 5 \\
 Maximal depth & 8 \\
@@ -1140,7 +1192,7 @@ Mini-batch size & 256 \\
 Replay memory size & 200,000 \\
 Target-update frequency & 5,000 \\
 DDQN hidden-layer sizes & 256/128 \\
-Maximum resource-selection rule-pool size $K_{\max}$ & 5 \\
+Maximum rule-pool size $K$ & 5 \\
 Maximum risk mixing $\beta_{\max}$ & 0.75 \\
 Energy-cost scaling $\kappa$ & $4.7\times10^5$ \\
 Tchebycheff augmentation $\zeta$ & 0.05 \\
@@ -1148,53 +1200,21 @@ Tchebycheff augmentation $\zeta$ & 0.05 \\
 \end{tabular}
 \end{table}
 
-The maximum requested resource-selection rule-pool size is $K_{\max}=5$.
-Behavioural filtering may leave fewer than five unique rules in a particular
-run; the actual pool size in run $r$ is denoted by $K_r\leq K_{\max}$. Each
-retained rule is paired with the two modes, so that run $r$ has $2K_r$ nominal
-rule-mode actions. The DDQN is
-trained with sampled preferences and evaluated on
-\begin{equation}
-    w_T\in\{0,0.05,\ldots,0.95,1\},
-    \qquad w_E=1-w_T.
-    \label{Eq: evaluation preference grid}
-\end{equation}
-Checkpoints are selected according to validation performance over these
-evaluation preferences.
+We set $K=5$.
+Behavioral filtering may leave fewer than five unique rules in a particular
+run; the actual pool size in run $b$ is denoted by $K_b\leq K$. Each
+retained rule is paired with the two modes, so that run $b$ has $2K_b$ nominal
+rule-mode actions. Training preference sampling, checkpoint validation, and
+evaluation use the grid in Eq.~\eqref{Eq: evaluation preference grid}.
 
-\subsection{Evaluation Metrics}
-\label{Sec: evaluation metrics}
+\subsection{Solution-Set Quality and Pareto Trade-offs}
+\label{Sec: overall performance}
 
-For each run, the non-dominated solutions generated over the preference grid
-form an approximation set. Solution quality is assessed by hypervolume (HV) and
-inverted generational distance (IGD), which measure complementary aspects of
-convergence and distribution. Before calculating either metric, each objective
-$f_j\in\{\mathbb{T},\mathbb{E}\}$ is normalised within a scenario as
-\begin{equation}
-    \widehat{f}_j(x)=
-    \frac{f_j(x)-f_j^{\min}}
-    {f_j^{\max}-f_j^{\min}},
-    \label{Eq: objective normalisation}
-\end{equation}
-where $f_j^{\min}$ and $f_j^{\max}$ are obtained from the pooled solutions of
-all compared methods in that scenario. If the denominator is zero, the
-normalised value is set to zero.
+\subsubsection{HV Results}
 
-HV is the dominated area between an approximation set and the reference point
-$(1,1)$ in the normalised objective space. A larger HV indicates a set with
-better convergence, coverage, or both. Because the true Pareto front is
-unknown, the IGD reference set is constructed by merging the solutions of all
-methods and retaining the globally non-dominated solutions for the scenario.
-For an approximation set $P$ and reference set $Q$, IGD is
-\begin{equation}
-    \operatorname{IGD}(P,Q)=
-    \frac{1}{|Q|}
-    \sum_{q\in Q}
-    \min_{p\in P}\lVert p-q\rVert_2.
-    \label{Eq: IGD}
-\end{equation}
-A smaller IGD indicates that the approximation set is closer to and more
-representative of the pooled reference front.
+Tables~\ref{Table: HV main results} and~\ref{Table: IGD main results} present
+the mean and standard deviation of the HV and IGD values, respectively, over
+the 30 independent runs of the compared algorithms.
 
 \begin{table}[!t]
   \centering
@@ -1219,64 +1239,74 @@ representative of the pooled reference front.
 %     }
     {\begin{tabular}{ccccc}
         \toprule
-      $\left\langle \rm wfNum, \lambda\right\rangle$ & GATES & LWFF & CCGP
+      $\left\langle \mathrm{wfNum}, \lambda\right\rangle$ & GATES & LWFF & CCGP
       & PRS-GPDRL \\
         \midrule
-      $\left\langle 10,0.2\right\rangle$ & 0.525$\pm$0.196
-      & 0.590$\pm$0.138($\approx$)
-      & 0.772$\pm$0.105($\uparrow$)($\uparrow$)
-      & 0.859$\pm$0.072($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 10,0.8\right\rangle$ & 0.538$\pm$0.217
-      & 0.619$\pm$0.129($\uparrow$)
-      & 0.782$\pm$0.125($\uparrow$)($\uparrow$)
-      & 0.882$\pm$0.068($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 15,0.2\right\rangle$ & 0.564$\pm$0.128
-      & 0.601$\pm$0.109($\approx$)
-      & 0.800$\pm$0.116($\uparrow$)($\uparrow$)
-      & 0.862$\pm$0.089($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 15,0.8\right\rangle$ & 0.536$\pm$0.134
-      & 0.649$\pm$0.113($\uparrow$)
-      & 0.747$\pm$0.154($\uparrow$)($\uparrow$)
-      & 0.843$\pm$0.083($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 20,0.2\right\rangle$ & 0.604$\pm$0.172
-      & 0.630$\pm$0.125($\approx$)
-      & 0.786$\pm$0.140($\uparrow$)($\uparrow$)
-      & 0.868$\pm$0.091($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 20,0.8\right\rangle$ & 0.530$\pm$0.173
-      & 0.646$\pm$0.109($\uparrow$)
-      & 0.776$\pm$0.112($\uparrow$)($\uparrow$)
-      & 0.825$\pm$0.061($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 30,0.2\right\rangle$ & 0.635$\pm$0.143
-      & 0.674$\pm$0.096($\uparrow$)
-      & 0.815$\pm$0.108($\uparrow$)($\uparrow$)
-      & 0.864$\pm$0.065($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 30,0.8\right\rangle$ & 0.570$\pm$0.139
-      & 0.699$\pm$0.097($\uparrow$)
-      & 0.775$\pm$0.100($\uparrow$)($\uparrow$)
-      & 0.797$\pm$0.099($\uparrow$)($\uparrow$)($\approx$) \\
-      $\left\langle 50,0.2\right\rangle$ & 0.610$\pm$0.152
-      & 0.701$\pm$0.098($\uparrow$)
-      & 0.807$\pm$0.105($\uparrow$)($\uparrow$)
-      & 0.851$\pm$0.116($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 50,0.8\right\rangle$ & 0.643$\pm$0.167
-      & 0.749$\pm$0.105($\uparrow$)
-      & 0.782$\pm$0.138($\uparrow$)($\uparrow$)
-      & 0.814$\pm$0.113($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 100,0.2\right\rangle$ & 0.576$\pm$0.200
-      & 0.697$\pm$0.098($\uparrow$)
-      & 0.811$\pm$0.099($\uparrow$)($\uparrow$)
-      & 0.845$\pm$0.082($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 100,0.8\right\rangle$ & 0.787$\pm$0.093
-      & 0.861$\pm$0.065($\uparrow$)
-      & 0.842$\pm$0.078($\uparrow$)($\downarrow$)
-      & 0.804$\pm$0.090($\approx$)($\downarrow$)($\downarrow$) \\
+      $\left\langle 10,0.2\right\rangle$ & 0.533$\pm$0.189
+      & 0.597$\pm$0.131($\approx$)
+      & 0.789$\pm$0.092($\uparrow$)($\uparrow$)
+      & 0.867$\pm$0.068($\uparrow$)($\uparrow$)($\uparrow$) \\
+      $\left\langle 10,0.8\right\rangle$ & 0.536$\pm$0.211
+      & 0.616$\pm$0.124($\uparrow$)
+      & 0.788$\pm$0.113($\uparrow$)($\uparrow$)
+      & 0.882$\pm$0.059($\uparrow$)($\uparrow$)($\uparrow$) \\
+      $\left\langle 15,0.2\right\rangle$ & 0.566$\pm$0.124
+      & 0.602$\pm$0.107($\approx$)
+      & 0.800$\pm$0.114($\uparrow$)($\uparrow$)
+      & 0.862$\pm$0.087($\uparrow$)($\uparrow$)($\uparrow$) \\
+      $\left\langle 15,0.8\right\rangle$ & 0.539$\pm$0.128
+      & 0.651$\pm$0.109($\uparrow$)
+      & 0.749$\pm$0.150($\uparrow$)($\uparrow$)
+      & 0.843$\pm$0.081($\uparrow$)($\uparrow$)($\uparrow$) \\
+      $\left\langle 20,0.2\right\rangle$ & 0.607$\pm$0.168
+      & 0.632$\pm$0.122($\approx$)
+      & 0.789$\pm$0.134($\uparrow$)($\uparrow$)
+      & 0.869$\pm$0.088($\uparrow$)($\uparrow$)($\uparrow$) \\
+      $\left\langle 20,0.8\right\rangle$ & 0.530$\pm$0.170
+      & 0.646$\pm$0.107($\uparrow$)
+      & 0.776$\pm$0.110($\uparrow$)($\uparrow$)
+      & 0.825$\pm$0.060($\uparrow$)($\uparrow$)($\uparrow$) \\
+      $\left\langle 30,0.2\right\rangle$ & 0.635$\pm$0.139
+      & 0.675$\pm$0.091($\uparrow$)
+      & 0.823$\pm$0.101($\uparrow$)($\uparrow$)
+      & 0.867$\pm$0.060($\uparrow$)($\uparrow$)($\uparrow$) \\
+      $\left\langle 30,0.8\right\rangle$ & 0.568$\pm$0.132
+      & 0.697$\pm$0.091($\uparrow$)
+      & 0.788$\pm$0.091($\uparrow$)($\uparrow$)
+      & 0.803$\pm$0.090($\uparrow$)($\uparrow$)($\approx$) \\
+      $\left\langle 50,0.2\right\rangle$ & 0.611$\pm$0.152
+      & 0.702$\pm$0.098($\uparrow$)
+      & 0.808$\pm$0.103($\uparrow$)($\uparrow$)
+      & 0.851$\pm$0.114($\uparrow$)($\uparrow$)($\uparrow$) \\
+      $\left\langle 50,0.8\right\rangle$ & 0.644$\pm$0.164
+      & 0.749$\pm$0.103($\uparrow$)
+      & 0.783$\pm$0.135($\uparrow$)($\uparrow$)
+      & 0.815$\pm$0.110($\uparrow$)($\uparrow$)($\uparrow$) \\
+      $\left\langle 100,0.2\right\rangle$ & 0.579$\pm$0.192
+      & 0.697$\pm$0.090($\uparrow$)
+      & 0.817$\pm$0.096($\uparrow$)($\uparrow$)
+      & 0.847$\pm$0.077($\uparrow$)($\uparrow$)($\uparrow$) \\
+      $\left\langle 100,0.8\right\rangle$ & 0.798$\pm$0.081
+      & 0.866$\pm$0.059($\uparrow$)
+      & 0.852$\pm$0.067($\uparrow$)($\downarrow$)
+      & 0.810$\pm$0.086($\approx$)($\downarrow$)($\downarrow$) \\
       \midrule
       W/D/L & 0/1/11 & 1/0/11 & 1/1/10 & N/A \\
-      AverageRank & 3.597 & 3.008 & 1.992 & 1.403 \\
+      AverageRank & 3.603 & 3.017 & 1.975 & 1.406 \\
       \bottomrule
   \end{tabular}}
   \vspace{-1em}
 \end{table}
+
+PRS-GPDRL obtains the best HV average rank (1.406), while CCGP records 1/1/10
+relative to it. HV gains are clearest at $\mathrm{wfNum}=10$. PRS-GPDRL is
+statistically better than or comparable to CCGP throughout
+$\mathrm{wfNum}\leq 50$. At $\mathrm{wfNum}=100$, the outcome depends on the
+arrival rate: an additional gain occurs at $\langle100,0.2\rangle$, but not at
+$\langle100,0.8\rangle$, where the maximum workflow scale and higher arrival
+rate coincide.
+
+\subsubsection{IGD Results}
 
 \begin{table}[!t]
   \centering
@@ -1301,114 +1331,369 @@ representative of the pooled reference front.
 %     }
     \begin{tabular}{ccccc}
     \toprule
-      $\left\langle \rm wfNum, \lambda\right\rangle$ & GATES & LWFF & CCGP
+      $\left\langle \mathrm{wfNum}, \lambda\right\rangle$ & GATES & LWFF & CCGP
       & PRS-GPDRL \\
       \midrule
-      $\left\langle 10,0.2\right\rangle$ & 0.317$\pm$0.138
-      & 0.257$\pm$0.078($\uparrow$)
-      & 0.104$\pm$0.040($\uparrow$)($\uparrow$)
-      & 0.052$\pm$0.038($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 10,0.8\right\rangle$ & 0.304$\pm$0.146
-      & 0.217$\pm$0.069($\uparrow$)
-      & 0.104$\pm$0.040($\uparrow$)($\uparrow$)
-      & 0.041$\pm$0.024($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 15,0.2\right\rangle$ & 0.262$\pm$0.096
-      & 0.176$\pm$0.056($\uparrow$)
-      & 0.077$\pm$0.033($\uparrow$)($\uparrow$)
-      & 0.054$\pm$0.036($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 15,0.8\right\rangle$ & 0.298$\pm$0.084
-      & 0.186$\pm$0.063($\uparrow$)
-      & 0.091$\pm$0.060($\uparrow$)($\uparrow$)
-      & 0.050$\pm$0.032($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 20,0.2\right\rangle$ & 0.261$\pm$0.126
-      & 0.185$\pm$0.070($\uparrow$)
-      & 0.084$\pm$0.042($\uparrow$)($\uparrow$)
-      & 0.055$\pm$0.042($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 20,0.8\right\rangle$ & 0.266$\pm$0.126
-      & 0.187$\pm$0.079($\uparrow$)
-      & 0.078$\pm$0.036($\uparrow$)($\uparrow$)
-      & 0.061$\pm$0.046($\uparrow$)($\uparrow$)($\approx$) \\
-      $\left\langle 30,0.2\right\rangle$ & 0.231$\pm$0.102
-      & 0.136$\pm$0.047($\uparrow$)
-      & 0.078$\pm$0.038($\uparrow$)($\uparrow$)
-      & 0.053$\pm$0.049($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 30,0.8\right\rangle$ & 0.278$\pm$0.090
-      & 0.124$\pm$0.033($\uparrow$)
-      & 0.074$\pm$0.033($\uparrow$)($\uparrow$)
-      & 0.068$\pm$0.032($\uparrow$)($\uparrow$)($\approx$) \\
-      $\left\langle 50,0.2\right\rangle$ & 0.230$\pm$0.093
-      & 0.109$\pm$0.038($\uparrow$)
-      & 0.087$\pm$0.046($\uparrow$)($\uparrow$)
-      & 0.066$\pm$0.051($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 50,0.8\right\rangle$ & 0.230$\pm$0.102
-      & 0.094$\pm$0.030($\uparrow$)
-      & 0.079$\pm$0.041($\uparrow$)($\approx$)
-      & 0.078$\pm$0.039($\uparrow$)($\uparrow$)($\approx$) \\
-      $\left\langle 100,0.2\right\rangle$ & 0.257$\pm$0.131
-      & 0.131$\pm$0.050($\uparrow$)
-      & 0.071$\pm$0.035($\uparrow$)($\uparrow$)
-      & 0.083$\pm$0.037($\uparrow$)($\uparrow$)($\approx$) \\
-      $\left\langle 100,0.8\right\rangle$ & 0.188$\pm$0.078
-      & 0.088$\pm$0.048($\uparrow$)
-      & 0.069$\pm$0.028($\uparrow$)($\approx$)
-      & 0.140$\pm$0.067($\uparrow$)($\downarrow$)($\downarrow$) \\
+      $\left\langle 10,0.2\right\rangle$ & 0.321$\pm$0.135
+      & 0.235$\pm$0.081($\uparrow$)
+      & 0.100$\pm$0.032($\uparrow$)($\uparrow$)
+      & 0.047$\pm$0.024($\uparrow$)($\uparrow$)($\uparrow$) \\
+      $\left\langle 10,0.8\right\rangle$ & 0.310$\pm$0.145
+      & 0.199$\pm$0.063($\uparrow$)
+      & 0.107$\pm$0.038($\uparrow$)($\uparrow$)
+      & 0.042$\pm$0.020($\uparrow$)($\uparrow$)($\uparrow$) \\
+      $\left\langle 15,0.2\right\rangle$ & 0.257$\pm$0.099
+      & 0.166$\pm$0.054($\uparrow$)
+      & 0.068$\pm$0.031($\uparrow$)($\uparrow$)
+      & 0.040$\pm$0.028($\uparrow$)($\uparrow$)($\uparrow$) \\
+      $\left\langle 15,0.8\right\rangle$ & 0.303$\pm$0.094
+      & 0.154$\pm$0.054($\uparrow$)
+      & 0.084$\pm$0.057($\uparrow$)($\uparrow$)
+      & 0.047$\pm$0.034($\uparrow$)($\uparrow$)($\uparrow$) \\
+      $\left\langle 20,0.2\right\rangle$ & 0.260$\pm$0.128
+      & 0.173$\pm$0.077($\uparrow$)
+      & 0.078$\pm$0.041($\uparrow$)($\uparrow$)
+      & 0.050$\pm$0.048($\uparrow$)($\uparrow$)($\uparrow$) \\
+      $\left\langle 20,0.8\right\rangle$ & 0.276$\pm$0.133
+      & 0.151$\pm$0.075($\uparrow$)
+      & 0.074$\pm$0.035($\uparrow$)($\uparrow$)
+      & 0.055$\pm$0.038($\uparrow$)($\uparrow$)($\approx$) \\
+      $\left\langle 30,0.2\right\rangle$ & 0.247$\pm$0.110
+      & 0.152$\pm$0.050($\uparrow$)
+      & 0.083$\pm$0.037($\uparrow$)($\uparrow$)
+      & 0.053$\pm$0.046($\uparrow$)($\uparrow$)($\uparrow$) \\
+      $\left\langle 30,0.8\right\rangle$ & 0.291$\pm$0.108
+      & 0.127$\pm$0.039($\uparrow$)
+      & 0.080$\pm$0.030($\uparrow$)($\uparrow$)
+      & 0.074$\pm$0.043($\uparrow$)($\uparrow$)($\approx$) \\
+      $\left\langle 50,0.2\right\rangle$ & 0.232$\pm$0.095
+      & 0.112$\pm$0.040($\uparrow$)
+      & 0.082$\pm$0.042($\uparrow$)($\uparrow$)
+      & 0.059$\pm$0.043($\uparrow$)($\uparrow$)($\uparrow$) \\
+      $\left\langle 50,0.8\right\rangle$ & 0.240$\pm$0.105
+      & 0.099$\pm$0.032($\uparrow$)
+      & 0.074$\pm$0.039($\uparrow$)($\uparrow$)
+      & 0.075$\pm$0.041($\uparrow$)($\uparrow$)($\approx$) \\
+      $\left\langle 100,0.2\right\rangle$ & 0.269$\pm$0.139
+      & 0.146$\pm$0.063($\uparrow$)
+      & 0.075$\pm$0.034($\uparrow$)($\uparrow$)
+      & 0.079$\pm$0.040($\uparrow$)($\uparrow$)($\approx$) \\
+      $\left\langle 100,0.8\right\rangle$ & 0.190$\pm$0.078
+      & 0.079$\pm$0.055($\uparrow$)
+      & 0.066$\pm$0.024($\uparrow$)($\approx$)
+      & 0.135$\pm$0.056($\uparrow$)($\downarrow$)($\downarrow$) \\
         \midrule
       W/D/L & 0/0/12 & 1/0/11 & 1/4/7 & N/A \\
-      AverageRank & 3.778 & 2.869 & 1.828 & 1.525 \\
+      AverageRank & 3.792 & 2.847 & 1.883 & 1.478 \\
         \bottomrule
   \end{tabular}}
   \vspace{-1em}
 \end{table}
 
-\subsection{Overall Performance}
-\label{Sec: overall performance}
+PRS-GPDRL also obtains the best IGD average rank (1.478), with CCGP recording
+1/4/7 relative to it. IGD improvements are again clearest at
+$\mathrm{wfNum}=10$. PRS-GPDRL is statistically better than or comparable to
+CCGP throughout $\mathrm{wfNum}\leq 50$, whereas the $\mathrm{wfNum}=100$
+outcomes depend on the arrival rate. The adapted GATES and LWFF baselines are
+statistically worse than or comparable to PRS-GPDRL in at least 11 scenarios
+per metric.
 
-Tables~\ref{Table: HV main results} and~\ref{Table: IGD main results} report the
-mean and standard deviation over the 30 independent runs. For each scenario and
-metric, overall differences among the four algorithms are assessed using the
-Iman--Davenport correction of the Friedman test, with the matched runs as
-blocks. Pairwise significance symbols are obtained from two-sided paired
-Wilcoxon signed-rank tests on the matched run-level metric values at a
-significance level of 0.05. Within each result
-cell, $\uparrow$, $\downarrow$, and $\approx$ indicate statistically better,
-worse, and similar performance, respectively, against the methods in the
-preceding columns. The W/D/L row records each baseline's wins, draws, and losses
-against PRS-GPDRL. AverageRank averages the within-block ranks over all scenarios
-and runs, with a smaller value being preferable.
+The CCGP comparison controls GP-rule provenance: PRS-GPDRL extracts its rule
+pool from the corresponding CCGP run, so both methods share the same source of
+GP resource-selection knowledge. Their difference therefore cannot be
+explained by a different or better GP-rule source. Together with the behavior
+and ablation results, this pattern supports online selection among complementary
+rules and state- and preference-dependent local adjustment.
 
-\subsubsection{Comparison of Hypervolume}
-Table~\ref{Table: HV main results} shows that PRS-GPDRL obtains the best HV
-average rank of 1.403, ahead of CCGP (1.992), LWFF (3.008), and GATES (3.597).
-It achieves significantly higher HV than CCGP in ten scenarios and comparable
-HV in one of the remaining two. It also significantly exceeds GATES and LWFF in
-11 scenarios each.
+\subsubsection{50\% Empirical Attainment Curves}
 
-Across all ten scenarios with at most 50 workflows, PRS-GPDRL has the highest
-mean HV at both arrival rates. For example, in $\langle10,0.8\rangle$, its mean
-HV is 0.882, compared with 0.782 for CCGP and 0.619 for LWFF. Since HV reflects
-both convergence and coverage, the consistent gains across these workload sizes
-indicate that PRS-GPDRL produces higher-quality and better-covered approximation
-sets.
+Fig.~\ref{Fig: tradeoff profiles} presents the 50\% empirical attainment curves
+of the compared algorithms in the normalized weighted-tardiness--energy space
+for six representative scenarios.
 
-\subsubsection{Comparison of Inverted Generational Distance}
-Table~\ref{Table: IGD main results} shows that PRS-GPDRL also obtains the best
-IGD average rank of 1.525, followed by CCGP (1.828), LWFF (2.869), and GATES
-(3.778). Relative to CCGP, it achieves significantly lower IGD in seven
-scenarios and statistically similar IGD in four. PRS-GPDRL also significantly
-improves on GATES in all 12 scenarios and on LWFF in 11 scenarios.
+\begin{figure}[!t]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/tradeoff_profile_50.pdf}
+    \caption{The 50\% empirical attainment curves of the compared algorithms in
+    six representative scenarios.}
+    \label{Fig: tradeoff profiles}
+\end{figure}
 
-PRS-GPDRL has the lowest mean IGD in all ten scenarios with at most 50
-workflows. In $\langle10,0.8\rangle$, its mean IGD is 0.041, compared with 0.104
-for CCGP and 0.217 for LWFF. These results show that its approximation sets
-remain closer to and more representative of the pooled reference front across
-different workflow counts and arrival rates.
+PRS-GPDRL lies below CCGP over most of their shared tardiness range in five
+panels, with the clearest separation in the two $\mathrm{wfNum}=10$ scenarios.
+Because the separation spans the trade-off interior, the HV and IGD gains
+reflect broad set-quality improvements rather than a few endpoint solutions.
 
-Taken together, the two metrics show that PRS-GPDRL is statistically better
-than or comparable to CCGP in 11 of the 12 scenarios for each metric. The common
-exception is $\langle100,0.8\rangle$, where CCGP and LWFF obtain higher HV and
-lower IGD. Overall, the agreement between HV and IGD supports the effectiveness
-of PRS-GPDRL in constructing well-covered tardiness--energy trade-offs close to
-the pooled reference front.
+\subsection{Preference-Conditioned Policy Behavior}
+\label{Sec: preference action analysis}
+
+\subsubsection{Objective Response to Preference}
+\label{Sec: preference controllability}
+
+Fig.~\ref{Fig: preference responses} shows the scenario-wise median relative
+reductions in weighted tardiness and energy consumption as their corresponding
+preference weights vary across the 12 scenarios. Let $x(w_j)$ denote the
+solution obtained at objective weight $w_j$. For objective $f_j$, the relative
+reduction is $[f_j(x(0))-f_j(x(w_j))]/f_j(x(0))$ from the endpoint at which its
+own weight is zero.
+Weighted tardiness is plotted against $w_T$, and energy against $w_E=1-w_T$.
+
+\begin{figure*}[!t]
+    \centering
+    \begin{minipage}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/preference_response_tardiness.pdf}
+        \centerline{(a) Weighted tardiness response to $w_T$.}
+    \end{minipage}\hfill
+    \begin{minipage}[t]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{figures/preference_response_energy.pdf}
+        \centerline{(b) Energy response to $w_E$.}
+    \end{minipage}
+    \caption{Relative reductions in weighted tardiness and energy consumption
+    under different preference weights. Each curve shows the median over 30
+    independent runs for one scenario.}
+    \label{Fig: preference responses}
+\end{figure*}
+
+At the outcome level, increasing an objective's weight changes the schedule in
+the intended direction. Median reductions at weight 0.5 are 89.7\% for weighted
+tardiness and 20.5\% for energy; over the full range, they reach 96.9\% and
+51.1\%. The steeper tardiness response is consistent with urgency-oriented
+decisions avoiding deadline penalties immediately, whereas energy savings
+accumulate through assignments that alter utilization and resource active time.
+
+The median correlations between each raw objective and its own weight are
+$\rho_T=-0.968$ and $\rho_E=-0.955$. All tardiness curves and 99.4\% of energy
+curves have the expected direction; 99.4\% of runs also shift correctly between
+the endpoints. Thus, one network produces preference-dependent scheduling
+outcomes rather than relabeling the same outcome with different weights.
+
+\subsubsection{Preference-Dependent Resource-Selection Rule Usage}
+
+Fig.~\ref{Fig: tree role frequency} shows how the use of the five retained
+resource-selection rules varies with tardiness preference across the 12
+scenarios. The rules are ordered from the minimum-energy endpoint to the
+minimum-tardiness endpoint.
+
+\begin{figure*}[!t]
+    \centering
+    \includegraphics[width=\textwidth]{figures/tree_role_frequency.pdf}
+    \caption{Mean selection frequencies over the included independent runs for
+    each of the 12 scenarios under different tardiness preferences (runs
+    retaining five rules). The roles are the minimum-energy endpoint $g_1$, its
+    neighbor $g_2$, the knee $g_3$, the minimum-tardiness neighbor $g_4$, and
+    the minimum-tardiness endpoint $g_5$.}
+    \label{Fig: tree role frequency}
+\end{figure*}
+
+At the rule level, the minimum-energy rule and its neighbor account for 61.7\%
+of decisions at $w_T=0$, while the minimum-tardiness pair accounts for 50.3\%
+at $w_T=1$. The median weight--role correlation is $\rho_g=0.738$, and 90.4\%
+of included runs shift as expected. This explains Fig.~\ref{Fig: preference responses}
+internally: increasing $w_T$ moves selection from energy-oriented roles through
+the knee toward tardiness-oriented roles.
+
+\subsubsection{Risk-Mode Usage}
+
+Fig.~\ref{Fig: risk frequency} shows the risk-mode selection frequency as a
+function of $w_T$ for the two arrival rates, with one panel for each workflow
+count.
+
+\begin{figure}[!t]
+    \centering
+    \includegraphics[width=\linewidth]{figures/risk_frequency.pdf}
+    \caption{Mean risk-mode selection frequency over 30 independent runs for
+    each of the 12 scenarios. Gray markers denote the balanced preference
+    $w_T=w_E=0.5$. At the balanced preference, risk-mode
+    selections are counted although their priority scores coincide with those
+    of the base mode.}
+    \label{Fig: risk frequency}
+\end{figure}
+
+At the mode level, the risk mode is selected in 42.5\% of decisions. Away from
+balance, non-zero correction is activated in 41.2\%, ranging from 26.1\% to
+56.6\% across preferences and scenarios. The risk mode is therefore not rarely
+selected, while the remaining base-mode decisions show that local correction
+is not always required. The policy adaptively chooses between using the
+unmodified GP ranking and applying a local correction as the state and
+preference vary.
+
+Figs.~\ref{Fig: tree role frequency} and~\ref{Fig: risk frequency} capture two
+distinct levels of adaptation. Rule-role migration sets the global objective
+direction of the resource ranking, moving from energy-oriented roles through
+the knee toward tardiness-oriented roles as $w_T$ increases. Risk-mode
+selection instead gates whether the current decision requires a bounded local
+modification of that ranking. Its frequency need not vary monotonically with
+$w_T$, because the need for correction depends jointly on the requested
+preference, task urgency, CPU sharing, resource active time, Cloud provisioning,
+and the current feasible-resource state. Risk-mode frequency therefore reflects
+state- and preference-dependent gating behavior rather than serving as a direct
+proxy for the preference weight.
+
+Within the evaluated preference grid, the three figures form a layered account
+of policy behavior. Fig.~\ref{Fig: preference responses} shows preference
+response at the outcome level; Fig.~\ref{Fig: tree role frequency} shows the
+corresponding migration of global rule roles; and Fig.~\ref{Fig: risk frequency}
+shows whether local correction is selected at the mode level. Taken together,
+these observations support the interpretation that preference conditioning
+changes both the resulting objectives and the internal decisions that produce
+them: which global ranking is used and whether it is locally corrected for the
+current state.
+
+\subsection{Ablation Analysis}
+\label{Sec: ablation design analysis}
+
+Table~\ref{Table: combined ablation results} reports the HV and IGD results of
+PRS-GPDRL and its three ablation variants in six representative scenarios. The
+\emph{w/o Risk} and \emph{w/o FiLM} variants remove the two
+components separately, while $K=3$ sets the maximum requested rule-pool size to
+three. The evaluation and statistical analysis follow the
+main protocol.
+
+\begin{table*}[!t]
+\caption{The mean and standard deviation of the HV and IGD values for PRS-GPDRL
+and its ablation variants over 30 independent runs.}
+\label{Table: combined ablation results}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{1.6pt}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{c|cccc|cccc}
+\toprule
+\multirow{2}{*}{$\langle\mathrm{wfNum},\lambda\rangle$}
+& \multicolumn{4}{c|}{HV} & \multicolumn{4}{c}{IGD} \\
+& w/o Risk & w/o FiLM & $K=3$ & PRS-GPDRL
+& w/o Risk & w/o FiLM & $K=3$ & PRS-GPDRL \\
+\midrule
+$\langle10,0.2\rangle$
+& .832$\pm$.098 & .851$\pm$.076($\approx$) & .860$\pm$.071($\uparrow$)($\uparrow$) & .867$\pm$.068($\uparrow$)($\uparrow$)($\approx$)
+& .078$\pm$.046 & .058$\pm$.030($\uparrow$) & .052$\pm$.033($\uparrow$)($\approx$) & .047$\pm$.024($\uparrow$)($\uparrow$)($\approx$) \\
+$\langle10,0.8\rangle$
+& .827$\pm$.093 & .855$\pm$.068($\uparrow$) & .880$\pm$.064($\uparrow$)($\uparrow$) & .882$\pm$.059($\uparrow$)($\uparrow$)($\approx$)
+& .076$\pm$.047 & .058$\pm$.032($\uparrow$) & .039$\pm$.017($\uparrow$)($\uparrow$) & .042$\pm$.020($\uparrow$)($\uparrow$)($\approx$) \\
+$\langle30,0.2\rangle$
+& .814$\pm$.103 & .848$\pm$.074($\uparrow$) & .851$\pm$.076($\approx$)($\approx$) & .867$\pm$.060($\uparrow$)($\uparrow$)($\uparrow$)
+& .090$\pm$.058 & .068$\pm$.047($\uparrow$) & .068$\pm$.057($\uparrow$)($\approx$) & .053$\pm$.046($\uparrow$)($\uparrow$)($\uparrow$) \\
+$\langle30,0.8\rangle$
+& .752$\pm$.105 & .814$\pm$.087($\uparrow$) & .809$\pm$.081($\uparrow$)($\approx$) & .803$\pm$.090($\uparrow$)($\approx$)($\approx$)
+& .114$\pm$.059 & .065$\pm$.032($\uparrow$) & .074$\pm$.034($\uparrow$)($\approx$) & .074$\pm$.043($\uparrow$)($\approx$)($\approx$) \\
+$\langle100,0.2\rangle$
+& .778$\pm$.117 & .828$\pm$.075($\uparrow$) & .854$\pm$.055($\uparrow$)($\uparrow$) & .847$\pm$.077($\uparrow$)($\approx$)($\approx$)
+& .118$\pm$.071 & .084$\pm$.047($\uparrow$) & .082$\pm$.042($\uparrow$)($\approx$) & .079$\pm$.040($\uparrow$)($\approx$)($\approx$) \\
+$\langle100,0.8\rangle$
+& .748$\pm$.108 & .801$\pm$.090($\uparrow$) & .816$\pm$.081($\uparrow$)($\approx$) & .810$\pm$.086($\uparrow$)($\approx$)($\approx$)
+& .176$\pm$.065 & .125$\pm$.052($\uparrow$) & .121$\pm$.051($\uparrow$)($\approx$) & .135$\pm$.056($\uparrow$)($\approx$)($\approx$) \\
+\midrule
+W/D/L & 0/0/6 & 0/3/3 & 0/5/1 & N/A
+      & 0/0/6 & 0/3/3 & 0/5/1 & N/A \\
+AverageRank & 3.222 & 2.511 & 2.164 & 2.103
+            & 3.322 & 2.389 & 2.231 & 2.058 \\
+\bottomrule
+\end{tabular}}
+\end{table*}
+
+\subsubsection{Risk-Stratified Action Augmentation and FiLM Conditioning}
+
+Across the six representative scenarios, \emph{w/o Risk} records 0/0/6 against
+PRS-GPDRL for both metrics, the strongest ablation effect. A GP rule provides a
+global ranking; Risk uses the specified preference, task urgency, CPU sharing,
+resource active time, and Cloud provisioning for bounded local correction.
+The consistent result across these six scenarios supports state- and
+preference-dependent local correction as an important part of the full
+performance improvement.
+
+By comparison, the \emph{w/o FiLM} variant records 0/3/3 for both metrics and
+retains the vector-valued action costs and augmented weighted Tchebycheff
+scalarization, so preference information remains available to action
+evaluation. The three statistically comparable outcomes and three losses
+therefore suggest that FiLM
+is not the only preference-conditioning channel. Instead, its additional
+preference-dependent modulation of the shared state representation is
+consistent with complementary improvements in trade-off coverage and proximity.
+
+\subsubsection{Rule-Pool Size}
+
+The $K=3$ result is 0/5/1 for both metrics and is statistically comparable in
+five of six scenarios. Thus, the main capability does not arise simply from
+increasing the number of available actions; a small set of behaviorally
+complementary rules retains most of it. Within the tested settings, performance
+is reasonably robust to pool size when behaviorally diverse rule roles are
+retained. The $K=5$ design targets both endpoints,
+their neighboring regions, and the knee, and obtains the best average ranks.
+This pattern is consistent with the motivation for quality- and behavior-aware
+filtering: coverage of complementary global-ranking roles is more important
+than rule count alone.
+
+The ablations thus organize the components into distinct, complementary roles:
+Risk provides state- and preference-dependent local correction, FiLM adds
+preference-dependent modulation of the shared representation, and the rule
+pool provides complementary global-ranking coverage. These roles are
+complementary within the proposed decision process.
+
+\subsection{Task-Ordering Design Choice}
+
+Table~\ref{Table: combined GP task ordering} reports the HV and IGD results
+obtained using the GP task-selection rule and upward-rank ordering across the 12
+scenarios. The comparison holds the deduplicated resource-selection rule pool
+fixed. Following Tables~\ref{Table: HV main results}--\ref{Table: combined ablation results}, W/D/L reports the baseline GP
+task-selection rule relative to upward-rank ordering.
+
+\begin{table}[!t]
+\caption{The mean and standard deviation of the HV and IGD values obtained using
+GP task-selection rule and upward-rank ordering over 30 independent runs.}
+\label{Table: combined GP task ordering}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3.2pt}
+\begin{tabular}{c|cc|cc}
+\toprule
+\multirow{2}{*}{$\langle\mathrm{wfNum},\lambda\rangle$}
+& \multicolumn{2}{c|}{HV} & \multicolumn{2}{c}{IGD} \\
+& GP task rule & Upward rank & GP task rule & Upward rank \\
+\midrule
+$\langle10,0.2\rangle$ & .789$\pm$.092 & .790$\pm$.092($\approx$) & .100$\pm$.032 & .100$\pm$.033($\approx$) \\
+$\langle10,0.8\rangle$ & .788$\pm$.113 & .787$\pm$.117($\approx$) & .107$\pm$.038 & .108$\pm$.042($\approx$) \\
+$\langle15,0.2\rangle$ & .800$\pm$.114 & .799$\pm$.109($\approx$) & .068$\pm$.031 & .070$\pm$.028($\approx$) \\
+$\langle15,0.8\rangle$ & .749$\pm$.150 & .750$\pm$.151($\approx$) & .084$\pm$.057 & .085$\pm$.059($\approx$) \\
+$\langle20,0.2\rangle$ & .789$\pm$.134 & .787$\pm$.136($\approx$) & .078$\pm$.041 & .078$\pm$.040($\approx$) \\
+$\langle20,0.8\rangle$ & .776$\pm$.110 & .779$\pm$.108($\approx$) & .074$\pm$.035 & .072$\pm$.033($\approx$) \\
+$\langle30,0.2\rangle$ & .823$\pm$.101 & .823$\pm$.100($\approx$) & .083$\pm$.037 & .081$\pm$.037($\approx$) \\
+$\langle30,0.8\rangle$ & .788$\pm$.091 & .784$\pm$.099($\approx$) & .080$\pm$.030 & .081$\pm$.030($\approx$) \\
+$\langle50,0.2\rangle$ & .808$\pm$.103 & .806$\pm$.104($\approx$) & .082$\pm$.042 & .084$\pm$.042($\downarrow$) \\
+$\langle50,0.8\rangle$ & .783$\pm$.135 & .779$\pm$.136($\downarrow$) & .074$\pm$.039 & .075$\pm$.037($\approx$) \\
+$\langle100,0.2\rangle$ & .817$\pm$.096 & .813$\pm$.096($\approx$) & .075$\pm$.034 & .078$\pm$.035($\approx$) \\
+$\langle100,0.8\rangle$ & .852$\pm$.067 & .850$\pm$.070($\approx$) & .066$\pm$.024 & .067$\pm$.026($\approx$) \\
+\midrule
+W/D/L & 1/11/0 & N/A & 1/11/0 & N/A \\
+AverageRank & 1.436 & 1.564 & 1.458 & 1.542 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+With the resource-selection rule pool fixed, the GP task-selection rule records
+1/11/0 against upward-rank ordering for both metrics, with similar average
+ranks. Upward-rank ordering is therefore statistically comparable in 11 of 12
+scenarios. This diagnostic result indicates that task-ordering change is not
+the main explanation for the overall gain over CCGP. This comparability is
+consistent with the problem structure: VMs can execute tasks concurrently, and
+task ordering is required only when multiple tasks become ready simultaneously,
+whereas resource selection is required for every dispatched task. Task ordering
+is therefore less influential than resource selection in this problem.
+
+Taken together, the experiments narrow the plausible explanation for the
+overall gain. The V-C comparison controls GP-rule provenance because PRS-GPDRL
+uses the rule pool extracted from the corresponding CCGP run, while the present
+comparison indicates that task-ordering change is not the main explanation.
+The rule-usage analysis shows that the policy changes how this same-source GP
+knowledge is deployed as preference varies, and the mode-usage analysis shows
+that local correction is selected conditionally rather than always or never.
+The $K=3$ comparison further weakens a simple action-count explanation, while
+the \emph{w/o Risk} result supports the importance of local correction for the
+full improvement in the six ablation scenarios. These results jointly support
+the interpretation that PRS-GPDRL gains value from preference-conditioned
+online deployment of same-source, behaviorally complementary GP rules, together
+with bounded local correction when indicated by the current state.
 
 \section{Conclusion}
 \label{Sec: conclusion}
@@ -1418,16 +1703,26 @@ heterogeneous Cloud--Edge systems, with total weighted tardiness and energy as
 the two objectives. PRS-GPDRL connects evolutionary rule discovery with online
 reinforcement learning: CCGP evolves coupled scheduling rules, a diversity-aware
 procedure extracts a compact resource-selection rule pool, and a
-multi-objective DDQN selects risk-stratified rule-mode
-actions at task-allocation
-decision points. The resulting design retains the efficient execution of GP
-priority rules while adapting their use to the current state and requested
-objective trade-off.
-Across the 12 scenarios and 30 independent runs, PRS-GPDRL obtains the best
-average ranks of 1.403 for HV and 1.525 for IGD. It is statistically better than
-or comparable to CCGP in 11 scenarios for each metric, demonstrating the value
-of state- and preference-dependent rule-mode selection for constructing
-tardiness--energy trade-offs.
+multi-objective DDQN selects risk-stratified rule-mode actions at task-allocation
+decision points. This design lets one network adapt the use of GP-evolved
+resource priorities to the current state and requested objective trade-off.
+
+Across 12 scenarios, with 30 independent runs conducted per scenario,
+PRS-GPDRL obtains the best average ranks of 1.406 for HV and 1.478 for IGD and
+is statistically better than or comparable to CCGP in 11 of 12 scenarios for
+each metric. The clearest advantages occur on small- and medium-scale workflow
+sets, with additional HV gains in selected large-scale scenarios. The behavior
+analysis shows preference response at three levels: the objective values, the
+roles of the selected resource-selection rules, and the choice between using
+an unmodified GP ranking and applying a local risk correction. Across the six
+representative ablation
+scenarios, Risk provides the strongest component-level improvement, FiLM adds
+complementary preference conditioning, and the $K=3$ results retain most of the
+rule-pool capability. The task-ordering experiment further shows that
+upward-rank ordering is statistically comparable to the GP task-selection rule
+in 11 of the 12 scenarios. Overall, PRS-GPDRL generates high-quality tardiness--energy
+trade-offs while adapting its internal scheduling decisions to the requested
+preference.
 
 \bibliographystyle{IEEEtran}
 \bibliography{Bibliography}
