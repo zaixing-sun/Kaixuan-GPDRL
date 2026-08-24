@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.11.27)  24 AUG 2026 10:41
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.11.27)  24 AUG 2026 10:43
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -623,7 +623,7 @@ Overfull \hbox (2.18065pt too wide) detected at line 352
 
 
 
-<figures/framework.pdf, id=239, 231.74579pt x 162.6075pt>
+<figures/framework.pdf, id=270, 231.74579pt x 162.6075pt>
 File: figures/framework.pdf Graphic file (type pdf)
 <use figures/framework.pdf>
 Package pdftex.def Info: figures/framework.pdf  used on input line 455.
@@ -646,7 +646,7 @@ Underfull \hbox (badness 4096) in paragraph at lines 774--780
 []\OT1/ptm/m/n/10 The resource-selection prob-lem is for-mu-lated as an
  []
 
-<figures/DRL.pdf, id=312, 1836.8625pt x 535.03888pt>
+<figures/DRL.pdf, id=344, 1836.8625pt x 535.03888pt>
 File: figures/DRL.pdf Graphic file (type pdf)
 <use figures/DRL.pdf>
 Package pdftex.def Info: figures/DRL.pdf  used on input line 837.
@@ -675,17 +675,17 @@ Underfull \hbox (badness 10000) in paragraph at lines 1121--1121
 
 [9]
 
-<figures/tradeoff_profile_50.pdf, id=419, 261.23944pt x 392.27756pt>
+<figures/tradeoff_profile_50.pdf, id=451, 261.23944pt x 392.27756pt>
 File: figures/tradeoff_profile_50.pdf Graphic file (type pdf)
 <use figures/tradeoff_profile_50.pdf>
 Package pdftex.def Info: figures/tradeoff_profile_50.pdf  used on input line 1416.
 (pdftex.def)             Requested size: 252.0pt x 378.40779pt.
-<figures/preference_response_tardiness.pdf, id=421, 252.945pt x 184.28851pt>
+<figures/preference_response_tardiness.pdf, id=453, 252.945pt x 184.28851pt>
 File: figures/preference_response_tardiness.pdf Graphic file (type pdf)
 <use figures/preference_response_tardiness.pdf>
 Package pdftex.def Info: figures/preference_response_tardiness.pdf  used on input line 1445.
 (pdftex.def)             Requested size: 252.84283pt x 184.21774pt.
-<figures/preference_response_energy.pdf, id=422, 252.945pt x 184.28851pt>
+<figures/preference_response_energy.pdf, id=454, 252.945pt x 184.28851pt>
 File: figures/preference_response_energy.pdf Graphic file (type pdf)
 <use figures/preference_response_energy.pdf>
 Package pdftex.def Info: figures/preference_response_energy.pdf  used on input line 1450.
@@ -693,14 +693,14 @@ Package pdftex.def Info: figures/preference_response_energy.pdf  used on input l
 
 
 [10]
-<figures/tree_role_frequency.pdf, id=433, 490.58551pt x 259.46375pt>
+<figures/tree_role_frequency.pdf, id=464, 490.58551pt x 259.46375pt>
 File: figures/tree_role_frequency.pdf Graphic file (type pdf)
 <use figures/tree_role_frequency.pdf>
 Package pdftex.def Info: figures/tree_role_frequency.pdf  used on input line 1481.
 (pdftex.def)             Requested size: 516.0pt x 272.91609pt.
 
 
-<figures/risk_frequency.pdf, id=436, 261.23944pt x 378.23909pt>
+<figures/risk_frequency.pdf, id=467, 261.23944pt x 378.23909pt>
 File: figures/risk_frequency.pdf Graphic file (type pdf)
 <use figures/risk_frequency.pdf>
 Package pdftex.def Info: figures/risk_frequency.pdf  used on input line 1505.
@@ -752,16 +752,16 @@ Package rerunfilecheck Info: File `PRS-GPDRL.out' has not changed.
 Here is how much of TeX's memory you used:
  15198 strings out of 473190
  260474 string characters out of 5715799
- 726748 words of memory out of 5000000
+ 726682 words of memory out of 5000000
  38100 multiletter control sequences out of 15000+600000
  608875 words of font info for 132 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,23n,79p,1872b,588s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on PRS-GPDRL.pdf (15 pages, 561480 bytes).
+Output written on PRS-GPDRL.pdf (15 pages, 562029 bytes).
 PDF statistics:
- 727 PDF objects out of 1000 (max. 8388607)
- 602 compressed objects within 7 object streams
+ 748 PDF objects out of 1000 (max. 8388607)
+ 623 compressed objects within 7 object streams
  151 named destinations out of 1000 (max. 500000)
  276 words of extra memory for PDF output out of 10000 (max. 10000000)
 
