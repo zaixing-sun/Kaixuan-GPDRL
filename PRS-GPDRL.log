@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.11.27)  25 AUG 2026 16:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.11.27)  25 AUG 2026 17:00
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -583,27 +583,28 @@ Underfull \hbox (badness 1558) in paragraph at lines 107--110
 
 
 ]
-Underfull \hbox (badness 1803) in paragraph at lines 122--123
+LaTeX Font Info:    Trying to load font information for U+msa on input line 125.
+ (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 125.
+ (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+Underfull \hbox (badness 1803) in paragraph at lines 122--125
 []\OT1/ptm/m/n/10 To ad-dress this gap, this pa-per pro-poses Preference-
  []
 
 
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 126.
-(/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 126.
- (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
+
 
 [2]
 
 
 
 [3]
-Overfull \hbox (2.18065pt too wide) detected at line 248
+Overfull \hbox (2.18065pt too wide) detected at line 247
 []
  []
 
@@ -616,7 +617,7 @@ Overfull \hbox (2.18065pt too wide) detected at line 248
 <figures/framework.pdf, id=299, 231.74579pt x 162.6075pt>
 File: figures/framework.pdf Graphic file (type pdf)
 <use figures/framework.pdf>
-Package pdftex.def Info: figures/framework.pdf  used on input line 317.
+Package pdftex.def Info: figures/framework.pdf  used on input line 316.
 (pdftex.def)             Requested size: 221.76123pt x 155.60767pt.
 
 
@@ -632,14 +633,14 @@ Package pdftex.def Info: figures/framework.pdf  used on input line 317.
 <figures/DRL.pdf, id=357, 1836.8625pt x 535.03888pt>
 File: figures/DRL.pdf Graphic file (type pdf)
 <use figures/DRL.pdf>
-Package pdftex.def Info: figures/DRL.pdf  used on input line 542.
+Package pdftex.def Info: figures/DRL.pdf  used on input line 541.
 (pdftex.def)             Requested size: 402.47937pt x 117.22723pt.
 
 
 
 
 [8]
-Underfull \hbox (badness 4832) in paragraph at lines 644--652
+Underfull \hbox (badness 4832) in paragraph at lines 643--651
 \OT1/ptm/m/n/10 and container-scaling GP rules to con-struct non-
  []
 
@@ -648,7 +649,7 @@ Underfull \hbox (badness 4832) in paragraph at lines 644--652
 
 
 [9 <./figures/DRL.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 775--775
+Underfull \hbox (badness 10000) in paragraph at lines 774--774
 [][][][]$\OT1/ptm/m/n/8 https : / / engineering . teads . com / sustainability / carbon -[] footprint -[] estimator -[]
  []
 
@@ -657,7 +658,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 775--775
 <figures/tradeoff_profile_50.pdf, id=445, 261.23944pt x 392.27756pt>
 File: figures/tradeoff_profile_50.pdf Graphic file (type pdf)
 <use figures/tradeoff_profile_50.pdf>
-Package pdftex.def Info: figures/tradeoff_profile_50.pdf  used on input line 1070.
+Package pdftex.def Info: figures/tradeoff_profile_50.pdf  used on input line 1069.
 (pdftex.def)             Requested size: 252.0pt x 378.40779pt.
 
 
@@ -666,17 +667,17 @@ Package pdftex.def Info: figures/tradeoff_profile_50.pdf  used on input line 107
 <figures/preference_response_tardiness.pdf, id=463, 252.945pt x 184.28851pt>
 File: figures/preference_response_tardiness.pdf Graphic file (type pdf)
 <use figures/preference_response_tardiness.pdf>
-Package pdftex.def Info: figures/preference_response_tardiness.pdf  used on input line 1099.
+Package pdftex.def Info: figures/preference_response_tardiness.pdf  used on input line 1098.
 (pdftex.def)             Requested size: 252.84283pt x 184.21774pt.
 <figures/preference_response_energy.pdf, id=464, 252.945pt x 184.28851pt>
 File: figures/preference_response_energy.pdf Graphic file (type pdf)
 <use figures/preference_response_energy.pdf>
-Package pdftex.def Info: figures/preference_response_energy.pdf  used on input line 1104.
+Package pdftex.def Info: figures/preference_response_energy.pdf  used on input line 1103.
 (pdftex.def)             Requested size: 252.84283pt x 184.21774pt.
 <figures/tree_role_frequency.pdf, id=466, 490.58551pt x 259.46375pt>
 File: figures/tree_role_frequency.pdf Graphic file (type pdf)
 <use figures/tree_role_frequency.pdf>
-Package pdftex.def Info: figures/tree_role_frequency.pdf  used on input line 1135.
+Package pdftex.def Info: figures/tree_role_frequency.pdf  used on input line 1134.
 (pdftex.def)             Requested size: 516.0pt x 272.91609pt.
 
 
@@ -684,7 +685,7 @@ Package pdftex.def Info: figures/tree_role_frequency.pdf  used on input line 113
 <figures/risk_frequency.pdf, id=477, 261.23944pt x 378.23909pt>
 File: figures/risk_frequency.pdf Graphic file (type pdf)
 <use figures/risk_frequency.pdf>
-Package pdftex.def Info: figures/risk_frequency.pdf  used on input line 1159.
+Package pdftex.def Info: figures/risk_frequency.pdf  used on input line 1158.
 (pdftex.def)             Requested size: 252.0pt x 364.86569pt.
 
 
@@ -738,7 +739,7 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  75i,23n,79p,1900b,588s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on PRS-GPDRL.pdf (16 pages, 565609 bytes).
+Output written on PRS-GPDRL.pdf (16 pages, 565623 bytes).
 PDF statistics:
  757 PDF objects out of 1000 (max. 8388607)
  631 compressed objects within 7 object streams
