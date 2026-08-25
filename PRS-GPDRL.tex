@@ -51,7 +51,7 @@
 
 \begin{document}
 
-\title{Preference-Aware Deep Reinforcement Learning with GP-Evolved Actions for Dynamic Workflow Scheduling in Cloud-Edge Computing}
+\title{Preference-Aware Deep Reinforcement Learning with GP-Evolved Actions for Dynamic Workflow Scheduling in Cloud--Edge Computing}
 
 \author{Anonymous Authors}
 
@@ -88,17 +88,18 @@ resource-selection rules for dynamic workflow scheduling, but usually apply
 them as fixed policies. Deep reinforcement learning enables adaptive control,
 yet directly treating a variable set of feasible resources as actions while
 handling multiple preferences complicates policy learning. We propose
-Preference-aware Risk-Stratified Genetic Programming-assisted Deep
-Reinforcement Learning (PRS-GPDRL). Cooperative coevolution genetic programming
+Preference-Aware Risk-Stratified Genetic Programming-assisted Deep
+Reinforcement Learning (PRS-GPDRL). Cooperative coevolution genetic programming (CCGP)
 first evolves coupled task- and resource-selection rules. Quality- and
 behavior-aware filtering then retains a compact resource-selection rule pool
 from the final CCGP archive. Each retained rule is paired with base and risk
 modes. A multi-objective double deep Q-network then selects a rule-mode action
 under the requested preference at each allocation decision. Across 12 scenarios
-(30 independent runs each), PRS-GPDRL achieves the best average ranks (HV:
-1.406; IGD: 1.478) and
+(30 independent runs each), PRS-GPDRL achieves the best average ranks for
+hypervolume (HV) and inverted generational distance (IGD), with ranks of 1.406
+and 1.478, respectively, and
 statistically outperforms or matches CCGP in 11 scenarios per metric. Gains are
-clearest on small- and medium-scale sets; selected large-scale scenarios show
+clearest on small- and medium-scale sets, and selected large-scale scenarios show
 additional HV gains. Behavioral and ablation evidence supports
 preference-dependent rule selection and risk-stratified adjustment.
 \end{abstract}
@@ -110,7 +111,7 @@ deep reinforcement learning, multi-objective optimization.
 
 \section{Introduction}
 \label{Sec: introduction}
-\IEEEPARstart{C}{loud--Edge} computing provides a heterogeneous execution environment for workflow applications by combining latency-proximate Edge Nodes with elastic Cloud Servers. These applications include scientific workflows, data analytics pipelines, Internet of Things (IoT) services, and emerging artificial intelligence (AI) agent orchestration services \cite{Li2026,Bouabdallah2024,Coleman2022WfCommons,Gartner2025AgenticAI}. Many workflow applications are represented as directed acyclic graphs (DAGs), where tasks are constrained by precedence and data dependencies \cite{Li2026,Bouabdallah2024,Coleman2022WfCommons}. As workflows arrive dynamically, a scheduler must order ready tasks and allocate heterogeneous resources without knowing future arrivals. Energy consumption has also become an important system-level constraint. Data centers consumed around 415~TWh worldwide in 2024, accounting for about 1.5\% of global electricity demand, and their share of metered electricity consumption reached 23\% in Ireland in 2025 \cite{IEA2025EnergyAI,CSO2026DataCentres}. These trends make dynamic workflow scheduling in Cloud--Edge computing a key problem for improving quality of service while controlling resource use and energy consumption.
+\IEEEPARstart{C}{loud--Edge} computing provides a heterogeneous execution environment for workflow applications by combining latency-proximate Edge Nodes with elastic Cloud Servers. These applications include scientific workflows, data analytics pipelines, Internet of Things services, and emerging artificial intelligence agent orchestration services \cite{Li2026,Bouabdallah2024,Coleman2022WfCommons,Gartner2025AgenticAI}. Many workflow applications are represented as directed acyclic graphs (DAGs), where tasks are constrained by precedence and data dependencies \cite{Li2026,Bouabdallah2024,Coleman2022WfCommons}. As workflows arrive dynamically, a scheduler must order ready tasks and allocate heterogeneous resources without knowing future arrivals. Energy consumption has also become an important system-level constraint. Data centers consumed around 415~TWh worldwide in 2024, accounting for about 1.5\% of global electricity demand, and their share of metered electricity consumption reached 23\% in Ireland in 2025 \cite{IEA2025EnergyAI,CSO2026DataCentres}. These trends make dynamic workflow scheduling in Cloud--Edge computing a key problem for improving quality of service while controlling resource use and energy consumption.
 
 The main difficulty is that each resource allocation must be evaluated in the current workflow and resource state, because its effects may propagate beyond the task being assigned. \emph{First}, workflow dependencies make task completion times affect downstream execution. The finish time of a task determines when its successors can be released and may further affect workflow completion and service quality. \emph{Second}, Cloud--Edge heterogeneity creates different trade-offs between latency and capacity. Edge Nodes can shorten data paths and avoid Cloud provisioning, but their computing capacity is limited. Cloud Servers provide elastic capacity, but may introduce additional communication and provisioning overheads. \emph{Third}, the CPU-sharing model considered in this paper couples the progress of tasks running on the same resource. Container virtualization provides a practical execution substrate for workflow tasks \cite{Ranjan2020}, and modern platforms support runtime resource adjustment through mechanisms such as Kubernetes in-place resource resizing and Docker CPU share or quota updates \cite{Kubernetes2026Resize,DockerUpdate2026,DockerResourceConstraints2026}. In our model, multiple tasks may execute on one resource and share its CPU capacity. Assigning a new task changes the running-task set, so the CPU allocated to CPU-sensitive tasks may be recomputed. As a result, the allocation may change remaining execution times, successor release times, resource active duration, and energy consumption. Therefore, an effective scheduler should consider dependency-driven task urgency, heterogeneous resource effects, and runtime CPU allocation when making online decisions. In a multi-objective setting, resource selection should also adapt to the requested tardiness--energy preference.
 
@@ -118,14 +119,15 @@ Many dynamic workflow scheduling studies use manual rules or genetic programming
 
 Deep reinforcement learning (DRL) offers a way to learn online selection policies from scheduling experience, but two issues must be addressed in this setting. \emph{First}, directly using feasible resources as actions is difficult for dynamic workflow scheduling in Cloud--Edge computing because the action set changes with task requirements, resource availability, and on-demand Cloud provisioning \cite{jayanetti2022,xiao2025,gates}. Rule-assisted DRL avoids this issue by using scheduling rules as fixed actions, where the selected rule ranks feasible candidates at the current decision point. Existing rule-assisted studies use manual rules or GP-evolved rules in dynamic scheduling \cite{liu2022rules,xu2024niching,zhao2025tdrl}, and GP-evolved actions have also been applied to dynamic Fog workflow scheduling \cite{he2026evolved}. However, these studies mainly address single-objective or fixed-objective settings, and rule sets based on manual rules still depend on expert design. \emph{Second}, different users or scenarios may require different tardiness--energy trade-offs. Multi-objective reinforcement learning (MORL) and Pareto set learning can condition decisions on preferences \cite{roijers2013morl,hayes2022morl,abels2019morl,yang2019morl,lin2022psl,xu2026pslgp}. However, they do not provide a rule-mode action design that combines a compact pool of GP-evolved resource-selection rules with preference-aware online selection. This gap motivates combining GP-based generation of complementary resource-selection rules with DRL-based preference-aware online selection.
 
-To address this gap, this paper proposes Preference-aware Risk-Stratified Genetic Programming-assisted Deep Reinforcement Learning (PRS-GPDRL). Cooperative coevolution genetic programming (CCGP) first evolves coupled task-selection and resource-selection rules, so each resource-selection rule is evaluated together with a cooperating task-selection rule. A quality- and behavior-aware extraction procedure then constructs a compact pool of complementary resource-selection rules from the final CCGP archive. Each retained resource-selection rule is paired with a base mode and a risk mode. The base mode follows the selected GP rule, while the risk mode adds a bounded preference-aware local correction. Pairing the retained rules with these two modes gives a fixed rule-mode action space for the DRL agent. A multi-objective double deep Q-network (DDQN) learns to select rule-mode actions according to the current system state and requested preference. Fixed upward-rank ordering is used for ready-task sequencing, so the learned policy can focus on resource selection.
+To address this gap, this paper proposes Preference-Aware Risk-Stratified Genetic Programming-assisted Deep Reinforcement Learning (PRS-GPDRL). Cooperative coevolution genetic programming (CCGP) first evolves coupled task-selection and resource-selection rules, so each resource-selection rule is evaluated together with a cooperating task-selection rule. A quality- and behavior-aware extraction procedure then constructs a compact pool of complementary resource-selection rules from the final CCGP archive. Each retained resource-selection rule is paired with a base mode and a risk mode. The base mode follows the selected GP rule, while the risk mode adds a bounded preference-aware local correction. Pairing the retained rules with these two modes gives a fixed rule-mode action space for the DRL agent. A multi-objective double deep Q-network (DDQN) learns to select rule-mode actions according to the current system state and requested preference. Fixed upward-rank ordering is used for ready-task sequencing, so the learned policy can focus on resource selection.
+
 The main contributions are as follows:
 \begin{itemize}
     \item We establish a CCGP-to-DRL knowledge interface that extracts high-quality and behaviorally complementary resource-selection rules from a CCGP archive. Pairing the compact rule pool with base and risk modes converts these executable heuristics into a fixed rule-mode action space that ranks the variable feasible-resource set at each allocation decision.
 
-    \item We develop two-level adaptive resource selection through risk-stratified action augmentation. A selected GP rule supplies the global ranking direction, while the risk mode conditionally applies a bounded local correction using the current state and requested preference. FiLM conditioning, vector-valued action costs, and augmented weighted Tchebycheff scalarization enable one DDQN to serve different tardiness--energy preferences.
+    \item We develop two-level adaptive resource selection through risk-stratified action augmentation. A selected GP rule supplies the global ranking direction, while the risk mode conditionally applies a bounded local correction using the current state and requested preference. Feature-wise linear modulation (FiLM) conditioning, vector-valued action costs, and augmented weighted Tchebycheff scalarization enable one DDQN to serve different tardiness--energy preferences.
 
-    \item Across 12 dynamic scheduling scenarios, with 30 independent runs conducted per scenario, PRS-GPDRL obtains the best average ranks for hypervolume (HV, 1.406) and inverted generational distance (IGD, 1.478). It is statistically better than or comparable to CCGP in 11 of 12 scenarios and to GATES and LWFF in at least 11 of 12 scenarios for each metric. The clearest advantages occur on small- and medium-scale workflow sets, with additional HV gains in selected large-scale scenarios.
+    \item Across 12 dynamic scheduling scenarios, with 30 independent runs conducted per scenario, PRS-GPDRL obtains the best average ranks for hypervolume (HV) and inverted generational distance (IGD), with ranks of 1.406 and 1.478, respectively. It is statistically better than or comparable to CCGP in 11 of 12 scenarios and to GATES and LWFF in at least 11 of 12 scenarios for each metric. The clearest advantages occur on small- and medium-scale workflow sets, with additional HV gains in selected large-scale scenarios.
 
     \item Behavioral analyses show preference-aligned changes at the outcome, rule, and mode levels: objective values respond to the requested preference, online selection migrates between energy- and tardiness-oriented rule roles, and local risk correction is activated selectively. Ablation and diagnostic results further distinguish the contributions of complementary rule coverage, preference-dependent representation, local correction, and task ordering.
 \end{itemize}
@@ -135,17 +137,17 @@ The main contributions are as follows:
 
 \subsection{Rule-Based Dynamic Workflow Scheduling}
 
-Dynamic workflow scheduling in cloud, fog, and Cloud--Edge environments has been studied under deadline, cost, energy, and utilization objectives \cite{ohds,rmes,li2024,lou2023,lwff}. Manual rules and constructive methods remain important because they can be directly applied during online scheduling. Fan et al.~\cite{ohds} proposed Online Hybrid Dynamic Scheduling (OHDS), which integrates task merging, sub-deadline assignment, hybrid scheduling of multiple workflows, dynamic priority adjustment, and virtual machine (VM) migration based on CPU utilization. Sun et al.~\cite{rmes} proposed Real-time Multi-workflow Energy-efficient Scheduling (RMES) for container-based clouds, where sub-deadlines, container-machine affinity, resource reuse, and rescheduling of remaining tasks are used for energy-efficient real-time scheduling. Fard et al.~\cite{lwff} proposed Least Waste Fast First (LWFF) for microservice placement, using CPU and memory requests to improve multi-resource utilization and throughput. These methods provide clear scheduling mechanisms for their target resource models and objectives. Although some of them update priorities or reschedule tasks during execution, the priority and scoring rules are still specified by design. Therefore, they provide limited support for changing the scheduling behavior online when workload conditions or objective preferences vary.
+Dynamic workflow scheduling in cloud, fog, and Cloud--Edge environments has been studied under deadline, cost, energy, and utilization objectives \cite{ohds,rmes,li2024,lou2023,lwff}. Manual rules and constructive methods remain important because they can be directly applied during online scheduling. Fan et al.~\cite{ohds} proposed Online Hybrid Dynamic Scheduling (OHDS), which integrates task merging, sub-deadline assignment, hybrid scheduling of multiple workflows, dynamic priority adjustment, and virtual machine migration based on CPU utilization. Sun et al.~\cite{rmes} proposed Real-time Multi-workflow Energy-efficient Scheduling (RMES) for container-based clouds, where sub-deadlines, container-machine affinity, resource reuse, and rescheduling of remaining tasks are used for energy-efficient real-time scheduling. Fard et al.~\cite{lwff} proposed Least Waste Fast First (LWFF) for microservice placement, using CPU and memory requests to improve multi-resource utilization and throughput. These methods provide clear scheduling mechanisms for their target resource models and objectives. Although some of them update priorities or reschedule tasks during execution, the priority and scoring rules are still specified by design. Therefore, they provide limited support for changing the scheduling behavior online when workload conditions or objective preferences vary.
 
-Learning-based methods learn scheduling policies or candidate evaluations from data or simulation experience. Deep reinforcement learning (DRL) and multi-agent DRL have been used to address time--energy scheduling, multi-objective resource allocation, and collaborative workflow offloading in Cloud--Edge environments \cite{jayanetti2022,zhang2024,xiao2025}. GATES uses graph attention to encode variable ready-task and VM states, and trains the allocation policy through an evolution strategy \cite{gates}. Reinforcement learning-based hyper-heuristics have also been studied for energy-efficient cloud workflow scheduling \cite{li2025qphh}. These studies improve adaptive decision making for dynamic workflow scheduling, but their learned components mainly produce direct allocation policies, resource scores, or selections among predefined low-level heuristics. They do not focus on online deployment of a pool of evolved resource-selection rules.
+Learning-based methods learn scheduling policies or candidate evaluations from data or simulation experience. DRL and multi-agent DRL have been used to address time--energy scheduling, multi-objective resource allocation, and collaborative workflow offloading in Cloud--Edge environments \cite{jayanetti2022,zhang2024,xiao2025}. GATES uses graph attention to encode variable ready-task and virtual-machine states, and trains the allocation policy through an evolution strategy \cite{gates}. Reinforcement learning-based hyper-heuristics have also been studied for energy-efficient cloud workflow scheduling \cite{li2025qphh}. These studies improve adaptive decision making for dynamic workflow scheduling, but their learned components mainly produce direct allocation policies, resource scores, or selections among predefined low-level heuristics. They do not focus on online deployment of a pool of evolved resource-selection rules.
 
-Genetic programming (GP) hyper-heuristics address rule generation by searching for executable priority rules. Escott et al.~\cite{escott2020gphh} introduced GP hyper-heuristics for dynamic cloud workflow scheduling to generate rules from a richer set of task and resource attributes. Yu et al.~\cite{yu2022mogp} extended this idea to multi-objective dynamic workflow scheduling. Xu et al.~\cite{xu2023mtgp}, Sun et al.~\cite{sun2024mtgp}, and Yang et al.~\cite{yang2025dtgp} further studied GP rule generation for fog, multi-cloud, and cloud workflow scheduling with different rule representations. Sun et al.~\cite{ccgp} proposed Cooperative Coevolution Genetic Programming (CCGP) for dynamic joint workflow scheduling and container scaling in Cloud--Fog computing. CCGP evolves task-selection, resource-selection, and container-scaling rules in cooperating subpopulations. These studies show that GP can automatically discover scheduling rules for dynamic workflow environments. However, the evolved heuristic or cooperating rule set is normally fixed before online execution. Thus, GP can provide useful rules, but it does not decide online which resource-selection rule should be applied under the current workflow state and objective preference.
+GP hyper-heuristics address rule generation by searching for executable priority rules. Escott et al.~\cite{escott2020gphh} introduced GP hyper-heuristics for dynamic cloud workflow scheduling to generate rules from a richer set of task and resource attributes. Yu et al.~\cite{yu2022mogp} extended this idea to multi-objective dynamic workflow scheduling. Xu et al.~\cite{xu2023mtgp}, Sun et al.~\cite{sun2024mtgp}, and Yang et al.~\cite{yang2025dtgp} further studied GP rule generation for fog, multi-cloud, and cloud workflow scheduling with different rule representations. Sun et al.~\cite{ccgp} proposed CCGP for dynamic joint workflow scheduling and container scaling in Cloud--Fog computing. CCGP evolves task-selection, resource-selection, and container-scaling rules in cooperating subpopulations. These studies show that GP can automatically discover scheduling rules for dynamic workflow environments. However, the evolved heuristic or cooperating rule set is normally fixed before online execution. Thus, GP can provide useful rules, but it does not decide online which resource-selection rule should be applied under the current workflow state and objective preference.
 
 Rule-assisted DRL addresses online rule selection by defining actions over scheduling rules rather than over a changing set of candidate jobs or resources. Liu et al.~\cite{liu2022rules} used manual dispatching rules as actions for DRL in dynamic flexible job-shop scheduling. This indirect action representation avoids direct action definitions over variable candidate sets, but its performance is limited by the manual rule library. Xu et al.~\cite{xu2024niching} replaced manual actions with heuristics evolved by niching GP, and the behaviorally different heuristics are then used as DRL actions. Zhao et al.~\cite{zhao2025tdrl} studied GP-assisted DRL for dynamic flexible job-shop scheduling, and He et al.~\cite{he2026evolved} applied GP-evolved actions to dynamic fog workflow scheduling. These studies are closely related to the rule-action design in this paper. However, they mainly address dynamic job-shop scheduling or fixed-objective workflow scheduling. They do not directly consider preference-aware online selection from a compact resource-selection rule pool extracted from a multi-objective GP archive for dynamic workflow scheduling in Cloud--Edge computing.
 
 \subsection{Preference-Aware Multi-Objective Learning}
 
-Multi-objective reinforcement learning (MORL) studies sequential decision making with vector-valued returns and different objective trade-offs \cite{roijers2013morl,hayes2022morl}. One line learns multiple policies or a continuous Pareto manifold to cover different non-dominated regions \cite{vanmoffaert2014pareto,parisi2016pareto}. Another line conditions a shared value function or policy on the requested preference. For example, Abels et al.~\cite{abels2019morl} conditioned deep Q-networks on dynamic objective weights, and Yang et al.~\cite{yang2019morl} learned a generalized policy for different preferences. Recent MORL studies further improve preference control and adaptation in learned policies \cite{reymond2022pcn,wu2026e2morl,yang2025pcrl}. These methods provide useful preference representations for multi-objective decision making. However, their focus is preference-conditioned policy learning rather than scheduling-rule generation and online rule deployment.
+MORL studies sequential decision making with vector-valued returns and different objective trade-offs \cite{roijers2013morl,hayes2022morl}. One line learns multiple policies or a continuous Pareto manifold to cover different non-dominated regions \cite{vanmoffaert2014pareto,parisi2016pareto}. Another line conditions a shared value function or policy on the requested preference. For example, Abels et al.~\cite{abels2019morl} conditioned deep Q-networks on dynamic objective weights, and Yang et al.~\cite{yang2019morl} learned a generalized policy for different preferences. Recent MORL studies further improve preference control and adaptation in learned policies \cite{reymond2022pcn,wu2026e2morl,yang2025pcrl}. These methods provide useful preference representations for multi-objective decision making. However, their focus is preference-aware policy learning rather than scheduling-rule generation and online rule deployment.
 
 Preference-aware ideas have also been introduced into evolutionary multi-objective optimization. Pareto set learning maps a preference vector to an approximate Pareto solution through scalarization-based training \cite{lin2022psl}. Xu et al.~\cite{xu2026pslgp} proposed Pareto Set Learning GP (PSLGP) for multi-objective dynamic scheduling. PSLGP uses the preference as an input to a single GP heuristic, reducing the need to manage many heuristics for different Pareto regions. This line shows that preferences can guide evolved decision rules. The remaining issue for this paper is different: how to use DRL to select online among multiple GP-evolved resource-selection rules while the feasible resource set and workflow state change over time. This motivates preference-aware online deployment of complementary GP-evolved resource-selection rules for dynamic workflow scheduling in Cloud--Edge computing.
 
@@ -544,7 +546,7 @@ Fig.~\ref{Fig: PRS-GPDRL DDQN} illustrates the state encoder and rule-mode actio
 
 Let $\mathbf{x}_t^{\mathrm{task}}$, $\mathbf{X}_t^{\mathrm{res}}$, and $\mathbf{w}$ denote the task features, feasible resource features, and preference vector, respectively. Continuous task and resource attributes are transformed using signed logarithmic scaling, while categorical indicators remain unchanged. The task encoder comprises two 64-unit layers, each followed by an exponential linear unit (ELU) activation. Feasible resources are separated into Edge Node and Cloud Server sets. Each tier-specific resource encoder contains two 64-unit ELU layers that project resource features into key representations, followed by a 64-dimensional linear value projection. Single-head masked scaled dot-product attention uses the task embedding as the query and the projected resource representations as keys to aggregate the corresponding values into a 64-dimensional tier-level representation. The task embedding and the two tier-level representations are concatenated and passed through two 128-unit fusion layers, with an ELU activation after the first, to produce $\mathbf{h}_{\mathrm{fuse}}\in\mathbb{R}^{128}$.
 
-A feature-wise linear modulation (FiLM) layer \cite{perez2018film} modulates the fused representation according to the preference. A two-layer preference multilayer perceptron (MLP) maps the two preference weights through a 32-unit ELU hidden layer to a 256-dimensional output, which is split into 128-dimensional raw scale and shift vectors. The scale is parameterized as
+A FiLM layer \cite{perez2018film} modulates the fused representation according to the preference. A two-layer preference multilayer perceptron (MLP) maps the two preference weights through a 32-unit ELU hidden layer to a 256-dimensional output, which is split into 128-dimensional raw scale and shift vectors. The scale is parameterized as
 $\boldsymbol{\gamma}_{\mathrm{film}}(\mathbf{w})=
 1+0.3\tanh(\widetilde{\boldsymbol{\gamma}}_{\mathrm{film}}(\mathbf{w}))$,
 which bounds its elements between 0.7 and 1.3 and prevents multiplicative sign reversal or excessive amplification. The shift remains unconstrained.
@@ -653,7 +655,8 @@ PRS-GPDRL is compared with CCGP, GATES, and LWFF.
     resource-selection policy through an evolution strategy. Our implementation
     retains this graph representation and direct resource-selection policy.
     To support the two objectives, policy networks are evaluated on energy and
-    weighted tardiness, NSGA-II performs individual selection, and offspring
+    weighted tardiness. The Non-dominated Sorting Genetic Algorithm II (NSGA-II)
+    performs individual selection, and offspring
     networks are generated by Gaussian perturbations of the selected network
     parameters. The final non-dominated policies form the approximation set.
 
@@ -667,9 +670,9 @@ PRS-GPDRL is compared with CCGP, GATES, and LWFF.
 \end{itemize}
 
 PRS-GPDRL uses the resource-selection rule pool extracted from the corresponding
-CCGP run. In each run, one non-dominated approximation set is obtained for each method:
-solutions over the preference grid for PRS-GPDRL and LWFF, and the final
-heuristics or policies for CCGP and GATES. LWFF produces the same approximation
+CCGP run. In each run, each method produces one non-dominated approximation
+set. PRS-GPDRL and LWFF use solutions over the preference grid, while CCGP and
+GATES use the final heuristics or policies. LWFF produces the same approximation
 set in every run. Its non-zero HV and IGD standard deviations arise because this
 set is jointly normalized with those of the other methods in each run. The four
 sets are pooled, and each objective
@@ -681,8 +684,7 @@ $f_j\in\{\mathbb{T},\mathbb{E}\}$ is min--max normalized as
     \label{Eq: objective normalization}
 \end{equation}
 where $f_j^{\min}$ and $f_j^{\max}$ are the pooled extrema of the four sets in
-that run. A
-constant objective is assigned zero.
+that run. A constant objective is assigned zero.
 
 HV evaluates the convergence and coverage of each approximation set and is
 computed against the reference point $(1,1)$. Because the true Pareto front is
@@ -703,9 +705,9 @@ signed-rank tests at a significance level of 0.05. Within each result cell, the
 arrows denote
 statistically better ($\uparrow$), worse ($\downarrow$), or similar
 ($\approx$) performance against the preceding methods. For each baseline
-column, W/D/L gives the number of scenarios in which that baseline is
+column, W/D/L (win/draw/loss) gives the number of scenarios in which that baseline is
 statistically better than, similar to, or worse than PRS-GPDRL. Therefore, the
-PRS-GPDRL column is marked N/A. AverageRank is the mean rank over the 30 runs,
+PRS-GPDRL column is marked as not applicable (N/A). AverageRank is the mean rank over the 30 runs,
 for which smaller is better.
 
 \subsection{Experimental Setup}
@@ -718,15 +720,15 @@ instances, feasible resource set, communication model, CPU allocation rule, and
 energy accounting.
 
 Table~\ref{Table: resource configurations} lists five representative resource
-types for each tier. The configurations are derived from AWS
-EC2\footnotemark[1], and the power parameters follow the Teads
-model\footnotemark[2].
+types for each tier. The configurations are derived from Amazon
+EC2\footnotemark[1], with CPU capacities reported in EC2 Compute Units (ECUs),
+and the power parameters follow the Teads model\footnotemark[2].
 The Edge tier contains 19 fixed Edge Nodes, whereas Cloud Servers of the listed
 types can be provisioned on demand. Each task incurs a 50-ms container
 initialization delay \cite{Ranjan2020}, and provisioning a new Cloud Server takes
-55.9 s. Following
-\cite{Goudarzi2021,Pallewatta2022}, LAN and WAN bandwidths are set to 2.0 and
-0.5 GB/s, and their communication latencies are 0.5 and 30 ms, respectively.
+55.9 s. Following \cite{Goudarzi2021,Pallewatta2022}, local-area network (LAN) and wide-area
+network (WAN) bandwidths are set to 2.0 and 0.5 GB/s, and their communication
+latencies are 0.5 and 30 ms, respectively.
 
 \begin{table*}[!t]
 \caption{Configurations of Edge Nodes and Cloud Servers.}
@@ -1050,12 +1052,12 @@ outcomes depend on the arrival rate. The adapted GATES and LWFF baselines are
 statistically worse than or comparable to PRS-GPDRL in at least 11 scenarios
 per metric.
 
-The CCGP comparison controls GP-rule provenance: PRS-GPDRL extracts its rule
-pool from the corresponding CCGP run, so both methods share the same source of
-GP resource-selection knowledge. Therefore, their difference cannot be
-explained by a different GP-rule source. Together with the behavior
-and ablation results, this pattern supports online selection among complementary
-rules and state- and preference-dependent local adjustment.
+Because PRS-GPDRL extracts its resource-selection rule pool from the
+corresponding CCGP run, the comparison with CCGP controls the source of GP
+rules. Together with the behavior and ablation results, this pattern indicates
+that the improvement is more closely related to online selection among rules
+from the same CCGP run and bounded local adjustment than to a different source
+of GP rules.
 
 \subsubsection{50\% Empirical Attainment Curves}
 
@@ -1076,7 +1078,7 @@ panels, with the clearest separation in the two $\mathrm{wfNum}=10$ scenarios.
 Because the separation spans the trade-off interior, the HV and IGD gains
 reflect broad set-quality improvements rather than a few endpoint solutions.
 
-\subsection{Preference-Conditioned Policy Behavior}
+\subsection{Preference-Aware Policy Behavior}
 \label{Sec: preference action analysis}
 
 \subsubsection{Objective Response to Preference}
@@ -1259,8 +1261,8 @@ By comparison, the \emph{w/o FiLM} variant records 0/3/3 for both metrics and
 retains the vector-valued action costs and augmented weighted Tchebycheff
 scalarization, so preference information remains available to action
 evaluation. The three statistically comparable outcomes and three losses
-suggest that FiLM is not the only preference-conditioning channel. Instead, its additional
-preference-dependent modulation of the shared state representation is
+suggest that FiLM is not the only way in which preference information enters
+the policy. Its additional preference-dependent modulation of the shared state representation is
 consistent with complementary improvements in trade-off coverage and proximity.
 
 \subsubsection{Rule-Pool Size}
@@ -1333,19 +1335,18 @@ task ordering is required only when multiple tasks become ready simultaneously,
 whereas resource selection is required for every dispatched task. The comparison suggests
 that task ordering is less influential than resource selection in this problem.
 
-Taken together, the experiments narrow the plausible explanation for the
-overall gain. The comparison with CCGP controls the source of GP rules because PRS-GPDRL
-uses the resource-selection rule pool extracted from the corresponding CCGP run, while the present
-comparison indicates that task-ordering change is not the main explanation.
-The rule-usage analysis shows that the policy changes how GP rules from this
-CCGP run are used as preference varies, and the mode-usage analysis shows that
-local correction is selected conditionally rather than always or never.
+Taken together, the experiments help explain the overall gain. The comparison
+with CCGP controls the source of GP rules because PRS-GPDRL uses the
+resource-selection rule pool extracted from the corresponding CCGP run. The
+task-ordering comparison indicates that replacing the GP task-selection rule
+with upward-rank ordering is not the main factor. The rule-usage analysis shows
+preference-dependent use of rules extracted from the same CCGP run, and the
+mode-usage analysis shows conditional rather than uniform local correction.
 The $K=3$ comparison further weakens a simple action-count explanation, while
 the \emph{w/o Risk} result supports the importance of local correction for the
 full improvement in the six ablation scenarios. These results jointly support
-the interpretation that PRS-GPDRL gains value from preference-conditioned
-online use of behaviorally complementary GP rules extracted from that run,
-together with bounded local correction when indicated by the current state.
+preference-aware online use of behaviorally complementary GP rules, together
+with bounded local correction when indicated by the current state.
 
 \section{Conclusion}
 \label{Sec: conclusion}
@@ -1353,9 +1354,9 @@ together with bounded local correction when indicated by the current state.
 This paper studies preference-aware online scheduling of dynamic workflows in
 heterogeneous Cloud--Edge systems, with total weighted tardiness and energy as
 the two objectives. PRS-GPDRL connects evolutionary rule discovery with online
-reinforcement learning: CCGP evolves coupled scheduling rules, a diversity-aware
+reinforcement learning. CCGP evolves coupled scheduling rules, a diversity-aware
 procedure extracts a compact resource-selection rule pool, and a
-multi-objective DDQN selects risk-stratified rule-mode actions at task-allocation
+multi-objective DDQN selects risk-stratified rule-mode actions at allocation
 decision points. Through this process, one network can adapt the use of GP-evolved
 resource priorities to the current state and requested objective trade-off.
 
