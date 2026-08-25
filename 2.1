@@ -81,8 +81,8 @@ but have limited capacity, whereas Cloud
 Servers provide elastic and powerful computing capacity but incur additional
 provisioning and communication overheads. Their relative benefits further
 depend on task characteristics, workflow dependencies, and energy efficiency.
-Therefore, scheduling policies must adapt to user-requested objective
-trade-offs and evolving system states. Genetic
+Scheduling policies must therefore adapt to
+user-requested objective trade-offs and evolving system states. Genetic
 programming (GP) hyper-heuristics have demonstrated effectiveness in evolving
 resource-selection rules for dynamic workflow scheduling, but usually apply
 them as fixed policies. Deep reinforcement learning enables adaptive control,
@@ -112,13 +112,13 @@ deep reinforcement learning, multi-objective optimization.
 \label{Sec: introduction}
 \IEEEPARstart{C}{loud--Edge} computing provides a heterogeneous execution environment for workflow applications by combining latency-proximate Edge Nodes with elastic Cloud Servers. These applications include scientific workflows, data analytics pipelines, Internet of Things (IoT) services, and emerging artificial intelligence (AI) agent orchestration services \cite{Li2026,Bouabdallah2024,Coleman2022WfCommons,Gartner2025AgenticAI}. Many workflow applications are represented as directed acyclic graphs (DAGs), where tasks are constrained by precedence and data dependencies \cite{Li2026,Bouabdallah2024,Coleman2022WfCommons}. As workflows arrive dynamically, a scheduler must order ready tasks and allocate heterogeneous resources without knowing future arrivals. Energy consumption has also become an important system-level constraint. Data centers consumed around 415~TWh worldwide in 2024, accounting for about 1.5\% of global electricity demand, and their share of metered electricity consumption reached 23\% in Ireland in 2025 \cite{IEA2025EnergyAI,CSO2026DataCentres}. These trends make dynamic workflow scheduling in Cloud--Edge computing a key problem for improving quality of service while controlling resource use and energy consumption.
 
-The main difficulty is that each resource allocation must be evaluated in the current workflow and resource state, because its effects may propagate beyond the task being assigned. \emph{First}, workflow dependencies make task completion times affect downstream execution. The finish time of a task determines when its successors can be released and may further affect workflow completion and service quality. \emph{Second}, Cloud--Edge heterogeneity creates different trade-offs between latency and capacity. Edge Nodes can shorten data paths and avoid Cloud provisioning, but their computing capacity is limited. Cloud Servers provide elastic capacity, but may introduce additional communication and provisioning overheads. \emph{Third}, the CPU-sharing model considered in this paper couples the progress of tasks running on the same resource. Container virtualization provides a practical execution substrate for workflow tasks \cite{Ranjan2020}, and modern platforms support runtime resource adjustment through mechanisms such as Kubernetes in-place resource resizing and Docker CPU share or quota updates \cite{Kubernetes2026Resize,DockerUpdate2026,DockerResourceConstraints2026}. In our model, multiple tasks may execute on one resource and share its CPU capacity. Assigning a new task changes the running-task set, so the CPU allocated to CPU-sensitive tasks may be recomputed. As a result, the allocation may change remaining execution times, successor release times, resource active duration, and energy consumption. Therefore, an effective scheduler should consider dependency-driven task urgency, heterogeneous resource effects, and runtime CPU allocation when making online decisions. In a multi-objective setting, resource selection should also adapt to the requested tardiness--energy preference.
+The main difficulty is that each resource allocation must be evaluated in the current workflow and resource state, because its effects may propagate beyond the task being assigned. \emph{First}, workflow dependencies make task completion times affect downstream execution. The finish time of a task determines when its successors can be released and may further affect workflow completion and service quality. \emph{Second}, Cloud--Edge heterogeneity creates different trade-offs between latency and capacity. Edge Nodes can shorten data paths and avoid Cloud provisioning, but their computing capacity is limited. Cloud Servers provide elastic capacity, but may introduce additional communication and provisioning overheads. \emph{Third}, the CPU-sharing model considered in this paper couples the progress of tasks running on the same resource. Container virtualization provides a practical execution substrate for workflow tasks \cite{Ranjan2020}, and modern platforms support runtime resource adjustment through mechanisms such as Kubernetes in-place resource resizing and Docker CPU share or quota updates \cite{Kubernetes2026Resize,DockerUpdate2026,DockerResourceConstraints2026}. In our model, multiple tasks may execute on one resource and share its CPU capacity. Assigning a new task changes the running-task set, so the CPU allocated to CPU-sensitive tasks may be recomputed. This can change remaining execution times, successor release times, resource active duration, and energy consumption. Therefore, an effective scheduler should consider dependency-driven task urgency, heterogeneous resource effects, and runtime CPU allocation when making online decisions. In a multi-objective setting, resource selection should also adapt to the requested tardiness--energy preference.
 
 Many dynamic workflow scheduling studies use manual rules or genetic programming (GP) hyper-heuristics to support online decisions. Manual rules often combine task priorities, sub-deadlines, resource reuse, cost or energy estimates, and candidate filtering to guide task sequencing and resource allocation \cite{ohds,rmes,li2024,lou2023,lwff}. Their scheduling logic is explicit, but their performance depends on expert knowledge in selecting and combining task, workflow, and resource attributes. When the execution environment, resource model, workload pattern, or objective preference changes, these rules often require redesign or careful adjustment. GP hyper-heuristics reduce this manual design effort by automatically evolving priority rules from selected attributes. Instead of searching for one schedule for one instance, GP searches the heuristic space and produces rules that can be applied to new dynamic instances. GP has been used to evolve single-tree, multi-objective, multi-tree, dual-tree, and cooperative rules for task selection, resource selection, and related workflow scheduling decisions \cite{escott2020gphh,yu2022mogp,xu2023mtgp,sun2024mtgp,yang2025dtgp,ccgp}. However, most GP hyper-heuristic methods deploy one evolved heuristic or a fixed set of cooperating rules throughout an online scheduling run. They do not decide online which evolved resource-selection rule is more suitable for the current task urgency, resource availability, CPU allocation, and objective preference.
 
-Deep reinforcement learning (DRL) offers a way to learn online selection policies from scheduling experience, but two issues must be addressed in this setting. \emph{First}, directly using feasible resources as actions is difficult for dynamic workflow scheduling in Cloud--Edge computing because the action set changes with task requirements, resource availability, and on-demand Cloud provisioning \cite{jayanetti2022,xiao2025,gates}. Rule-assisted DRL avoids this issue by using scheduling rules as fixed actions, where the selected rule ranks feasible candidates at the current decision point. Existing rule-assisted studies use manual rules or GP-evolved rules in dynamic scheduling \cite{liu2022rules,xu2024niching,zhao2025tdrl}, and GP-evolved actions have also been applied to dynamic Fog workflow scheduling \cite{he2026evolved}. However, these studies mainly address single-objective or fixed-objective settings, and rule sets based on manual rules still depend on expert design. \emph{Second}, different users or scenarios may require different tardiness--energy trade-offs. Multi-objective reinforcement learning (MORL) and Pareto set learning can condition decisions on preferences \cite{roijers2013morl,hayes2022morl,abels2019morl,yang2019morl,lin2022psl,xu2026pslgp}. However, they do not provide a rule-mode action design that combines a compact pool of GP-evolved resource-selection rules with preference-aware online selection. This gap motivates combining GP-based generation of complementary resource-selection rules with DRL-based preference-aware online selection.
+Deep reinforcement learning (DRL) offers a way to learn online selection policies from scheduling experience, but two issues must be addressed in this setting. \emph{First}, directly using feasible resources as actions is difficult for dynamic workflow scheduling in Cloud--Edge computing because the action set changes with task requirements, resource availability, and on-demand Cloud provisioning \cite{jayanetti2022,xiao2025,gates}. Rule-assisted DRL avoids this issue by using scheduling rules as fixed actions, where the selected rule ranks feasible candidates at the current decision point. Existing rule-assisted studies use manual rules or GP-evolved rules in dynamic scheduling \cite{liu2022rules,xu2024niching,zhao2025tdrl}, and GP-evolved actions have also been applied to dynamic Fog workflow scheduling \cite{he2026evolved}. However, these studies mainly address single-objective or fixed-objective settings, and rule sets based on manual rules still depend on expert design. \emph{Second}, different users or scenarios may require different tardiness--energy trade-offs. Multi-objective reinforcement learning (MORL) and Pareto set learning can condition decisions on preferences \cite{roijers2013morl,hayes2022morl,abels2019morl,yang2019morl,lin2022psl,xu2026pslgp}. However, they do not provide a rule-mode action design that combines a compact pool of GP-evolved resource-selection rules with preference-aware online selection. These observations motivate combining GP-based generation of complementary resource-selection rules with DRL-based preference-aware online selection.
 
-To address this gap, this paper proposes Preference-aware Risk-Stratified Genetic Programming-assisted Deep Reinforcement Learning (PRS-GPDRL). Cooperative coevolution genetic programming (CCGP) first evolves coupled task-selection and resource-selection rules, so each resource-selection rule is evaluated together with a cooperating task-selection rule. A quality- and behavior-aware extraction procedure then constructs a compact pool of complementary resource-selection rules from the final CCGP archive. Each retained resource-selection rule is paired with a base mode and a risk mode. The base mode follows the selected GP rule, while the risk mode adds a bounded preference-aware local correction. Pairing the retained rules with these two modes gives a fixed rule-mode action space for the DRL agent. A multi-objective double deep Q-network (DDQN) learns to select rule-mode actions according to the current system state and requested preference. Fixed upward-rank ordering is used for ready-task sequencing, so the learned policy can focus on resource selection.
+To address this gap, this paper proposes Preference-aware Risk-Stratified Genetic Programming-assisted Deep Reinforcement Learning (PRS-GPDRL). Cooperative coevolution genetic programming (CCGP) first evolves coupled task-selection and resource-selection rules, so each resource-selection rule is evaluated together with a cooperating task-selection rule. A quality- and behavior-aware extraction procedure then constructs a compact pool of complementary resource-selection rules from the final CCGP archive. Each retained resource-selection rule is paired with a base mode and a risk mode. The base mode follows the selected GP rule, while the risk mode adds a bounded preference-aware local correction. Pairing the retained rules with these two modes gives a fixed rule-mode action space for the DRL agent. A multi-objective double deep Q-network (DDQN) learns to select rule-mode actions according to the current system state and requested preference. Fixed upward-rank ordering sequences ready tasks, allowing the learned policy to focus on resource selection.
 The main contributions are as follows:
 \begin{itemize}
     \item We propose a CCGP-to-DRL scheduling framework that extracts high-quality and behaviorally complementary resource-selection rules from the CCGP archive. Pairing the resulting compact pool with base and risk modes creates a fixed rule-mode action space whose actions rank the variable set of feasible resources at each allocation decision.
@@ -166,14 +166,14 @@ actions. At each decision point, the agent selects a rule from a fixed action
 set, and the selected rule ranks the current feasible candidates. Liu et al.
 used this indirect action representation with manual dispatching rules in
 dynamic flexible job shops \cite{liu2022rules}.
-The indirect action representation handles changing candidate sets, but the
+This design allows the DRL policy to handle changing candidate sets, but the
 quality and diversity of a manual rule library still depend on expert design
 \cite{xu2024niching}.
 
 Recent studies replace manual rules with evolved rules. Niching and behavior
 clustering can preserve different scheduling behaviors, while GP provides
 executable routing or sequencing rules for online DRL selection
-\cite{xu2024niching,zhao2025tdrl}. The same idea has also been applied to dynamic
+\cite{xu2024niching,zhao2025tdrl}. This idea has also been applied to dynamic
 Fog workflow scheduling with GP-evolved actions \cite{he2026evolved}. These
 studies show the value of using evolved rules as DRL actions. However, they
 mainly address single-objective scheduling or fixed objective settings. They do
@@ -201,7 +201,7 @@ into GP heuristics for multi-objective dynamic scheduling \cite{xu2026pslgp}.
 These studies show how preferences can guide a learned policy or heuristic.
 However, they do not combine GP-evolved resource-selection rules with
 DRL-based online rule selection. The proposed PRS-GPDRL addresses this gap by
-building a rule-mode action space from a compact GP resource-selection rule pool and learning
+building a rule-mode action space from a compact GP rule pool and learning
 preference-aware selection over this action space.
 
 \section{Problem Modeling}
@@ -358,9 +358,7 @@ Eqs.~\eqref{Eq: running set}-\eqref{Eq: cpu allocation} define the elastic CPU s
 \subsection{Overall Framework of PRS-GPDRL}
 \label{Sec: PRS-GPDRL overall}
 
-Fig.~\ref{Fig: PRS-GPDRL framework} shows the overall framework of PRS-GPDRL, which consists of offline training and online scheduling. For each training scenario, CCGP first produces an archive of complete scheduling heuristics, each of which contains a task-selection rule and a resource-selection rule. Although both rules are evolved cooperatively, PRS-GPDRL uses the resource-selection rules to construct the DDQN action space and uses upward-rank ordering for ready-task sequencing. The task-ordering ablation experiment in Section~\ref{Sec: task ordering design} supports the use of upward-rank ordering by comparing it with the GP task-selection rule while the resource-selection rule pool is fixed. The results show that upward-rank ordering is statistically comparable to the GP task-selection rule in 11 of 12 scenarios. Including task-selection rules would also introduce many additional action combinations, increasing training cost and making convergence more difficult. Therefore, PRS-GPDRL uses fixed upward-rank ordering for ready-task sequencing and focuses the learned action space on resource selection.
-
-The offline stage extracts a compact resource-selection rule pool $\mathcal{G}$ from the final CCGP archive. Each retained rule is paired with the base and risk modes in $\mathcal{M}$, and the resulting rule-mode action space $\mathcal{A}$ remains fixed while the feasible resource set varies at runtime. A multi-objective DDQN is trained to select actions from $\mathcal{A}$ according to the task attributes, feasible resource attributes, and preference weights.
+Fig.~\ref{Fig: PRS-GPDRL framework} shows the overall framework of PRS-GPDRL, which consists of offline training and online scheduling. The offline stage prepares a fixed action space for DRL from CCGP-evolved resource-selection rules. For each training scenario, CCGP first produces an archive of complete scheduling heuristics, each of which contains a task-selection rule and a resource-selection rule. PRS-GPDRL then extracts a compact resource-selection rule pool $\mathcal{G}$ from the final archive. Each retained rule is paired with the base and risk modes in $\mathcal{M}$, and the resulting rule-mode action space $\mathcal{A}$ separates the fixed DDQN output from the variable feasible resource set observed at runtime. A multi-objective DDQN is trained to select actions from $\mathcal{A}$ according to the task attributes, feasible resource attributes, and preference weights.
 
 In online scheduling, fixed upward-rank ordering is used only when multiple tasks are ready at the same decision point \cite{Topcuoglu2002}. For the selected ready task, the trained DDQN chooses a resource-selection rule and a mode according to the current state and requested preference. The selected rule-mode action then scores the feasible resources, and the task is assigned to the resource with the minimum priority score.
 
@@ -435,9 +433,9 @@ Function set & $+$, $-$, $\times$, protected~/, Max, and Min. & T/R & -- \\
 % feasible resource, and preference attributes, respectively.}
 \end{table}
 
-\textbf{Action extraction.} After CCGP training, PRS-GPDRL constructs $\mathcal{G}$ from the first non-dominated front retained from $AS$. For a complete heuristic $i$ in this front, let $g_i$ denote its resource-selection rule. Different heuristics may contain resource-selection rules that make the same choices at representative decision points. Therefore, the extraction procedure retains rules from different regions of the validation trade-off front and removes behaviorally duplicate rules. It consists of validation evaluation, decision point sampling, behavioral representation, and anchor selection.
+\textbf{Action extraction.} The first non-dominated front retained from $AS$ may contain many complete scheduling heuristics, but not all resource-selection rules provide distinct decisions. Using all retained rules as actions would make the DDQN action space larger and may include several rules that behave identically on representative decision points. Therefore, PRS-GPDRL extracts a compact rule pool $\mathcal{G}$ with two goals: retaining rules from different regions of the validation trade-off front and removing behaviorally duplicate resource-selection rules. For a complete heuristic $i$ in the retained front, let $g_i$ denote its resource-selection rule. The extraction procedure consists of validation evaluation, decision point sampling, behavioral representation, and anchor selection.
 
-\textbf{Validation evaluation.} Each complete heuristic in the retained front is evaluated on a validation set of random seeds to obtain a bi-objective performance estimate for anchor selection. The validation performance is represented by the mean energy consumption and mean weighted tardiness over three independent runs. Let $S_i^{\mathrm{val}}=\widehat{\mathbb{E}}_i^{\mathrm{val}}+\widehat{\mathbb{T}}_i^{\mathrm{val}}$ denote the normalized validation score of heuristic $i$, where $\widehat{\mathbb{E}}_i^{\mathrm{val}}$ and $\widehat{\mathbb{T}}_i^{\mathrm{val}}$ are its min--max normalized validation energy and weighted tardiness, respectively. The score is used only for validation-based selection among CCGP heuristics and does not replace the final test evaluation.
+\textbf{Validation evaluation.} Each complete heuristic in the retained front is evaluated on a validation set of random seeds to obtain a bi-objective performance estimate for anchor selection. The validation performance is represented by the mean energy consumption and mean weighted tardiness over three independent runs. Let $S_i^{\mathrm{val}}=\widehat{\mathbb{E}}_i^{\mathrm{val}}+\widehat{\mathbb{T}}_i^{\mathrm{val}}$ denote the normalized validation score of heuristic $i$, where $\widehat{\mathbb{E}}_i^{\mathrm{val}}$ and $\widehat{\mathbb{T}}_i^{\mathrm{val}}$ are its min--max normalized validation energy and weighted tardiness, respectively. This score is used only for validation-based selection among CCGP heuristics and does not replace the final test evaluation.
 
 \textbf{Decision point sampling.} A reference scheduling heuristic is selected from the validation-evaluated heuristics by minimizing $S_i^{\mathrm{val}}$. The reference heuristic is then executed to collect representative resource allocation decision points. At each sampled decision point, all feasible resources are recorded with their current terminal attributes. These samples provide a common set of online decision contexts for comparing the behavior of different resource-selection rules.
 
@@ -448,7 +446,7 @@ Function set & $+$, $-$, $\times$, protected~/, Max, and Min. & T/R & -- \\
 \end{equation}
 where $\pi_i(d_m)$ is the resource index selected by $g_i$ at sampled decision point $d_m$, and $M=20$ is the number of sampled decision points. In implementation, $\pi_i(d_m)$ is encoded as a resource-selection indicator vector, so tied best resources are represented as the same selected set. Rules producing identical behavior vectors are grouped together, and the rule whose complete heuristic has the lowest $S_i^{\mathrm{val}}$ is retained as the representative.
 
-\textbf{Anchor selection.} Let $K$ denote the maximum requested size of the resource-selection rule pool. If the number of behaviorally unique rules does not exceed $K$, all representatives are retained. For the default $K=5$, the retained rules are otherwise selected from five representative positions on the validation front: the minimum-energy endpoint, a low-energy neighbor, a balanced anchor, a low-tardiness neighbor, and the minimum-tardiness endpoint. Selecting these positions preserves rules associated with different tardiness--energy trade-off regions, so that the DDQN can choose among complementary resource-selection behaviors during online scheduling. The endpoints minimize $\widehat{\mathbb{E}}_i^{\mathrm{val}}$ and $\widehat{\mathbb{T}}_i^{\mathrm{val}}$, respectively. After excluding the endpoints, each neighbor is drawn from the corresponding 5\% normalized objective band. A heuristic belongs to this band when its corresponding normalized objective value does not exceed 0.05. If the band contains too few behaviorally distinct rules, top-ranked heuristics under the same objective are also considered. Let $i_E$ and $i_T$ denote the two endpoint indices. The balanced anchor is selected by
+\textbf{Anchor selection.} Let $K$ denote the maximum requested size of the resource-selection rule pool. If the number of behaviorally unique rules does not exceed $K$, all representatives are retained. For the default $K=5$, the retained rules are otherwise selected from five representative positions on the validation front: the minimum-energy endpoint, a low-energy neighbor, a balanced anchor, a low-tardiness neighbor, and the minimum-tardiness endpoint. This selection keeps rules associated with different tardiness--energy trade-off regions, so that the DDQN can select among complementary resource-selection behaviors during online scheduling. The endpoints minimize $\widehat{\mathbb{E}}_i^{\mathrm{val}}$ and $\widehat{\mathbb{T}}_i^{\mathrm{val}}$, respectively. After excluding the endpoints, each neighbor is drawn from the corresponding 5\% normalized objective band. A heuristic belongs to this band when its corresponding normalized objective value does not exceed 0.05. If the band contains too few behaviorally distinct rules, top-ranked heuristics under the same objective are also considered. Let $i_E$ and $i_T$ denote the two endpoint indices. The balanced anchor is selected by
 \begin{equation}
 \begin{aligned}
     S_i^{\mathrm{bal}}
@@ -472,11 +470,11 @@ For a given CCGP run $b$, the retained resource-selection rules form $\mathcal{G
 \subsection{Risk-Stratified Action Augmentation}
 \label{Sec: risk stratified actions}
 
-Each extracted resource-selection rule defines a priority function for ranking the feasible resources. The normalized GP score preserves the ranking behavior learned by CCGP, but the score itself is not explicitly adjusted by the requested preference. Therefore, PRS-GPDRL pairs each resource-selection rule with a \textit{base} mode and a \textit{risk} mode. The base mode uses the normalized GP score directly. The risk mode keeps the GP score as the primary ranking term and adds a bounded correction derived from the local tardiness-related and energy-related costs defined below. In this way, the DDQN can choose either the original GP ranking or its preference-aware local correction for the current decision.
+The extracted GP rules provide different priority functions for ranking feasible resources. After a rule is selected, its priority score gives the main resource ranking, but it may not reflect the local weighted-tardiness and energy changes caused by the current allocation. Therefore, PRS-GPDRL augments each resource-selection rule with a \textit{base} mode and a \textit{risk} mode. The base mode directly uses the normalized priority score of the selected GP rule. The risk mode keeps the GP score as the main ranking signal and adds a bounded correction based on preference-weighted local cost estimates. This design allows the DDQN to choose the resource-selection rule and to decide whether bounded local adjustment is needed for the current state and preference.
 
 Let $\mathbf{w}=(w_T,w_E)$ be the current preference vector, where $w_T$ and $w_E$ are the weights for weighted tardiness and energy consumption, respectively, and $w_T+w_E=1$. At decision point $t$, let $\mathcal{R}_t$ be the feasible resource set and let $n=|\mathcal{R}_t|$. For a selected resource-selection rule $g_i\in\mathcal{G}$, let $\hat{g}_i(r)$ denote its min--max normalized priority score for resource $r\in\mathcal{R}_t$. For all min--max normalizations in this work, if all resources have the same value, the corresponding normalized score is set to zero for all resources.
 
-PRS-GPDRL estimates two local costs for each resource in the same feasible resource set. These costs are used only to stratify feasible resources under the requested preference, rather than to replace the selected GP rule. For the tardiness-related local cost, let $\alpha_t$ be the current ready task at decision time $t$, let $\mathsf{SD}(\alpha_t)$ be its sub-deadline, and let $\omega$ be the workflow containing $\alpha_t$. For resource $r$, let $t_{\alpha_t,r}^{\mathrm{ava}}$ be the actual available time for assigning $\alpha_t$ to $r$. To evaluate this feasible assignment, $\alpha_t$ is temporarily assigned to $r$ at $t_{\alpha_t,r}^{\mathrm{ava}}$, and CPU allocation is updated according to Eq.~\eqref{Eq: cpu allocation}. Let $\hat{x}_{\alpha_t,r}^{f}$ be the estimated finish time of $\alpha_t$ under this temporary assignment. The local cost combines the estimated time from the current decision point to task completion with the workflow-weighted sub-deadline violation:
+PRS-GPDRL estimates two local costs for each resource in the same feasible resource set. These costs are used to stratify feasible resources under the requested preference, rather than to replace the selected GP rule. For the tardiness-related local cost, let $\alpha_t$ be the current ready task at decision time $t$, let $\mathsf{SD}(\alpha_t)$ be its sub-deadline, and let $\omega$ be the workflow containing $\alpha_t$. For resource $r$, let $t_{\alpha_t,r}^{\mathrm{ava}}$ be the actual available time for assigning $\alpha_t$ to $r$. To evaluate this feasible assignment, $\alpha_t$ is temporarily assigned to $r$ at $t_{\alpha_t,r}^{\mathrm{ava}}$, and CPU allocation is updated according to Eq.~\eqref{Eq: cpu allocation}. Let $\hat{x}_{\alpha_t,r}^{f}$ be the estimated finish time of $\alpha_t$ under this temporary assignment. The local cost combines the estimated time from the current decision point to task completion with the workflow-weighted sub-deadline violation:
 \begin{equation}
     c_T(r)=
     \hat{x}_{\alpha_t,r}^{f}-t
@@ -496,7 +494,7 @@ For the energy-related local cost, PRS-GPDRL compares the resource state before 
     \right).
     \label{Eq: dynamic energy increment}
 \end{equation}
-\(\Delta E_r^{\mathrm{dyn}}\) estimates the dynamic energy increment caused by assigning the current task to resource $r$. The static energy increment is calculated according to whether $r$ is newly created, already active, or idle:
+\(\Delta E_r^{\mathrm{dyn}}\) estimates the dynamic energy increment caused by assigning the current task to resource $r$. The static energy increment accounts for the additional active interval of the resource and depends on whether $r$ is newly created, already active, or idle:
 \begin{equation}
     \Delta E_r^{\mathrm{sta}} =
     \begin{cases}
@@ -531,7 +529,7 @@ The auxiliary score ranks the feasible resources for risk stratification. Let $\
     \end{cases}
     \label{Eq: risk strata}
 \end{equation}
-Because a smaller $c_{\mathbf{w}}(r)$ indicates a lower local cost under the requested preference, resources with better auxiliary ranks receive zero or small $\chi_{\mathbf{w}}(r)$ values, whereas resources with worse auxiliary ranks receive larger values. The risk mode uses these stratum values as bounded correction terms, so the local cost estimates can influence the final ranking without replacing the selected GP rule.
+The value $\chi_{\mathbf{w}}(r)$ is the penalty level associated with the risk stratum. Resources with lower ranks receive lower or zero penalties, while resources with higher ranks receive larger penalties. This rank-based design uses the local estimates only as bounded corrective information for the selected GP rule.
 
 For the base mode, the risk term is disabled. For the risk mode, the mixing
 coefficient is
@@ -555,14 +553,14 @@ The final priority score for resource $r$ under resource-selection rule $g_i$ an
 \end{equation}
 For a selected rule $g^*$ and mode $m^*$, the selected resource is
 $r_t^*=\arg\min_{r\in\mathcal{R}_t}p_{m^*}(r;g^*)$.
-Therefore, the risk mode does not replace the selected GP rule. It only adds a bounded stratum correction to the normalized GP score. The final priority score retains the selected GP rule as its main component, while the auxiliary local estimates can change the ranking only within the range controlled by $\beta_{\mathrm{risk}}(\mathbf{w})$.
+Therefore, the risk mode does not replace the selected GP rule. It adds only the stratum penalty to the normalized GP score, allowing the local preference-weighted estimates to adjust the resource ranking within a bounded range.
 
 \subsection{Markov Decision Process Formulation for Preference-Aware Rule Selection}
 \label{Sec: PRS-GPDRL MDP}
 
 After the current ready task has been selected, PRS-GPDRL determines which rule-mode action should be used to assign this task to a feasible resource. We model this resource allocation process as a Markov decision process (MDP) represented by $(\mathcal{S},\mathcal{A},\mathcal{P},\mathbf{c},\gamma)$, where $\mathcal{S}$ is the state space, $\mathcal{A}$ is the rule-mode action space, $\mathcal{P}$ is the state transition kernel, $\mathbf{c}$ is the vector cost, and $\gamma$ is the discount factor.
 
-At decision point $t$, state $s_t\in\mathcal{S}$ contains the attributes of the current ready task, the feasible resources, and the requested preference, as marked in the DDQN column of Table~\ref{Table:scheduling-attributes}. Task and preference attributes have fixed lengths, whereas the feasible resource set has a variable size. The feasible resource list is padded and accompanied by a validity mask, which allows the DDQN to observe the current feasible resources while keeping the action outputs defined over rule-mode pairs.
+At decision point $t$, state $s_t\in\mathcal{S}$ contains the attributes of the current ready task, the feasible resources, and the requested preference, as marked in the DDQN column of Table~\ref{Table:scheduling-attributes}. Task and preference attributes have fixed lengths, whereas the feasible resource set has a variable size. The feasible resource list is padded and accompanied by a validity mask, which allows the DDQN to observe the current feasible resources without using them as output actions.
 
 Let $\mathcal{M}=\{\mathrm{base},\mathrm{risk}\}$ be the mode set. The action
 space is
@@ -586,7 +584,7 @@ where $\kappa$ aligns the numerical scales of the two components during training
 \subsection{Preference-Aware Multi-Objective DDQN}
 \label{Sec: MO-DDQN}
 
-PRS-GPDRL uses a multi-objective DDQN \cite{vanhasselt2016} to select rule-mode actions. At each decision point, the observation is encoded into a state representation and fed to a vector-valued DDQN. The DDQN estimates the cumulative cost of each rule-mode action, and the current preference is used to scalarize the two objective dimensions for both action selection and network update. Since the DDQN selects rule-mode actions rather than resources directly, the learned action space remains fixed, and the actual resource is selected by applying the chosen rule-mode action to the feasible resources observed at that decision point.
+PRS-GPDRL uses a multi-objective DDQN \cite{vanhasselt2016} to select rule-mode actions. At each decision point, the observation is encoded into a state representation and fed to a vector-valued DDQN. The DDQN estimates the future cost of each rule-mode action, and the current preference is used to scalarize the two objective dimensions for both action selection and network update. This design keeps the learned action space fixed, while the selected action determines the actual resource by ranking the feasible resources observed at that decision point.
 
 Fig.~\ref{Fig: PRS-GPDRL DDQN} illustrates the state encoder and rule-mode action selection. The raw observation $s_t$ contains task features, feasible resource features, and preference weights. The state encoder maps $s_t$ to an embedding $\mathbf{z}_t$, and the DDQN estimates vector action costs over $\mathcal{A}$. Augmented weighted Tchebycheff scalarization selects $a_t^*=(g^*,m^*)$, where $g^*\in\mathcal{G}$ and $m^*\in\mathcal{M}$ are the selected rule and mode. Algorithm~\ref{Alg: online resource selection} then applies the selected rule and mode to score the feasible resources and assign the ready task $\alpha_t$ to $r_t^*$.
 \begin{figure*}[!t]
@@ -724,7 +722,7 @@ PRS-GPDRL uses the resource-selection rule pool extracted from the corresponding
 CCGP run. In each run, one non-dominated approximation set is obtained for each method:
 solutions over the preference grid for PRS-GPDRL and LWFF, and the final
 heuristics or policies for CCGP and GATES. LWFF produces the same approximation
-set in every run. Its non-zero HV and IGD standard deviations arise because this
+set in every run; its non-zero HV and IGD standard deviations arise because this
 set is jointly normalized with those of the other methods in each run. The four
 sets are pooled, and each objective
 $f_j\in\{\mathbb{T},\mathbb{E}\}$ is min--max normalized as
@@ -735,7 +733,7 @@ $f_j\in\{\mathbb{T},\mathbb{E}\}$ is min--max normalized as
     \label{Eq: objective normalization}
 \end{equation}
 where $f_j^{\min}$ and $f_j^{\max}$ are the pooled extrema of the four sets in
-that run. A
+that run; a
 constant objective is assigned zero.
 
 HV evaluates the convergence and coverage of each approximation set and is
@@ -758,8 +756,8 @@ arrows denote
 statistically better ($\uparrow$), worse ($\downarrow$), or similar
 ($\approx$) performance against the preceding methods. For each baseline
 column, W/D/L gives the number of scenarios in which that baseline is
-statistically better than, similar to, or worse than PRS-GPDRL. Therefore, the
-PRS-GPDRL column is marked N/A. AverageRank is the mean rank over the 30 runs,
+statistically better than, similar to, or worse than PRS-GPDRL; the PRS-GPDRL
+column is therefore marked N/A. AverageRank is the mean rank over the 30 runs,
 for which smaller is better.
 
 \subsection{Experimental Setup}
@@ -898,7 +896,7 @@ Mini-batch size & 256 \\
 Replay memory size & 200,000 \\
 Target-update frequency & 5,000 \\
 DDQN hidden-layer sizes & 256/128 \\
-Maximum resource-selection rule pool size $K$ & 5 \\
+Maximum rule pool size $K$ & 5 \\
 Maximum risk mixing $\beta_{\max}$ & 0.75 \\
 Energy-cost scaling $\kappa$ & $4.7\times10^5$ \\
 Tchebycheff augmentation $\zeta$ & 0.05 \\
@@ -908,8 +906,8 @@ Tchebycheff augmentation $\zeta$ & 0.05 \\
 
 We set $K=5$.
 Behavioral filtering may leave fewer than five unique rules in a particular
-run. The actual pool size in run $b$ is denoted by $K_b\leq K$. Each
-retained rule is paired with the two modes. As a result, run $b$ has $2K_b$ nominal
+run; the actual pool size in run $b$ is denoted by $K_b\leq K$. Each
+retained rule is paired with the two modes, so that run $b$ has $2K_b$ nominal
 rule-mode actions. Training preference sampling, checkpoint validation, and
 evaluation use the grid in Eq.~\eqref{Eq: evaluation preference grid}.
 
@@ -1106,8 +1104,8 @@ per metric.
 
 The CCGP comparison controls GP-rule provenance: PRS-GPDRL extracts its rule
 pool from the corresponding CCGP run, so both methods share the same source of
-GP resource-selection knowledge. Therefore, their difference cannot be
-explained by a different GP-rule source. Together with the behavior
+GP resource-selection knowledge. Their difference therefore cannot be
+explained by a different or better GP-rule source. Together with the behavior
 and ablation results, this pattern supports online selection among complementary
 rules and state- and preference-dependent local adjustment.
 
@@ -1164,14 +1162,14 @@ Weighted tardiness is plotted against $w_T$, and energy against $w_E=1-w_T$.
 
 At the outcome level, increasing an objective's weight changes the schedule in
 the intended direction. Median reductions at weight 0.5 are 89.7\% for weighted
-tardiness and 20.5\% for energy. Over the full range, they reach 96.9\% and
+tardiness and 20.5\% for energy; over the full range, they reach 96.9\% and
 51.1\%. The steeper tardiness response is consistent with urgency-oriented
 decisions avoiding deadline penalties immediately, whereas energy savings
 accumulate through assignments that alter utilization and resource active time.
 
 The median correlations between each raw objective and its own weight are
 $\rho_T=-0.968$ and $\rho_E=-0.955$. All tardiness curves and 99.4\% of energy
-curves have the expected direction. In addition, 99.4\% of runs shift correctly between
+curves have the expected direction; 99.4\% of runs also shift correctly between
 the endpoints. Thus, one network produces preference-dependent scheduling
 outcomes rather than relabeling the same outcome with different weights.
 
@@ -1219,28 +1217,28 @@ count.
 
 At the mode level, the risk mode is selected in 42.5\% of decisions. Away from
 balance, non-zero correction is activated in 41.2\%, ranging from 26.1\% to
-56.6\% across preferences and scenarios. These values indicate that the risk mode
-is used in a substantial fraction of decisions. At the same time, the remaining
-base-mode decisions indicate that local correction is not always required. The policy adaptively chooses between using the
+56.6\% across preferences and scenarios. The risk mode is therefore not rarely
+selected, while the remaining base-mode decisions show that local correction
+is not always required. The policy adaptively chooses between using the
 unmodified GP ranking and applying a local correction as the state and
 preference vary.
 
 Figs.~\ref{Fig: tree role frequency} and~\ref{Fig: risk frequency} capture two
-distinct levels of adaptation. Rule selection sets the global objective
-direction of the resource ranking by moving from energy-oriented roles through
+distinct levels of adaptation. Rule-role migration sets the global objective
+direction of the resource ranking, moving from energy-oriented roles through
 the knee toward tardiness-oriented roles as $w_T$ increases. Risk-mode
-selection instead determines whether the current decision requires a bounded local
+selection instead gates whether the current decision requires a bounded local
 modification of that ranking. Its frequency need not vary monotonically with
 $w_T$, because the need for correction depends jointly on the requested
 preference, task urgency, CPU sharing, resource active time, Cloud provisioning,
-and the current feasible-resource state. Thus, risk-mode frequency reflects the
-conditional use of local correction under the current state and preference rather
-than serving as a direct proxy for the preference weight.
+and the current feasible-resource state. Risk-mode frequency therefore reflects
+state- and preference-dependent gating behavior rather than serving as a direct
+proxy for the preference weight.
 
 Within the evaluated preference grid, the three figures form a layered account
 of policy behavior. Fig.~\ref{Fig: preference responses} shows preference
-response at the outcome level. Fig.~\ref{Fig: tree role frequency} shows the
-corresponding migration of global rule roles. Fig.~\ref{Fig: risk frequency}
+response at the outcome level; Fig.~\ref{Fig: tree role frequency} shows the
+corresponding migration of global rule roles; and Fig.~\ref{Fig: risk frequency}
 shows whether local correction is selected at the mode level. Taken together,
 these observations support the interpretation that preference conditioning
 changes both the resulting objectives and the internal decisions that produce
@@ -1253,7 +1251,7 @@ current state.
 Table~\ref{Table: combined ablation results} reports the HV and IGD results of
 PRS-GPDRL and its three ablation variants in six representative scenarios. The
 \emph{w/o Risk} and \emph{w/o FiLM} variants remove the two
-components separately, while $K=3$ sets the maximum requested resource-selection rule pool size to
+components separately, while $K=3$ sets the maximum requested rule pool size to
 three. The evaluation and statistical analysis follow the
 main protocol.
 
@@ -1303,7 +1301,7 @@ AverageRank & 3.222 & 2.511 & 2.164 & 2.103
 
 Across the six representative scenarios, \emph{w/o Risk} records 0/0/6 against
 PRS-GPDRL for both metrics, the strongest ablation effect. A GP rule provides a
-global ranking. Risk uses the specified preference, task urgency, CPU sharing,
+global ranking; Risk uses the specified preference, task urgency, CPU sharing,
 resource active time, and Cloud provisioning for bounded local correction.
 The consistent result across these six scenarios supports state- and
 preference-dependent local correction as an important part of the full
@@ -1313,31 +1311,31 @@ By comparison, the \emph{w/o FiLM} variant records 0/3/3 for both metrics and
 retains the vector-valued action costs and augmented weighted Tchebycheff
 scalarization, so preference information remains available to action
 evaluation. The three statistically comparable outcomes and three losses
-suggest that FiLM is not the only preference-conditioning channel. Instead, its additional
+therefore suggest that FiLM
+is not the only preference-conditioning channel. Instead, its additional
 preference-dependent modulation of the shared state representation is
 consistent with complementary improvements in trade-off coverage and proximity.
 
 \subsubsection{Rule-Pool Size}
 
 The $K=3$ result is 0/5/1 for both metrics and is statistically comparable in
-five of six scenarios. This indicates that the main capability does not arise simply from
-increasing the number of available actions. A small set of behaviorally
+five of six scenarios. Thus, the main capability does not arise simply from
+increasing the number of available actions; a small set of behaviorally
 complementary rules retains most of it. Within the tested settings, performance
 is reasonably robust to pool size when behaviorally diverse rule roles are
 retained. The $K=5$ design targets both endpoints,
 their neighboring regions, and the knee, and obtains the best average ranks.
-The comparison supports the motivation for quality- and behavior-aware
-filtering: coverage of complementary global ranking roles is more important
+This pattern is consistent with the motivation for quality- and behavior-aware
+filtering: coverage of complementary global-ranking roles is more important
 than rule count alone.
 
 The ablations thus organize the components into distinct, complementary roles:
 Risk provides state- and preference-dependent local correction, FiLM adds
-preference-dependent modulation of the shared representation, and the
-resource-selection rule pool provides complementary global ranking coverage. These roles are
+preference-dependent modulation of the shared representation, and the rule
+pool provides complementary global-ranking coverage. These roles are
 complementary within the proposed decision process.
 
 \subsection{Task-Ordering Design Choice}
-\label{Sec: task ordering design}
 
 Table~\ref{Table: combined GP task ordering} reports the HV and IGD results
 obtained using the GP task-selection rule and upward-rank ordering across the 12
@@ -1379,27 +1377,27 @@ AverageRank & 1.436 & 1.564 & 1.458 & 1.542 \\
 
 With the resource-selection rule pool fixed, the GP task-selection rule records
 1/11/0 against upward-rank ordering for both metrics, with similar average
-ranks. Thus, upward-rank ordering is statistically comparable in 11 of 12
-scenarios. The diagnostic result indicates that task-ordering change is not
-the main explanation for the overall gain over CCGP. The comparability is
+ranks. Upward-rank ordering is therefore statistically comparable in 11 of 12
+scenarios. This diagnostic result indicates that task-ordering change is not
+the main explanation for the overall gain over CCGP. This comparability is
 consistent with the problem structure: VMs can execute tasks concurrently, and
 task ordering is required only when multiple tasks become ready simultaneously,
-whereas resource selection is required for every dispatched task. The comparison suggests
-that task ordering is less influential than resource selection in this problem.
+whereas resource selection is required for every dispatched task. Task ordering
+is therefore less influential than resource selection in this problem.
 
 Taken together, the experiments narrow the plausible explanation for the
-overall gain. The comparison with CCGP controls the source of GP rules because PRS-GPDRL
-uses the resource-selection rule pool extracted from the corresponding CCGP run, while the present
+overall gain. The V-C comparison controls GP-rule provenance because PRS-GPDRL
+uses the rule pool extracted from the corresponding CCGP run, while the present
 comparison indicates that task-ordering change is not the main explanation.
-The rule-usage analysis shows that the policy changes how GP rules from this
-CCGP run are used as preference varies, and the mode-usage analysis shows that
-local correction is selected conditionally rather than always or never.
+The rule-usage analysis shows that the policy changes how this same-source GP
+knowledge is deployed as preference varies, and the mode-usage analysis shows
+that local correction is selected conditionally rather than always or never.
 The $K=3$ comparison further weakens a simple action-count explanation, while
 the \emph{w/o Risk} result supports the importance of local correction for the
 full improvement in the six ablation scenarios. These results jointly support
 the interpretation that PRS-GPDRL gains value from preference-conditioned
-online use of behaviorally complementary GP rules extracted from that run,
-together with bounded local correction when indicated by the current state.
+online deployment of same-source, behaviorally complementary GP rules, together
+with bounded local correction when indicated by the current state.
 
 \section{Conclusion}
 \label{Sec: conclusion}
@@ -1410,7 +1408,7 @@ the two objectives. PRS-GPDRL connects evolutionary rule discovery with online
 reinforcement learning: CCGP evolves coupled scheduling rules, a diversity-aware
 procedure extracts a compact resource-selection rule pool, and a
 multi-objective DDQN selects risk-stratified rule-mode actions at task-allocation
-decision points. Through this process, one network can adapt the use of GP-evolved
+decision points. This design lets one network adapt the use of GP-evolved
 resource priorities to the current state and requested objective trade-off.
 
 Across 12 scenarios, with 30 independent runs conducted per scenario,
@@ -1424,7 +1422,7 @@ an unmodified GP ranking and applying a local risk correction. Across the six
 representative ablation
 scenarios, Risk provides the strongest component-level improvement, FiLM adds
 complementary preference conditioning, and the $K=3$ results retain most of the
-resource-selection rule pool capability. The task-ordering ablation experiment further shows that
+rule pool capability. The task-ordering experiment further shows that
 upward-rank ordering is statistically comparable to the GP task-selection rule
 in 11 of the 12 scenarios. Overall, PRS-GPDRL generates high-quality tardiness--energy
 trade-offs while adapting its internal scheduling decisions to the requested
