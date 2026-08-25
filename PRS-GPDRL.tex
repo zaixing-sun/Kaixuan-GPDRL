@@ -863,93 +863,71 @@ evaluation use the grid in Eq.~\eqref{Eq: evaluation preference grid}.
 \subsection{Solution-Set Quality and Pareto Trade-offs}
 \label{Sec: overall performance}
 
-\subsubsection{HV Results}
+\subsubsection{HV and IGD Results}
 
-Tables~\ref{Table: HV main results} and~\ref{Table: IGD main results} present
-the mean and standard deviation of the HV and IGD values, respectively, over
-the 30 independent runs of the compared algorithms.
+Table~\ref{Table: main results} presents the mean and standard deviation of
+the HV and IGD values over the 30 independent runs of the compared algorithms.
 
-\begin{table}[!t]
-  \centering
-  \setlength{\abovecaptionskip}{0cm}
-  \setlength{\belowcaptionskip}{-0.2cm}
-  \setlength{\tabcolsep}{0.5mm}
-  \caption{The mean and standard deviation of the HV values over the 30
-  independent runs of the compared algorithms.}
-  \label{Table: HV main results}
-%   \SetTblrInner{colsep=1.0mm}
-  \resizebox{\linewidth}{!}%
-%   {\begin{tblr}{
-%       width = 1.22\linewidth,
-%       colspec = {ccccc},
-%       hline{1,Z} = {0.8pt},
-%       hline{2,14} = {0.5pt},
-%       row{2,3,4,5,6,7,8,9,10,11,12,13,15} = {fg=black},
-%       stretch = 1.1,
-%       abovesep = 0pt,
-%       belowsep = 0pt,
-%       rowsep = 0pt,
-%     }
-    {\begin{tabular}{ccccc}
-        \toprule
-      $\left\langle \mathrm{wfNum}, \lambda\right\rangle$ & GATES & LWFF & CCGP
-      & PRS-GPDRL \\
-        \midrule
-      $\left\langle 10,0.2\right\rangle$ & 0.533$\pm$0.189
-      & 0.597$\pm$0.131($\approx$)
-      & 0.789$\pm$0.092($\uparrow$)($\uparrow$)
-      & 0.867$\pm$0.068($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 10,0.8\right\rangle$ & 0.536$\pm$0.211
-      & 0.616$\pm$0.124($\uparrow$)
-      & 0.788$\pm$0.113($\uparrow$)($\uparrow$)
-      & 0.882$\pm$0.059($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 15,0.2\right\rangle$ & 0.566$\pm$0.124
-      & 0.602$\pm$0.107($\approx$)
-      & 0.800$\pm$0.114($\uparrow$)($\uparrow$)
-      & 0.862$\pm$0.087($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 15,0.8\right\rangle$ & 0.539$\pm$0.128
-      & 0.651$\pm$0.109($\uparrow$)
-      & 0.749$\pm$0.150($\uparrow$)($\uparrow$)
-      & 0.843$\pm$0.081($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 20,0.2\right\rangle$ & 0.607$\pm$0.168
-      & 0.632$\pm$0.122($\approx$)
-      & 0.789$\pm$0.134($\uparrow$)($\uparrow$)
-      & 0.869$\pm$0.088($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 20,0.8\right\rangle$ & 0.530$\pm$0.170
-      & 0.646$\pm$0.107($\uparrow$)
-      & 0.776$\pm$0.110($\uparrow$)($\uparrow$)
-      & 0.825$\pm$0.060($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 30,0.2\right\rangle$ & 0.635$\pm$0.139
-      & 0.675$\pm$0.091($\uparrow$)
-      & 0.823$\pm$0.101($\uparrow$)($\uparrow$)
-      & 0.867$\pm$0.060($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 30,0.8\right\rangle$ & 0.568$\pm$0.132
-      & 0.697$\pm$0.091($\uparrow$)
-      & 0.788$\pm$0.091($\uparrow$)($\uparrow$)
-      & 0.803$\pm$0.090($\uparrow$)($\uparrow$)($\approx$) \\
-      $\left\langle 50,0.2\right\rangle$ & 0.611$\pm$0.152
-      & 0.702$\pm$0.098($\uparrow$)
-      & 0.808$\pm$0.103($\uparrow$)($\uparrow$)
-      & 0.851$\pm$0.114($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 50,0.8\right\rangle$ & 0.644$\pm$0.164
-      & 0.749$\pm$0.103($\uparrow$)
-      & 0.783$\pm$0.135($\uparrow$)($\uparrow$)
-      & 0.815$\pm$0.110($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 100,0.2\right\rangle$ & 0.579$\pm$0.192
-      & 0.697$\pm$0.090($\uparrow$)
-      & 0.817$\pm$0.096($\uparrow$)($\uparrow$)
-      & 0.847$\pm$0.077($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 100,0.8\right\rangle$ & 0.798$\pm$0.081
-      & 0.866$\pm$0.059($\uparrow$)
-      & 0.852$\pm$0.067($\uparrow$)($\downarrow$)
-      & 0.810$\pm$0.086($\approx$)($\downarrow$)($\downarrow$) \\
-      \midrule
-      W/D/L & 0/1/11 & 1/0/11 & 1/1/10 & N/A \\
-      AverageRank & 3.603 & 3.017 & 1.975 & 1.406 \\
-      \bottomrule
-  \end{tabular}}
-  \vspace{-1em}
-\end{table}
+\begin{table*}[!t]
+\caption{The mean and standard deviation of the HV and IGD values over the 30
+independent runs of the compared algorithms.}
+\label{Table: main results}
+\centering
+% \scriptsize
+\setlength{\tabcolsep}{1.6pt}
+\resizebox{\textwidth}{!}%
+{\begin{tabular}{@{}lcccccccc@{}}
+\toprule
+\multirow{2}{*}{$\langle\mathrm{wfNum},\lambda\rangle$}
+& \multicolumn{4}{c}{HV} & \multicolumn{4}{c}{IGD} \\
+\cmidrule(lr){2-5}\cmidrule(lr){6-9}
+& GATES & LWFF & CCGP & PRS-GPDRL
+& GATES & LWFF & CCGP & PRS-GPDRL \\
+\midrule
+$\langle10,0.2\rangle$
+& 0.533$\pm$0.189 & 0.597$\pm$0.131($\approx$) & 0.789$\pm$0.092($\uparrow$)($\uparrow$) & 0.867$\pm$0.068($\uparrow$)($\uparrow$)($\uparrow$)
+& 0.321$\pm$0.135 & 0.235$\pm$0.081($\uparrow$) & 0.100$\pm$0.032($\uparrow$)($\uparrow$) & 0.047$\pm$0.024($\uparrow$)($\uparrow$)($\uparrow$) \\
+$\langle10,0.8\rangle$
+& 0.536$\pm$0.211 & 0.616$\pm$0.124($\uparrow$) & 0.788$\pm$0.113($\uparrow$)($\uparrow$) & 0.882$\pm$0.059($\uparrow$)($\uparrow$)($\uparrow$)
+& 0.310$\pm$0.145 & 0.199$\pm$0.063($\uparrow$) & 0.107$\pm$0.038($\uparrow$)($\uparrow$) & 0.042$\pm$0.020($\uparrow$)($\uparrow$)($\uparrow$) \\
+$\langle15,0.2\rangle$
+& 0.566$\pm$0.124 & 0.602$\pm$0.107($\approx$) & 0.800$\pm$0.114($\uparrow$)($\uparrow$) & 0.862$\pm$0.087($\uparrow$)($\uparrow$)($\uparrow$)
+& 0.257$\pm$0.099 & 0.166$\pm$0.054($\uparrow$) & 0.068$\pm$0.031($\uparrow$)($\uparrow$) & 0.040$\pm$0.028($\uparrow$)($\uparrow$)($\uparrow$) \\
+$\langle15,0.8\rangle$
+& 0.539$\pm$0.128 & 0.651$\pm$0.109($\uparrow$) & 0.749$\pm$0.150($\uparrow$)($\uparrow$) & 0.843$\pm$0.081($\uparrow$)($\uparrow$)($\uparrow$)
+& 0.303$\pm$0.094 & 0.154$\pm$0.054($\uparrow$) & 0.084$\pm$0.057($\uparrow$)($\uparrow$) & 0.047$\pm$0.034($\uparrow$)($\uparrow$)($\uparrow$) \\
+$\langle20,0.2\rangle$
+& 0.607$\pm$0.168 & 0.632$\pm$0.122($\approx$) & 0.789$\pm$0.134($\uparrow$)($\uparrow$) & 0.869$\pm$0.088($\uparrow$)($\uparrow$)($\uparrow$)
+& 0.260$\pm$0.128 & 0.173$\pm$0.077($\uparrow$) & 0.078$\pm$0.041($\uparrow$)($\uparrow$) & 0.050$\pm$0.048($\uparrow$)($\uparrow$)($\uparrow$) \\
+$\langle20,0.8\rangle$
+& 0.530$\pm$0.170 & 0.646$\pm$0.107($\uparrow$) & 0.776$\pm$0.110($\uparrow$)($\uparrow$) & 0.825$\pm$0.060($\uparrow$)($\uparrow$)($\uparrow$)
+& 0.276$\pm$0.133 & 0.151$\pm$0.075($\uparrow$) & 0.074$\pm$0.035($\uparrow$)($\uparrow$) & 0.055$\pm$0.038($\uparrow$)($\uparrow$)($\approx$) \\
+$\langle30,0.2\rangle$
+& 0.635$\pm$0.139 & 0.675$\pm$0.091($\uparrow$) & 0.823$\pm$0.101($\uparrow$)($\uparrow$) & 0.867$\pm$0.060($\uparrow$)($\uparrow$)($\uparrow$)
+& 0.247$\pm$0.110 & 0.152$\pm$0.050($\uparrow$) & 0.083$\pm$0.037($\uparrow$)($\uparrow$) & 0.053$\pm$0.046($\uparrow$)($\uparrow$)($\uparrow$) \\
+$\langle30,0.8\rangle$
+& 0.568$\pm$0.132 & 0.697$\pm$0.091($\uparrow$) & 0.788$\pm$0.091($\uparrow$)($\uparrow$) & 0.803$\pm$0.090($\uparrow$)($\uparrow$)($\approx$)
+& 0.291$\pm$0.108 & 0.127$\pm$0.039($\uparrow$) & 0.080$\pm$0.030($\uparrow$)($\uparrow$) & 0.074$\pm$0.043($\uparrow$)($\uparrow$)($\approx$) \\
+$\langle50,0.2\rangle$
+& 0.611$\pm$0.152 & 0.702$\pm$0.098($\uparrow$) & 0.808$\pm$0.103($\uparrow$)($\uparrow$) & 0.851$\pm$0.114($\uparrow$)($\uparrow$)($\uparrow$)
+& 0.232$\pm$0.095 & 0.112$\pm$0.040($\uparrow$) & 0.082$\pm$0.042($\uparrow$)($\uparrow$) & 0.059$\pm$0.043($\uparrow$)($\uparrow$)($\uparrow$) \\
+$\langle50,0.8\rangle$
+& 0.644$\pm$0.164 & 0.749$\pm$0.103($\uparrow$) & 0.783$\pm$0.135($\uparrow$)($\uparrow$) & 0.815$\pm$0.110($\uparrow$)($\uparrow$)($\uparrow$)
+& 0.240$\pm$0.105 & 0.099$\pm$0.032($\uparrow$) & 0.074$\pm$0.039($\uparrow$)($\uparrow$) & 0.075$\pm$0.041($\uparrow$)($\uparrow$)($\approx$) \\
+$\langle100,0.2\rangle$
+& 0.579$\pm$0.192 & 0.697$\pm$0.090($\uparrow$) & 0.817$\pm$0.096($\uparrow$)($\uparrow$) & 0.847$\pm$0.077($\uparrow$)($\uparrow$)($\uparrow$)
+& 0.269$\pm$0.139 & 0.146$\pm$0.063($\uparrow$) & 0.075$\pm$0.034($\uparrow$)($\uparrow$) & 0.079$\pm$0.040($\uparrow$)($\uparrow$)($\approx$) \\
+$\langle100,0.8\rangle$
+& 0.798$\pm$0.081 & 0.866$\pm$0.059($\uparrow$) & 0.852$\pm$0.067($\uparrow$)($\downarrow$) & 0.810$\pm$0.086($\approx$)($\downarrow$)($\downarrow$)
+& 0.190$\pm$0.078 & 0.079$\pm$0.055($\uparrow$) & 0.066$\pm$0.024($\uparrow$)($\approx$) & 0.135$\pm$0.056($\uparrow$)($\downarrow$)($\downarrow$) \\
+\midrule
+W/D/L & 0/1/11 & 1/0/11 & 1/1/10 & N/A
+      & 0/0/12 & 1/0/11 & 1/4/7 & N/A \\
+AverageRank & 3.603 & 3.017 & 1.975 & 1.406
+            & 3.792 & 2.847 & 1.883 & 1.478 \\
+\bottomrule
+\end{tabular}}
+\end{table*}
 
 PRS-GPDRL obtains the best HV average rank (1.406), while CCGP records 1/1/10
 relative to it. HV gains are clearest at $\mathrm{wfNum}=10$. PRS-GPDRL is
@@ -958,90 +936,6 @@ $\mathrm{wfNum}\leq 50$. At $\mathrm{wfNum}=100$, the outcome depends on the
 arrival rate: an additional gain occurs at $\langle100,0.2\rangle$, but not at
 $\langle100,0.8\rangle$, where the maximum workflow scale and higher arrival
 rate coincide.
-
-\subsubsection{IGD Results}
-
-\begin{table}[!t]
-  \centering
-  \setlength{\abovecaptionskip}{0cm}
-  \setlength{\belowcaptionskip}{-0.2cm}
-  \setlength{\tabcolsep}{0.5mm}
-  \caption{The mean and standard deviation of the IGD values over the 30
-  independent runs of the compared algorithms.}
-  \label{Table: IGD main results}
-%   \SetTblrInner{colsep=1.0mm}
-  \resizebox{\linewidth}{!}{%
-%   \begin{tblr}{
-%       width = 1.22\linewidth,
-%       colspec = {ccccc},
-%       hline{1,Z} = {0.8pt},
-%       hline{2,14} = {0.5pt},
-%       row{2,3,4,5,6,7,8,9,10,11,12,13,15} = {fg=black},
-%       stretch = 1.1,
-%       abovesep = 0pt,
-%       belowsep = 0pt,
-%       rowsep = 0pt,
-%     }
-    \begin{tabular}{ccccc}
-    \toprule
-      $\left\langle \mathrm{wfNum}, \lambda\right\rangle$ & GATES & LWFF & CCGP
-      & PRS-GPDRL \\
-      \midrule
-      $\left\langle 10,0.2\right\rangle$ & 0.321$\pm$0.135
-      & 0.235$\pm$0.081($\uparrow$)
-      & 0.100$\pm$0.032($\uparrow$)($\uparrow$)
-      & 0.047$\pm$0.024($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 10,0.8\right\rangle$ & 0.310$\pm$0.145
-      & 0.199$\pm$0.063($\uparrow$)
-      & 0.107$\pm$0.038($\uparrow$)($\uparrow$)
-      & 0.042$\pm$0.020($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 15,0.2\right\rangle$ & 0.257$\pm$0.099
-      & 0.166$\pm$0.054($\uparrow$)
-      & 0.068$\pm$0.031($\uparrow$)($\uparrow$)
-      & 0.040$\pm$0.028($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 15,0.8\right\rangle$ & 0.303$\pm$0.094
-      & 0.154$\pm$0.054($\uparrow$)
-      & 0.084$\pm$0.057($\uparrow$)($\uparrow$)
-      & 0.047$\pm$0.034($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 20,0.2\right\rangle$ & 0.260$\pm$0.128
-      & 0.173$\pm$0.077($\uparrow$)
-      & 0.078$\pm$0.041($\uparrow$)($\uparrow$)
-      & 0.050$\pm$0.048($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 20,0.8\right\rangle$ & 0.276$\pm$0.133
-      & 0.151$\pm$0.075($\uparrow$)
-      & 0.074$\pm$0.035($\uparrow$)($\uparrow$)
-      & 0.055$\pm$0.038($\uparrow$)($\uparrow$)($\approx$) \\
-      $\left\langle 30,0.2\right\rangle$ & 0.247$\pm$0.110
-      & 0.152$\pm$0.050($\uparrow$)
-      & 0.083$\pm$0.037($\uparrow$)($\uparrow$)
-      & 0.053$\pm$0.046($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 30,0.8\right\rangle$ & 0.291$\pm$0.108
-      & 0.127$\pm$0.039($\uparrow$)
-      & 0.080$\pm$0.030($\uparrow$)($\uparrow$)
-      & 0.074$\pm$0.043($\uparrow$)($\uparrow$)($\approx$) \\
-      $\left\langle 50,0.2\right\rangle$ & 0.232$\pm$0.095
-      & 0.112$\pm$0.040($\uparrow$)
-      & 0.082$\pm$0.042($\uparrow$)($\uparrow$)
-      & 0.059$\pm$0.043($\uparrow$)($\uparrow$)($\uparrow$) \\
-      $\left\langle 50,0.8\right\rangle$ & 0.240$\pm$0.105
-      & 0.099$\pm$0.032($\uparrow$)
-      & 0.074$\pm$0.039($\uparrow$)($\uparrow$)
-      & 0.075$\pm$0.041($\uparrow$)($\uparrow$)($\approx$) \\
-      $\left\langle 100,0.2\right\rangle$ & 0.269$\pm$0.139
-      & 0.146$\pm$0.063($\uparrow$)
-      & 0.075$\pm$0.034($\uparrow$)($\uparrow$)
-      & 0.079$\pm$0.040($\uparrow$)($\uparrow$)($\approx$) \\
-      $\left\langle 100,0.8\right\rangle$ & 0.190$\pm$0.078
-      & 0.079$\pm$0.055($\uparrow$)
-      & 0.066$\pm$0.024($\uparrow$)($\approx$)
-      & 0.135$\pm$0.056($\uparrow$)($\downarrow$)($\downarrow$) \\
-        \midrule
-      W/D/L & 0/0/12 & 1/0/11 & 1/4/7 & N/A \\
-      AverageRank & 3.792 & 2.847 & 1.883 & 1.478 \\
-        \bottomrule
-  \end{tabular}}
-  \vspace{-1em}
-\end{table}
 
 PRS-GPDRL also obtains the best IGD average rank (1.478), with CCGP recording
 1/4/7 relative to it. IGD improvements are again clearest at
@@ -1066,7 +960,7 @@ for six representative scenarios.
 
 \begin{figure}[!t]
     \centering
-    \includegraphics[width=\columnwidth]{figures/tradeoff_profile_50.pdf}
+    \includegraphics[width=.88\columnwidth]{figures/tradeoff_profile_50.pdf}
     \caption{The 50\% empirical attainment curves of the compared algorithms in
     six representative scenarios.}
     \label{Fig: tradeoff profiles}
@@ -1093,14 +987,14 @@ Weighted tardiness is plotted against $w_T$, and energy against $w_E=1-w_T$.
 
 \begin{figure*}[!t]
     \centering
-    \begin{minipage}[t]{0.49\textwidth}
+    \begin{minipage}[t]{0.48\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{figures/preference_response_tardiness.pdf}
+        \includegraphics[width=.88\linewidth]{figures/preference_response_tardiness.pdf}
         \centerline{(a) Weighted tardiness response to $w_T$.}
     \end{minipage}\hfill
-    \begin{minipage}[t]{0.49\textwidth}
+    \begin{minipage}[t]{0.48\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{figures/preference_response_energy.pdf}
+        \includegraphics[width=.88\linewidth]{figures/preference_response_energy.pdf}
         \centerline{(b) Energy response to $w_E$.}
     \end{minipage}
     \caption{Relative reductions in weighted tardiness and energy consumption
@@ -1131,7 +1025,7 @@ minimum-tardiness endpoint.
 
 \begin{figure*}[!t]
     \centering
-    \includegraphics[width=\textwidth]{figures/tree_role_frequency.pdf}
+    \includegraphics[width=.78\textwidth]{figures/tree_role_frequency.pdf}
     \caption{Mean selection frequencies over the included independent runs for
     each of the 12 scenarios under different tardiness preferences (runs
     retaining five rules). The roles are the minimum-energy endpoint $g_1$, its
@@ -1155,7 +1049,7 @@ count.
 
 \begin{figure}[!t]
     \centering
-    \includegraphics[width=\linewidth]{figures/risk_frequency.pdf}
+    \includegraphics[width=.88\linewidth]{figures/risk_frequency.pdf}
     \caption{Mean risk-mode selection frequency over 30 independent runs for
     each of the 12 scenarios. Gray markers denote the balanced preference
     $w_T=w_E=0.5$. At the balanced preference, risk-mode
@@ -1209,34 +1103,35 @@ main protocol.
 and its ablation variants over 30 independent runs.}
 \label{Table: combined ablation results}
 \centering
-\scriptsize
-\setlength{\tabcolsep}{1.6pt}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{c|cccc|cccc}
+% \scriptsize
+\setlength{\tabcolsep}{1.25pt}
+\resizebox{\textwidth}{!}%
+{\begin{tabular}{@{}lcccccccc@{}}
 \toprule
 \multirow{2}{*}{$\langle\mathrm{wfNum},\lambda\rangle$}
-& \multicolumn{4}{c|}{HV} & \multicolumn{4}{c}{IGD} \\
+& \multicolumn{4}{c}{HV} & \multicolumn{4}{c}{IGD} \\
+\cmidrule(lr){2-5}\cmidrule(lr){6-9}
 & w/o Risk & w/o FiLM & $K=3$ & PRS-GPDRL
 & w/o Risk & w/o FiLM & $K=3$ & PRS-GPDRL \\
 \midrule
 $\langle10,0.2\rangle$
-& .832$\pm$.098 & .851$\pm$.076($\approx$) & .860$\pm$.071($\uparrow$)($\uparrow$) & .867$\pm$.068($\uparrow$)($\uparrow$)($\approx$)
-& .078$\pm$.046 & .058$\pm$.030($\uparrow$) & .052$\pm$.033($\uparrow$)($\approx$) & .047$\pm$.024($\uparrow$)($\uparrow$)($\approx$) \\
+& 0.832$\pm$0.098 & 0.851$\pm$0.076($\approx$) & 0.860$\pm$0.071($\uparrow$)($\uparrow$) & 0.867$\pm$0.068($\uparrow$)($\uparrow$)($\approx$)
+& 0.078$\pm$0.046 & 0.058$\pm$0.030($\uparrow$) & 0.052$\pm$0.033($\uparrow$)($\approx$) & 0.047$\pm$0.024($\uparrow$)($\uparrow$)($\approx$) \\
 $\langle10,0.8\rangle$
-& .827$\pm$.093 & .855$\pm$.068($\uparrow$) & .880$\pm$.064($\uparrow$)($\uparrow$) & .882$\pm$.059($\uparrow$)($\uparrow$)($\approx$)
-& .076$\pm$.047 & .058$\pm$.032($\uparrow$) & .039$\pm$.017($\uparrow$)($\uparrow$) & .042$\pm$.020($\uparrow$)($\uparrow$)($\approx$) \\
+& 0.827$\pm$0.093 & 0.855$\pm$0.068($\uparrow$) & 0.880$\pm$0.064($\uparrow$)($\uparrow$) & 0.882$\pm$0.059($\uparrow$)($\uparrow$)($\approx$)
+& 0.076$\pm$0.047 & 0.058$\pm$0.032($\uparrow$) & 0.039$\pm$0.017($\uparrow$)($\uparrow$) & 0.042$\pm$0.020($\uparrow$)($\uparrow$)($\approx$) \\
 $\langle30,0.2\rangle$
-& .814$\pm$.103 & .848$\pm$.074($\uparrow$) & .851$\pm$.076($\approx$)($\approx$) & .867$\pm$.060($\uparrow$)($\uparrow$)($\uparrow$)
-& .090$\pm$.058 & .068$\pm$.047($\uparrow$) & .068$\pm$.057($\uparrow$)($\approx$) & .053$\pm$.046($\uparrow$)($\uparrow$)($\uparrow$) \\
+& 0.814$\pm$0.103 & 0.848$\pm$0.074($\uparrow$) & 0.851$\pm$0.076($\approx$)($\approx$) & 0.867$\pm$0.060($\uparrow$)($\uparrow$)($\uparrow$)
+& 0.090$\pm$0.058 & 0.068$\pm$0.047($\uparrow$) & 0.068$\pm$0.057($\uparrow$)($\approx$) & 0.053$\pm$0.046($\uparrow$)($\uparrow$)($\uparrow$) \\
 $\langle30,0.8\rangle$
-& .752$\pm$.105 & .814$\pm$.087($\uparrow$) & .809$\pm$.081($\uparrow$)($\approx$) & .803$\pm$.090($\uparrow$)($\approx$)($\approx$)
-& .114$\pm$.059 & .065$\pm$.032($\uparrow$) & .074$\pm$.034($\uparrow$)($\approx$) & .074$\pm$.043($\uparrow$)($\approx$)($\approx$) \\
+& 0.752$\pm$0.105 & 0.814$\pm$0.087($\uparrow$) & 0.809$\pm$0.081($\uparrow$)($\approx$) & 0.803$\pm$0.090($\uparrow$)($\approx$)($\approx$)
+& 0.114$\pm$0.059 & 0.065$\pm$0.032($\uparrow$) & 0.074$\pm$0.034($\uparrow$)($\approx$) & 0.074$\pm$0.043($\uparrow$)($\approx$)($\approx$) \\
 $\langle100,0.2\rangle$
-& .778$\pm$.117 & .828$\pm$.075($\uparrow$) & .854$\pm$.055($\uparrow$)($\uparrow$) & .847$\pm$.077($\uparrow$)($\approx$)($\approx$)
-& .118$\pm$.071 & .084$\pm$.047($\uparrow$) & .082$\pm$.042($\uparrow$)($\approx$) & .079$\pm$.040($\uparrow$)($\approx$)($\approx$) \\
+& 0.778$\pm$0.117 & 0.828$\pm$0.075($\uparrow$) & 0.854$\pm$0.055($\uparrow$)($\uparrow$) & 0.847$\pm$0.077($\uparrow$)($\approx$)($\approx$)
+& 0.118$\pm$0.071 & 0.084$\pm$0.047($\uparrow$) & 0.082$\pm$0.042($\uparrow$)($\approx$) & 0.079$\pm$0.040($\uparrow$)($\approx$)($\approx$) \\
 $\langle100,0.8\rangle$
-& .748$\pm$.108 & .801$\pm$.090($\uparrow$) & .816$\pm$.081($\uparrow$)($\approx$) & .810$\pm$.086($\uparrow$)($\approx$)($\approx$)
-& .176$\pm$.065 & .125$\pm$.052($\uparrow$) & .121$\pm$.051($\uparrow$)($\approx$) & .135$\pm$.056($\uparrow$)($\approx$)($\approx$) \\
+& 0.748$\pm$0.108 & 0.801$\pm$0.090($\uparrow$) & 0.816$\pm$0.081($\uparrow$)($\approx$) & 0.810$\pm$0.086($\uparrow$)($\approx$)($\approx$)
+& 0.176$\pm$0.065 & 0.125$\pm$0.052($\uparrow$) & 0.121$\pm$0.051($\uparrow$)($\approx$) & 0.135$\pm$0.056($\uparrow$)($\approx$)($\approx$) \\
 \midrule
 W/D/L & 0/0/6 & 0/3/3 & 0/5/1 & N/A
       & 0/0/6 & 0/3/3 & 0/5/1 & N/A \\
@@ -1289,7 +1184,7 @@ complementary within the proposed decision process.
 Table~\ref{Table: combined GP task ordering} reports the HV and IGD results
 obtained using the GP task-selection rule and upward-rank ordering across the 12
 scenarios. The comparison holds the deduplicated resource-selection rule pool
-fixed. Following Tables~\ref{Table: HV main results}--\ref{Table: combined ablation results}, W/D/L reports the baseline GP
+fixed. Following Tables~\ref{Table: main results} and~\ref{Table: combined ablation results}, W/D/L reports the baseline GP
 task-selection rule relative to upward-rank ordering.
 
 \begin{table}[!t]
@@ -1297,31 +1192,33 @@ task-selection rule relative to upward-rank ordering.
 GP task-selection rule and upward-rank ordering over 30 independent runs.}
 \label{Table: combined GP task ordering}
 \centering
-\scriptsize
-\setlength{\tabcolsep}{3.2pt}
-\begin{tabular}{c|cc|cc}
+% \scriptsize
+\setlength{\tabcolsep}{1.8pt}
+\resizebox{\linewidth}{!}
+{\begin{tabular}{@{}lcccc@{}}
 \toprule
 \multirow{2}{*}{$\langle\mathrm{wfNum},\lambda\rangle$}
-& \multicolumn{2}{c|}{HV} & \multicolumn{2}{c}{IGD} \\
+& \multicolumn{2}{c}{HV} & \multicolumn{2}{c}{IGD} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
 & GP task rule & Upward rank & GP task rule & Upward rank \\
 \midrule
-$\langle10,0.2\rangle$ & .789$\pm$.092 & .790$\pm$.092($\approx$) & .100$\pm$.032 & .100$\pm$.033($\approx$) \\
-$\langle10,0.8\rangle$ & .788$\pm$.113 & .787$\pm$.117($\approx$) & .107$\pm$.038 & .108$\pm$.042($\approx$) \\
-$\langle15,0.2\rangle$ & .800$\pm$.114 & .799$\pm$.109($\approx$) & .068$\pm$.031 & .070$\pm$.028($\approx$) \\
-$\langle15,0.8\rangle$ & .749$\pm$.150 & .750$\pm$.151($\approx$) & .084$\pm$.057 & .085$\pm$.059($\approx$) \\
-$\langle20,0.2\rangle$ & .789$\pm$.134 & .787$\pm$.136($\approx$) & .078$\pm$.041 & .078$\pm$.040($\approx$) \\
-$\langle20,0.8\rangle$ & .776$\pm$.110 & .779$\pm$.108($\approx$) & .074$\pm$.035 & .072$\pm$.033($\approx$) \\
-$\langle30,0.2\rangle$ & .823$\pm$.101 & .823$\pm$.100($\approx$) & .083$\pm$.037 & .081$\pm$.037($\approx$) \\
-$\langle30,0.8\rangle$ & .788$\pm$.091 & .784$\pm$.099($\approx$) & .080$\pm$.030 & .081$\pm$.030($\approx$) \\
-$\langle50,0.2\rangle$ & .808$\pm$.103 & .806$\pm$.104($\approx$) & .082$\pm$.042 & .084$\pm$.042($\downarrow$) \\
-$\langle50,0.8\rangle$ & .783$\pm$.135 & .779$\pm$.136($\downarrow$) & .074$\pm$.039 & .075$\pm$.037($\approx$) \\
-$\langle100,0.2\rangle$ & .817$\pm$.096 & .813$\pm$.096($\approx$) & .075$\pm$.034 & .078$\pm$.035($\approx$) \\
-$\langle100,0.8\rangle$ & .852$\pm$.067 & .850$\pm$.070($\approx$) & .066$\pm$.024 & .067$\pm$.026($\approx$) \\
+$\langle10,0.2\rangle$ & 0.789$\pm$0.092 & 0.790$\pm$0.092($\approx$) & 0.100$\pm$0.032 & 0.100$\pm$0.033($\approx$) \\
+$\langle10,0.8\rangle$ & 0.788$\pm$0.113 & 0.787$\pm$0.117($\approx$) & 0.107$\pm$0.038 & 0.108$\pm$0.042($\approx$) \\
+$\langle15,0.2\rangle$ & 0.800$\pm$0.114 & 0.799$\pm$0.109($\approx$) & 0.068$\pm$0.031 & 0.070$\pm$0.028($\approx$) \\
+$\langle15,0.8\rangle$ & 0.749$\pm$0.150 & 0.750$\pm$0.151($\approx$) & 0.084$\pm$0.057 & 0.085$\pm$0.059($\approx$) \\
+$\langle20,0.2\rangle$ & 0.789$\pm$0.134 & 0.787$\pm$0.136($\approx$) & 0.078$\pm$0.041 & 0.078$\pm$0.040($\approx$) \\
+$\langle20,0.8\rangle$ & 0.776$\pm$0.110 & 0.779$\pm$0.108($\approx$) & 0.074$\pm$0.035 & 0.072$\pm$0.033($\approx$) \\
+$\langle30,0.2\rangle$ & 0.823$\pm$0.101 & 0.823$\pm$0.100($\approx$) & 0.083$\pm$0.037 & 0.081$\pm$0.037($\approx$) \\
+$\langle30,0.8\rangle$ & 0.788$\pm$0.091 & 0.784$\pm$0.099($\approx$) & 0.080$\pm$0.030 & 0.081$\pm$0.030($\approx$) \\
+$\langle50,0.2\rangle$ & 0.808$\pm$0.103 & 0.806$\pm$0.104($\approx$) & 0.082$\pm$0.042 & 0.084$\pm$0.042($\downarrow$) \\
+$\langle50,0.8\rangle$ & 0.783$\pm$0.135 & 0.779$\pm$0.136($\downarrow$) & 0.074$\pm$0.039 & 0.075$\pm$0.037($\approx$) \\
+$\langle100,0.2\rangle$ & 0.817$\pm$0.096 & 0.813$\pm$0.096($\approx$) & 0.075$\pm$0.034 & 0.078$\pm$0.035($\approx$) \\
+$\langle100,0.8\rangle$ & 0.852$\pm$0.067 & 0.850$\pm$0.070($\approx$) & 0.066$\pm$0.024 & 0.067$\pm$0.026($\approx$) \\
 \midrule
 W/D/L & 1/11/0 & N/A & 1/11/0 & N/A \\
 AverageRank & 1.436 & 1.564 & 1.458 & 1.542 \\
 \bottomrule
-\end{tabular}
+\end{tabular}}
 \end{table}
 
 With the resource-selection rule pool fixed, the GP task-selection rule records
