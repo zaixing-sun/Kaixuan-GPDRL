@@ -633,27 +633,11 @@ During inference, upward-rank ordering first determines the current ready task w
 \section{Experimental Design}
 \label{Sec: experimental design}
 
-This section describes the simulation setup, compared algorithms, evaluation metrics, and statistical tests used in the experiments.
-
 \subsection{Experimental Setup}
 \label{Sec: experimental environment}
 
-Experiments use the event-driven workflow simulator introduced in \cite{ccgp}.
-Allocation updates occur at the task events specified in
-Section~\ref{Sec: problem modeling}. All methods use the same workflow
-instances, feasible resource set, communication model, CPU allocation rule, and
-energy accounting.
-
-Table~\ref{Table: resource configurations} lists five representative resource
-types for each tier. The configurations are derived from Amazon
-EC2\footnotemark[1], with CPU capacities reported in EC2 Compute Units (ECUs),
-and the power parameters follow the Teads model\footnotemark[2].
-The Edge tier contains 19 fixed Edge Nodes, whereas Cloud Servers of the listed
-types can be provisioned on demand. Each task incurs a 50ms container
-initialization delay \cite{Ranjan2020}, and provisioning a new Cloud Server takes
-55.9 s. Following \cite{Goudarzi2021,Pallewatta2022}, local-area network (LAN) and wide-area
-network (WAN) bandwidths are set to 2.0 and 0.5 GB/s, and their communication
-latencies are 0.5 and 30 ms, respectively.
+We conduct the experiments using an event-driven simulator adapted from the workflow scheduling simulator in \cite{ccgp} to match the problem model in Section~\ref{Sec: problem modeling}.
+Table~\ref{Table: resource configurations} lists five representative resource types for each tier. The configurations are derived from Amazon EC2\footnotemark[1], with CPU capacity measured in EC2 Compute Units (ECUs), and the power parameters follow the Teads model\footnotemark[2]. The Edge tier contains 19 fixed Edge Nodes, whereas Cloud Servers of the listed types can be provisioned on demand. Each task incurs a 50~ms container initialization delay \cite{Ranjan2020}, and provisioning a new Cloud Server takes 55.9~s. Following \cite{Goudarzi2021,Pallewatta2022}, the bandwidths of local-area and wide-area networks are set to 2.0 and 0.5~GB/s, and their communication latencies are 0.5 and 30~ms, respectively.
 
 \begin{table*}[!t]
 \caption{Configurations of Edge Nodes and Cloud Servers.}
@@ -687,52 +671,26 @@ m4.16xlarge & 188 & 31.09 & 249.90 & 51.6 \\
 \vspace{-1em}
 \end{table*}
 
-Workflow templates are sampled from Alibaba Cluster-trace-v2018\footnotemark[3]. The public trace
-supplies task dependencies and execution information, from which the DAG
-workflows used by the simulator are reconstructed. Task input and output data
-sizes follow a discrete uniform distribution between 500 and 5000 MB. Each task
-is independently assigned as CPU-sensitive or CPU-insensitive with equal
-probability. Workflow weights are independently sampled from $\{1,2,4\}$ with
-probabilities $0.2$, $0.6$, and $0.2$, respectively, following
-\cite{Hi2015ousgp}.
+Workflow templates are sampled from Alibaba Cluster-trace-v2018\footnotemark[3]. The public trace provides task dependencies and execution information, and the simulator reconstructs workflows from these data. Task input and output data sizes follow a discrete uniform distribution between 500 and 5000~MB. Each task is independently classified as CPU-sensitive or CPU-insensitive with equal probability. Workflow weights are independently sampled from $\{1,2,4\}$ with probabilities $0.2$, $0.6$, and $0.2$, respectively, following \cite{Hi2015ousgp}.
 \footnotetext[1]{\url{https://aws.amazon.com/ec2/}}
 \footnotetext[2]{\url{https://engineering.teads.com/sustainability/
 carbon-footprint-estimator-for-aws-instances/}}
 \footnotetext[3]{\url{https://github.com/alibaba/clusterdata}}
 
-Workflow arrivals follow a Poisson process with rate $\lambda$, so the
-inter-arrival time is exponentially distributed with mean $1/\lambda$
-\cite{Sahoo2021}. Following \cite{ccgp}, reference execution and Edge transfer
-times are propagated along each DAG. Let $L_{\omega}$ be the largest earliest
-finish time obtained by this propagation. The workflow deadline is
-$\rho^d(\omega)=\rho^a(\omega)+\delta_{\omega}L_{\omega}$, where the deadline
-factor $\delta_{\omega}$ is
-sampled uniformly from $\{0.8,1.0,1.5,1.8\}$.
+Workflow arrivals follow a Poisson process with rate $\lambda$, and the inter-arrival time is exponentially distributed with mean $1/\lambda$ \cite{Sahoo2021}. Following \cite{ccgp}, reference execution times and Edge transfer times are propagated along each DAG to obtain the largest earliest finish time $L_{\omega}$. The workflow deadline is set as $\rho^d(\omega)=\rho^a(\omega)+\delta_{\omega}L_{\omega}$, where the deadline factor $\delta_{\omega}$ is sampled uniformly from $\{0.8,1.0,1.5,1.8\}$.
 
-\textbf{Training and test protocol.}
-\label{Sec: training test protocol}
-Each scenario is denoted by $\langle\mathrm{wfNum},\lambda\rangle$, where
-$\mathrm{wfNum}$ is the total number of submitted workflows and $\lambda$ is
-their arrival rate. The main evaluation covers the 12 combinations of
-$\mathrm{wfNum}\in\{10,15,20,30,50,100\}$ and $\lambda\in\{0.2,0.8\}$.
-For each scenario, 30 independent runs are conducted. Within each run, every
-solution is evaluated on the same 30 unseen test instances, and its objective
-values are averaged over these instances before HV and IGD are calculated. The
-tables report the mean and standard deviation of HV and IGD over the 30 runs.
+Each scenario is denoted by $\langle\mathrm{wfNum},\lambda\rangle$, where $\mathrm{wfNum}$ is the total number of submitted workflows and $\lambda$ is the arrival rate. The main evaluation consists of the 12 combinations of $\mathrm{wfNum}\in\{10,15,20,30,50,100\}$ and $\lambda\in\{0.2,0.8\}$. For each scenario, 30 independent runs are conducted. In each run, every solution is evaluated on the same 30 unseen instances, and the objective values are averaged over these instances before the performance measures are calculated. The tables report the mean and standard deviation over the 30 runs.
 
-The parameter settings of CCGP follow \cite{ccgp} and are presented in
-Table~\ref{Table: CCGP parameters}. The DDQN and risk-stratified action
-augmentation configuration is detailed in
-Table~\ref{Table: DDQN risk parameters}. GATES uses a population of 100 policy
-networks and runs for 51 generations.
-We set $K=5$.
-Behavioral filtering may leave fewer than five unique rules in a particular
-run. The actual pool size in run $b$ is denoted by $K_b\leq K$. Each
-retained rule is paired with the two modes. As a result, run $b$ has $2K_b$ nominal
-rule-mode actions. Training preference sampling, checkpoint validation, and
-evaluation use the grid in Eq.~\eqref{Eq: evaluation preference grid}.
+\subsection{Compared Algorithms}
+\label{Sec: compared methods}
+
+Under the above experimental setting, the performance comparison includes CCGP, GATES, and LWFF, which represent GP hyper-heuristic, graph-based learning, and constructive heuristic methods, respectively. CCGP \cite{ccgp} coevolves task-selection, resource-selection, and container-scaling rules, and returns non-dominated scheduling heuristics. GATES \cite{gates} uses graph attention to encode ready tasks, workflow dependencies, and virtual machines, and learns an allocation policy through an evolution strategy. LWFF \cite{lwff} constructs non-dominated candidate resources and selects a resource according to resource waste and completion speed.
+
+Because the original problem settings of these algorithms differ from the present model, necessary adaptations are made for a fair comparison. The adapted versions follow the experimental setup in Section~\ref{Sec: experimental environment} and use the objective definitions in Section~\ref{Sec: problem modeling}. For CCGP, task-selection and resource-selection rules are evolved, while the container-scaling rule is not used because CPU allocation is specified by Eq.~\eqref{Eq: cpu allocation}. For GATES, the learned policies are evaluated using weighted tardiness and energy consumption, and the final non-dominated policies form the approximation set. LWFF is evaluated on the same preference grid as PRS-GPDRL using upward-rank task ordering and preference-weighted normalized estimates of weighted tardiness and energy.
+The CCGP parameters follow \cite{ccgp} and are listed in Table~\ref{Table: CCGP parameters}. GATES uses a population of 100 policy networks and runs for 51 generations. The main DDQN and risk-stratified action augmentation parameters of PRS-GPDRL are listed in Table~\ref{Table: DDQN risk parameters}.
+
 \begin{table}[!t]
-\caption{The parameter settings of CCGP.}
+\caption{Parameter settings of CCGP.}
 \label{Table: CCGP parameters}
 \centering
 % \footnotesize
@@ -749,53 +707,13 @@ Elitism & 5 \\
 Maximal depth & 8 \\
 Crossover/mutation/reproduction rate & 0.80/0.15/0.05 \\
 Terminal/non-terminal selection rate & 10\%/90\% \\
-Environmental selection & NSGA-II \\
+Environmental selection & \makecell[l]{Non-dominated Sorting\\Genetic Algorithm II (NSGA-II)} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-
-
-
-\subsection{Compared Algorithms and Performance Measures}
-\label{Sec: compared methods}
-\label{Sec: evaluation metrics}
-
-PRS-GPDRL is compared with CCGP, GATES, and LWFF.
-
-\begin{itemize}
-    \item \textbf{CCGP} \cite{ccgp} coevolves task-selection,
-    resource-selection, and container-scaling GP rules to construct
-    non-dominated scheduling heuristics. For the problem model in Section~\ref{Sec: problem modeling},
-    our implementation retains its cooperative task- and resource-rule
-    evolution but omits the container-scaling subpopulation because container
-    CPU is assigned by Eq.~\eqref{Eq: cpu allocation}. Each combined heuristic
-    is evaluated on energy and weighted tardiness, and the final non-dominated
-    heuristics form the approximation set.
-
-    \item \textbf{GATES} \cite{gates} uses graph attention to encode ready
-    tasks, workflow dependencies, and candidate resources, and evolves a neural
-    resource-selection policy through an evolution strategy. Our implementation
-    retains this graph representation and direct resource-selection policy.
-    To support the two objectives, policy networks are evaluated on energy and
-    weighted tardiness. The Non-dominated Sorting Genetic Algorithm II (NSGA-II)
-    performs individual selection, and offspring networks are generated by
-    Gaussian perturbations of the selected network parameters. The final
-    non-dominated policies form the approximation set.
-
-    \item \textbf{LWFF} \cite{lwff} is a constructive heuristic that selects
-    resources from non-dominated candidates according to resource waste and
-    completion speed. In our implementation, ready tasks are ordered by upward
-    rank, and the energy and tardiness estimates of feasible resources are
-    min--max normalized and combined under each requested preference. Expected
-    finish time resolves ties. Applying LWFF over the evaluation preference
-    grid and retaining the non-dominated schedules produces its approximation
-    set.
-\end{itemize}
-
-
 \begin{table}[!t]
-\caption{The parameter configuration of DDQN and risk-stratified action
+\caption{Parameter settings of DDQN and risk-stratified action
 augmentation.}
 \label{Table: DDQN risk parameters}
 \centering
@@ -822,27 +740,19 @@ Tchebycheff augmentation $\zeta$ & 0.05 \\
 \end{tabular}
 \end{table}
 
-PRS-GPDRL uses the resource-selection rule pool extracted from the corresponding
-CCGP run. In each run, each method produces one non-dominated approximation
-set. PRS-GPDRL and LWFF use solutions over the preference grid, while CCGP and
-GATES use the final heuristics or policies. LWFF produces the same approximation
-set in every run. Its non-zero HV and IGD standard deviations arise because this
-set is jointly normalized with those of the other methods in each run. The four
-sets are pooled, and each objective
-$f_j\in\{\mathbb{T},\mathbb{E}\}$ is min--max normalized as
+\subsection{Performance Measures}
+\label{Sec: evaluation metrics}
+
+Each algorithm is evaluated by the approximation set it obtains in the weighted-tardiness--energy objective space. PRS-GPDRL and LWFF generate schedules over the preference grid in Eq.~\eqref{Eq: evaluation preference grid}, while CCGP and GATES use their final non-dominated heuristics or policies. For each method, dominated solutions are removed before calculating the performance measures.
+
+HV and IGD are used as the performance measures for approximation sets. HV measures the dominated area of an approximation set and reflects both convergence and spread, while IGD measures the average distance from a reference set to the approximation set. Larger HV and smaller IGD indicate better performance. Before calculating HV and IGD, all solutions obtained by the algorithms in the same run are pooled, and each objective is min--max normalized:
 \begin{equation}
     \widehat{f}_j(x)=
     \frac{f_j(x)-f_j^{\min}}
     {f_j^{\max}-f_j^{\min}},
     \label{Eq: objective normalization}
 \end{equation}
-where $f_j^{\min}$ and $f_j^{\max}$ are the pooled extrema of the four sets in
-that run. A constant objective is assigned zero.
-
-HV evaluates the convergence and coverage of each approximation set and is
-computed against the reference point $(1,1)$. Because the true Pareto front is
-unknown, the IGD reference set $Q$ comprises the jointly non-dominated
-normalized solutions from the four sets in that run. For approximation set $P$,
+where $f_j^{\min}$ and $f_j^{\max}$ are the minimum and maximum values of objective $f_j\in\{\mathbb{T},\mathbb{E}\}$ among the pooled solutions. HV is computed with the reference point $(1,1)$. Since the true Pareto front is unknown, the IGD reference set $Q$ is formed by the jointly non-dominated normalized solutions obtained in the same run. For an approximation set $P$, IGD is calculated as
 \begin{equation}
     \operatorname{IGD}(P,Q)=
     \frac{1}{|Q|}
@@ -850,17 +760,8 @@ normalized solutions from the four sets in that run. For approximation set $P$,
     \min_{p\in P}\lVert p-q\rVert_2.
     \label{Eq: IGD}
 \end{equation}
-Larger HV and smaller IGD are preferable.
 
-For each scenario and metric, the four algorithms are compared using the
-Iman--Davenport-corrected Friedman test and two-sided paired Wilcoxon
-signed-rank tests at a significance level of 0.05. Within each result cell, the
-arrows denote statistically better ($\uparrow$), worse ($\downarrow$), or
-similar ($\approx$) performance against the preceding methods. For each
-baseline column, W/D/L (win/draw/loss) gives the number of scenarios in which
-that baseline is statistically better than, similar to, or worse than
-PRS-GPDRL. The PRS-GPDRL column is marked as not applicable (N/A). AverageRank
-is the mean rank over the 30 runs, for which smaller is better.
+For each scenario and metric, statistical comparisons are performed using the Iman--Davenport-corrected Friedman test and two-sided paired Wilcoxon signed-rank tests at the 0.05 significance level. In the result tables, the arrows indicate that a result is statistically better ($\uparrow$), worse ($\downarrow$), or similar ($\approx$) compared with the preceding methods. W/D/L summarizes the number of scenarios in which a baseline is statistically better than, similar to, or worse than PRS-GPDRL. AverageRank reports the mean rank over the 30 runs, and a smaller value is better.
 
 \section{Experimental Results}
 \label{Sec: experimental results}
