@@ -713,38 +713,8 @@ Tchebycheff augmentation $\zeta$ & 0.05 \\
 \end{tabular}
 \end{table}
 
-\subsection{Performance Measures}
-\label{Sec: evaluation metrics}
 
-Each algorithm is evaluated by the approximation set it obtains in the weighted-tardiness--energy objective space. PRS-GPDRL and LWFF generate schedules over the preference grid in Eq.~\eqref{Eq: evaluation preference grid}, while CCGP and GATES use their final non-dominated heuristics or policies. For each method, dominated solutions are removed before calculating the performance measures.
 
-HV and IGD are used as the performance measures for approximation sets. HV measures the dominated area of an approximation set and reflects both convergence and spread, while IGD measures the average distance from a reference set to the approximation set. Larger HV and smaller IGD indicate better performance. Before calculating HV and IGD, all solutions obtained by the algorithms in the same run are pooled, and each objective is min--max normalized:
-\begin{equation}
-    \widehat{f}_j(x)=
-    \frac{f_j(x)-f_j^{\min}}
-    {f_j^{\max}-f_j^{\min}},
-    \label{Eq: objective normalization}
-\end{equation}
-where $f_j^{\min}$ and $f_j^{\max}$ are the minimum and maximum values of objective $f_j\in\{\mathbb{T},\mathbb{E}\}$ among the pooled solutions. HV is computed with the reference point $(1,1)$. Since the true Pareto front is unknown, the IGD reference set $Q$ is formed by the jointly non-dominated normalized solutions obtained in the same run. For an approximation set $P$, IGD is calculated as
-\begin{equation}
-    \operatorname{IGD}(P,Q)=
-    \frac{1}{|Q|}
-    \sum_{q\in Q}
-    \min_{p\in P}\lVert p-q\rVert_2.
-    \label{Eq: IGD}
-\end{equation}
-
-For each scenario and metric, statistical comparisons are performed using the Iman--Davenport-corrected Friedman test and two-sided paired Wilcoxon signed-rank tests at the 0.05 significance level. In the result tables, the arrows indicate that a result is statistically better ($\uparrow$), worse ($\downarrow$), or similar ($\approx$) compared with the preceding methods. W/D/L summarizes the number of scenarios in which the reported method is statistically better than, similar to, or worse than the reference method in the corresponding comparison. AverageRank reports the mean rank over the 30 runs, and a smaller value is better.
-
-\section{Experimental Results}
-\label{Sec: experimental results}
-
-This section first reports the ablation study and diagnostic comparisons, and then compares the overall performance of PRS-GPDRL with the baselines.
-
-\subsection{Ablation Study}
-\label{Sec: ablation design analysis}
-
-Table~\ref{Table: combined ablation results} reports the HV and IGD results of PRS-GPDRL and its three ablation variants in six representative scenarios. The \emph{w/o Risk} and \emph{w/o FiLM} variants remove the two components separately, while $K=3$ sets the maximum resource-selection rule pool size to three. All variants follow the same training, evaluation, and statistical analysis protocol.
 
 \begin{table*}[!t]
 \caption{The mean and standard deviation of the HV and IGD values for PRS-GPDRL
@@ -789,22 +759,30 @@ AverageRank & 3.222 & 2.511 & 2.164 & 2.103
 \end{tabular}}
 \end{table*}
 
-\subsubsection{Risk-Stratified Action Augmentation and FiLM Conditioning}
+\subsection{Performance Measures}
+\label{Sec: evaluation metrics}
 
-This ablation examines the effects of the risk mode and FiLM conditioning while keeping the retained GP rule pool and scalarization scheme unchanged. Across the six representative scenarios, \emph{w/o Risk} records 0/0/6 against PRS-GPDRL for both metrics, showing the largest degradation among the three variants. Each retained GP rule provides a resource ranking, while the risk mode applies a bounded local correction according to the current state and preference. The consistent losses after removing this mode support its contribution to the final performance.
+Each algorithm is evaluated by the approximation set it obtains in the weighted-tardiness--energy objective space. PRS-GPDRL and LWFF generate schedules over the preference grid in Eq.~\eqref{Eq: evaluation preference grid}, while CCGP and GATES use their final non-dominated heuristics or policies. For each method, dominated solutions are removed before calculating the performance measures.
 
-The \emph{w/o FiLM} variant records 0/3/3 for HV and 0/4/2 for IGD. Since this variant still uses vector-valued action costs and augmented weighted Tchebycheff scalarization, preference information remains available in action evaluation. The results suggest that FiLM provides additional preference-dependent modulation, although it is not the only channel through which preference information affects rule-mode selection.
+HV and IGD are used as the performance measures for approximation sets. HV measures the dominated area of an approximation set and reflects both convergence and spread, while IGD measures the average distance from a reference set to the approximation set. Larger HV and smaller IGD indicate better performance. Before calculating HV and IGD, all solutions obtained by the algorithms in the same run are pooled, and each objective is min--max normalized:
+\begin{equation}
+    \widehat{f}_j(x)=
+    \frac{f_j(x)-f_j^{\min}}
+    {f_j^{\max}-f_j^{\min}},
+    \label{Eq: objective normalization}
+\end{equation}
+where $f_j^{\min}$ and $f_j^{\max}$ are the minimum and maximum values of objective $f_j\in\{\mathbb{T},\mathbb{E}\}$ among the pooled solutions. HV is computed with the reference point $(1,1)$. Since the true Pareto front is unknown, the IGD reference set $Q$ is formed by the jointly non-dominated normalized solutions obtained in the same run. For an approximation set $P$, IGD is calculated as
+\begin{equation}
+    \operatorname{IGD}(P,Q)=
+    \frac{1}{|Q|}
+    \sum_{q\in Q}
+    \min_{p\in P}\lVert p-q\rVert_2.
+    \label{Eq: IGD}
+\end{equation}
 
-\subsubsection{Rule-Pool Size}
+For each scenario and metric, statistical comparisons are performed using the Iman--Davenport-corrected Friedman test and two-sided paired Wilcoxon signed-rank tests at the 0.05 significance level. In the result tables, the arrows indicate that a result is statistically better ($\uparrow$), worse ($\downarrow$), or similar ($\approx$) compared with the preceding methods. W/D/L summarizes the number of scenarios in which the reported method is statistically better than, similar to, or worse than the reference method in the corresponding comparison. AverageRank reports the mean rank over the 30 runs, and a smaller value is better.
 
-This ablation examines the sensitivity to the size of the retained resource-selection rule pool. The $K=3$ variant records 0/5/1 for both metrics and is statistically comparable to PRS-GPDRL in five of the six scenarios. This result indicates that a smaller pool can retain much of the performance when the two endpoint rules and the balanced anchor rule are preserved. The $K=5$ setting still obtains the best average ranks, which is consistent with using additional neighboring rules to cover nearby trade-off regions.
 
-Taken together, the ablation results show different effects of the three design choices. The risk mode gives the clearest component-level contribution, FiLM adds preference-dependent modulation to the state representation, and the pool-size comparison indicates that performance is not determined by action count alone.
-
-\subsubsection{Task-Sequencing and Resource-Selection Diagnostics}
-\label{Sec: task sequencing design}
-
-This diagnostic comparison examines how performance changes when either the task-sequencing or resource-selection component of CCGP is replaced by the corresponding component of the Heterogeneous Earliest Finish Time (HEFT) algorithm \cite{Topcuoglu2002}. Table~\ref{Table: combined GP task sequencing} reports two CCGP-based diagnostic comparisons across the 12 scenarios. CCGP-UR replaces the GP task-sequencing rule of CCGP with upward-rank sequencing, and CCGP-EFT replaces the GP resource-selection rule with the earliest-finish-time (EFT) criterion while retaining the GP task-sequencing rule.
 
 \begin{table}[!t]
 \caption{The mean and standard deviation of the HV and IGD values obtained using CCGP-EFT, CCGP-UR, and CCGP over 30 independent runs.}
@@ -839,15 +817,16 @@ AverageRank & 3.000 & 1.564 & 1.436 & 3.000 & 1.556 & 1.444 \\
 \end{tabular}}
 \end{table}
 
-CCGP-UR records 0/11/1 against CCGP for both metrics and has close average ranks. In contrast, CCGP-EFT records 0/0/12 against CCGP for both metrics and has the worst average rank. This contrast indicates that replacing the GP resource-selection rule with the EFT criterion leads to a much larger performance loss than replacing the GP task-sequencing rule with upward-rank sequencing.
+\section{Experimental Results}
+\label{Sec: experimental results}
 
-The diagnostic results are consistent with the decision structure considered in this work. VMs can execute multiple tasks concurrently, resource selection is required for every dispatched task, and task sequencing is only needed when more than one task is ready at the same decision point. Moreover, treating task-sequencing rules as additional learned actions would introduce combinations of task-sequencing and resource-selection choices, which can increase training cost and may make policy learning more difficult. Thus, these results support the design choice in Section~\ref{Sec: PRS-GPDRL overall}: PRS-GPDRL retains upward-rank sequencing for ready-task sequencing and concentrates the learned action space on resource selection. They do not imply that task sequencing is unimportant in general, but indicate that it is not the main source of performance difference in the evaluated scenarios.
+This section first reports the ablation study and diagnostic comparisons, and then compares the overall performance of PRS-GPDRL with the baselines.
 
-\subsection{Overall Performance}
-\label{Sec: overall performance}
-% The overall comparison examines whether PRS-GPDRL improves the quality of the obtained approximation sets over representative GP hyper-heuristic, graph-based learning, and constructive heuristic baselines. 
-Table~\ref{Table: main results} presents the mean and standard deviation of the HV and IGD values over the 30 independent runs of the compared algorithms.
-PRS-GPDRL obtains the best HV average rank (1.406), while CCGP records 1/1/10 relative to it. PRS-GPDRL is statistically better than or comparable to CCGP throughout $\mathrm{wfNum}\leq 50$, with clear gains in several small- and medium-scale scenarios. At $\mathrm{wfNum}=100$, PRS-GPDRL is better than CCGP at $\langle100,0.2\rangle$ but worse at $\langle100,0.8\rangle$, indicating that its advantage is less consistent under the largest workflow count with the higher arrival rate.
+\subsection{Ablation Study}
+\label{Sec: ablation design analysis}
+
+Table~\ref{Table: combined ablation results} reports the HV and IGD results of PRS-GPDRL and its three ablation variants in six representative scenarios. The \emph{w/o Risk} and \emph{w/o FiLM} variants remove the two components separately, while $K=3$ sets the maximum resource-selection rule pool size to three. All variants follow the same training, evaluation, and statistical analysis protocol.
+
 
 \begin{table*}[!t]
 \caption{The mean and standard deviation of the HV and IGD values over the 30
@@ -912,6 +891,38 @@ AverageRank & 3.603 & 3.017 & 1.975 & 1.406
 
 
 
+
+\subsubsection{Risk-Stratified Action Augmentation and FiLM Conditioning}
+
+This ablation examines the effects of the risk mode and FiLM conditioning while keeping the retained GP rule pool and scalarization scheme unchanged. Across the six representative scenarios, \emph{w/o Risk} records 0/0/6 against PRS-GPDRL for both metrics, showing the largest degradation among the three variants. Each retained GP rule provides a resource ranking, while the risk mode applies a bounded local correction according to the current state and preference. The consistent losses after removing this mode support its contribution to the final performance.
+
+The \emph{w/o FiLM} variant records 0/3/3 for HV and 0/4/2 for IGD. Since this variant still uses vector-valued action costs and augmented weighted Tchebycheff scalarization, preference information remains available in action evaluation. The results suggest that FiLM provides additional preference-dependent modulation, although it is not the only channel through which preference information affects rule-mode selection.
+
+\subsubsection{Rule-Pool Size}
+
+This ablation examines the sensitivity to the size of the retained resource-selection rule pool. The $K=3$ variant records 0/5/1 for both metrics and is statistically comparable to PRS-GPDRL in five of the six scenarios. This result indicates that a smaller pool can retain much of the performance when the two endpoint rules and the balanced anchor rule are preserved. The $K=5$ setting still obtains the best average ranks, which is consistent with using additional neighboring rules to cover nearby trade-off regions.
+
+Taken together, the ablation results show different effects of the three design choices. The risk mode gives the clearest component-level contribution, FiLM adds preference-dependent modulation to the state representation, and the pool-size comparison indicates that performance is not determined by action count alone.
+
+
+
+\subsubsection{Task-Sequencing and Resource-Selection Diagnostics}
+\label{Sec: task sequencing design}
+
+This diagnostic comparison examines how performance changes when either the task-sequencing or resource-selection component of CCGP is replaced by the corresponding component of the Heterogeneous Earliest Finish Time (HEFT) algorithm \cite{Topcuoglu2002}. Table~\ref{Table: combined GP task sequencing} reports two CCGP-based diagnostic comparisons across the 12 scenarios. CCGP-UR replaces the GP task-sequencing rule of CCGP with upward-rank sequencing, and CCGP-EFT replaces the GP resource-selection rule with the earliest-finish-time (EFT) criterion while retaining the GP task-sequencing rule.
+
+CCGP-UR records 0/11/1 against CCGP for both metrics and has close average ranks. In contrast, CCGP-EFT records 0/0/12 against CCGP for both metrics and has the worst average rank. This contrast indicates that replacing the GP resource-selection rule with the EFT criterion leads to a much larger performance loss than replacing the GP task-sequencing rule with upward-rank sequencing.
+
+The diagnostic results are consistent with the decision structure considered in this work. VMs can execute multiple tasks concurrently, resource selection is required for every dispatched task, and task sequencing is only needed when more than one task is ready at the same decision point. Moreover, treating task-sequencing rules as additional learned actions would introduce combinations of task-sequencing and resource-selection choices, which can increase training cost and may make policy learning more difficult. Thus, these results support the design choice in Section~\ref{Sec: PRS-GPDRL overall}: PRS-GPDRL retains upward-rank sequencing for ready-task sequencing and concentrates the learned action space on resource selection. They do not imply that task sequencing is unimportant in general, but indicate that it is not the main source of performance difference in the evaluated scenarios.
+
+\subsection{Overall Performance}
+\label{Sec: overall performance}
+% The overall comparison examines whether PRS-GPDRL improves the quality of the obtained approximation sets over representative GP hyper-heuristic, graph-based learning, and constructive heuristic baselines. 
+Table~\ref{Table: main results} presents the mean and standard deviation of the HV and IGD values over the 30 independent runs of the compared algorithms.
+PRS-GPDRL obtains the best HV average rank (1.406), while CCGP records 1/1/10 relative to it. PRS-GPDRL is statistically better than or comparable to CCGP throughout $\mathrm{wfNum}\leq 50$, with clear gains in several small- and medium-scale scenarios. At $\mathrm{wfNum}=100$, PRS-GPDRL is better than CCGP at $\langle100,0.2\rangle$ but worse at $\langle100,0.8\rangle$, indicating that its advantage is less consistent under the largest workflow count with the higher arrival rate.
+
+
+
 PRS-GPDRL also obtains the best IGD average rank (1.486), with CCGP recording 1/4/7 relative to it. The IGD results follow a similar pattern: PRS-GPDRL is better than or comparable to CCGP throughout $\mathrm{wfNum}\leq 50$, whereas the two $\mathrm{wfNum}=100$ scenarios show mixed outcomes. GATES and LWFF are statistically better than PRS-GPDRL in at most one scenario for each metric, and their average ranks are higher than those of PRS-GPDRL and CCGP.
 
 Because PRS-GPDRL extracts its resource-selection rule pool from the corresponding CCGP archive, the comparison with CCGP helps separate the source of GP rules from their online use. Together with the risk mode and $K=3$ ablations and the CCGP-UR/CCGP-EFT diagnostics, the results support the interpretation that preference-aware online selection of resource-selection rules and bounded local correction are important to the performance gain in the evaluated scenarios. The next section further examines the obtained trade-off profiles and the preference-dependent behavior of the learned policy.
@@ -948,7 +959,7 @@ reduction is $[f_j(x(0))-f_j(x(w_j))]/f_j(x(0))$ from the endpoint at which its
 own weight is zero.
 Weighted tardiness is plotted against $w_T$, and energy against $w_E=1-w_T$.
 
-\begin{figure*}[!t]
+\begin{figure}[!t]
     \centering
     \begin{minipage}[t]{0.48\textwidth}
         \centering
@@ -964,7 +975,7 @@ Weighted tardiness is plotted against $w_T$, and energy against $w_E=1-w_T$.
     under different preference weights. Each curve shows the median over 30
     independent runs for one scenario.}
     \label{Fig: preference responses}
-\end{figure*}
+\end{figure}
 
 At the outcome level, increasing an objective's weight changes the schedule in the expected direction. Median reductions at weight 0.5 are 89.7\% for weighted tardiness and 20.5\% for energy. Over the full range, they reach 96.9\% and 51.1\%. The stronger response of weighted tardiness may be related to the threshold nature of tardiness penalties, where earlier completion near deadlines can sharply reduce the objective, whereas energy changes accumulate over resource active intervals.
 
