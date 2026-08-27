@@ -100,8 +100,9 @@ hypervolume (HV) and inverted generational distance (IGD), with ranks of 1.406
 and 1.486, respectively, and
 statistically outperforms or matches CCGP in 11 scenarios per metric. Gains are
 clearest on small- and medium-scale sets, and selected large-scale scenarios show
-additional HV gains. Behavioral and ablation evidence supports
-preference-dependent rule selection and risk-stratified adjustment.
+additional HV gains. Behavioral, ablation, and diagnostic results support
+preference-dependent rule selection, risk-stratified adjustment, and the focus
+on resource selection.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -119,7 +120,7 @@ Many dynamic workflow scheduling studies use manual rules or genetic programming
 
 Deep reinforcement learning (DRL) offers a way to learn online selection policies from scheduling experience, but two issues must be addressed in this setting. \emph{First}, directly using feasible resources as actions is difficult for dynamic workflow scheduling in Cloud--Edge computing because the action set changes with task requirements, resource availability, and on-demand Cloud provisioning \cite{jayanetti2022,xiao2025,gates}. Rule-assisted DRL avoids this issue by using scheduling rules as fixed actions, where the selected rule ranks feasible candidates at the current decision point. Existing rule-assisted studies use manual rules or GP-evolved rules in dynamic scheduling \cite{liu2022rules,xu2024niching,zhao2025tdrl}, and GP-evolved actions have also been applied to dynamic Fog workflow scheduling \cite{he2026evolved}. However, these studies mainly address single-objective or fixed-objective settings, and rule sets based on manual rules still depend on expert design. \emph{Second}, different users or scenarios may require different tardiness--energy trade-offs. Multi-objective reinforcement learning (MORL) and Pareto set learning can condition decisions on preferences \cite{roijers2013morl,hayes2022morl,abels2019morl,yang2019morl,lin2022psl,xu2026pslgp}. However, they do not provide a rule-mode action design that combines a compact pool of GP-evolved resource-selection rules with preference-aware online selection. This gap motivates combining GP-based generation of complementary resource-selection rules with DRL-based preference-aware online selection.
 
-To address these gaps, this paper proposes Preference-Aware Risk-Stratified Genetic Programming-assisted Deep Reinforcement Learning (PRS-GPDRL). Cooperative coevolution genetic programming (CCGP) is used to generate a multi-objective archive of scheduling heuristics. A quality- and behavior-aware extraction procedure then constructs a compact pool of complementary resource-selection rules from this archive. Each retained resource-selection rule is paired with a base mode and a risk mode. The base mode follows the selected GP rule, while the risk mode adds a bounded preference-aware local correction. Pairing the retained rules with these two modes gives a fixed rule-mode action space for the DRL agent. A multi-objective double deep Q-network (DDQN) learns to select rule-mode actions according to the current system state and requested preference. % Fixed upward-rank ordering is used for ready-task sequencing, and the learned policy focuses on resource selection.
+To address these gaps, this paper proposes Preference-Aware Risk-Stratified Genetic Programming-assisted Deep Reinforcement Learning (PRS-GPDRL). Cooperative coevolution genetic programming (CCGP) is used to generate a multi-objective archive of scheduling heuristics. A quality- and behavior-aware extraction procedure then constructs a compact pool of complementary resource-selection rules from this archive. Each retained resource-selection rule is paired with a base mode and a risk mode. The base mode follows the selected GP rule, while the risk mode adds a bounded preference-aware local correction. Pairing the retained rules with these two modes gives a fixed rule-mode action space for the DRL agent. A multi-objective double deep Q-network (DDQN) learns to select rule-mode actions according to the current system state and requested preference.
 The main contributions are as follows:
 \begin{itemize}
     \item We establish a CCGP-to-DRL knowledge interface that extracts high-quality and behaviorally complementary resource-selection rules from a CCGP archive. Pairing the compact rule pool with base and risk modes converts these executable heuristics into a fixed rule-mode action space that ranks the variable feasible-resource set at each allocation decision.
@@ -305,7 +306,7 @@ Eqs.~\eqref{Eq: running set}-\eqref{Eq: cpu allocation} define the elastic CPU s
 \subsection{Overall Framework of PRS-GPDRL}
 \label{Sec: PRS-GPDRL overall}
 
-Fig.~\ref{Fig: PRS-GPDRL framework} shows the overall framework of PRS-GPDRL, which consists of offline training and online scheduling. For each training scenario, CCGP first produces an archive of complete scheduling heuristics, each of which contains a task-sequencing rule and a resource-selection rule. Although both rules are evolved cooperatively, PRS-GPDRL uses the resource-selection rules to construct the DDQN action space and uses upward-rank sequencing for ready-task sequencing. The task-sequencing ablation experiment in Section~\ref{Sec: task sequencing design} compares upward-rank sequencing with the GP task-sequencing rule while fixing the resource-selection rule pool. The results show that upward-rank sequencing is statistically comparable to the GP task-sequencing rule in 11 of 12 scenarios. Resource selection is required for every dispatched task, whereas task sequencing is needed only when multiple tasks are ready simultaneously. Therefore, PRS-GPDRL fixes upward-rank sequencing and focuses the learned action space on resource-selection rules and their modes.
+Fig.~\ref{Fig: PRS-GPDRL framework} shows the overall framework of PRS-GPDRL, which consists of offline training and online scheduling. For each training scenario, CCGP first produces an archive of complete scheduling heuristics, each of which contains a task-sequencing rule and a resource-selection rule. Although both rules are evolved cooperatively, PRS-GPDRL constructs the DDQN action space from the resource-selection rules and uses fixed upward-rank sequencing when multiple ready tasks need to be ordered. The diagnostic comparison in Section~\ref{Sec: task sequencing design} later examines this choice by separately replacing CCGP's task-sequencing and resource-selection rules. Since the variant that replaces task sequencing is statistically comparable to CCGP in most scenarios, whereas the variant that replaces resource selection is consistently worse, PRS-GPDRL concentrates the learned action space on resource-selection rules and their modes.
 
 The offline stage extracts a compact resource-selection rule pool $\mathcal{G}$ from the final CCGP archive. Each retained rule is paired with the base and risk modes in $\mathcal{M}$, and the resulting rule-mode action space $\mathcal{A}$ remains fixed while the feasible resource set varies at runtime. A multi-objective DDQN is trained to select actions from $\mathcal{A}$ according to the task attributes, feasible resource attributes, and preference weights.
 
@@ -733,22 +734,17 @@ where $f_j^{\min}$ and $f_j^{\max}$ are the minimum and maximum values of object
     \label{Eq: IGD}
 \end{equation}
 
-For each scenario and metric, statistical comparisons are performed using the Iman--Davenport-corrected Friedman test and two-sided paired Wilcoxon signed-rank tests at the 0.05 significance level. In the result tables, the arrows indicate that a result is statistically better ($\uparrow$), worse ($\downarrow$), or similar ($\approx$) compared with the preceding methods. W/D/L summarizes the number of scenarios in which a baseline is statistically better than, similar to, or worse than PRS-GPDRL. AverageRank reports the mean rank over the 30 runs, and a smaller value is better.
+For each scenario and metric, statistical comparisons are performed using the Iman--Davenport-corrected Friedman test and two-sided paired Wilcoxon signed-rank tests at the 0.05 significance level. In the result tables, the arrows indicate that a result is statistically better ($\uparrow$), worse ($\downarrow$), or similar ($\approx$) compared with the preceding methods. W/D/L summarizes the number of scenarios in which the reported method is statistically better than, similar to, or worse than the reference method in the corresponding comparison. AverageRank reports the mean rank over the 30 runs, and a smaller value is better.
 
 \section{Experimental Results}
 \label{Sec: experimental results}
 
-This section first reports the ablation study of PRS-GPDRL and then compares its overall performance with the baselines.
+This section first reports the ablation study and diagnostic comparisons, and then compares the overall performance of PRS-GPDRL with the baselines.
 
 \subsection{Ablation Study}
 \label{Sec: ablation design analysis}
 
-Table~\ref{Table: combined ablation results} reports the HV and IGD results of
-PRS-GPDRL and its three ablation variants in six representative scenarios. The
-\emph{w/o Risk} and \emph{w/o FiLM} variants remove the two components
-separately, while $K=3$ sets the maximum requested resource-selection rule pool
-size to three. All variants follow the same training, evaluation, and
-statistical analysis protocol.
+Table~\ref{Table: combined ablation results} reports the HV and IGD results of PRS-GPDRL and its three ablation variants in six representative scenarios. The \emph{w/o Risk} and \emph{w/o FiLM} variants remove the two components separately, while $K=3$ sets the maximum resource-selection rule pool size to three. All variants follow the same training, evaluation, and statistical analysis protocol.
 
 \begin{table*}[!t]
 \caption{The mean and standard deviation of the HV and IGD values for PRS-GPDRL
@@ -795,50 +791,20 @@ AverageRank & 3.222 & 2.511 & 2.164 & 2.103
 
 \subsubsection{Risk-Stratified Action Augmentation and FiLM Conditioning}
 
-Across the six representative scenarios, \emph{w/o Risk} records 0/0/6 against
-PRS-GPDRL for both metrics, the strongest ablation effect. A retained GP rule
-provides a global resource ranking, while the Risk mode applies a bounded
-priority correction using the specified preference, task urgency, CPU sharing,
-resource active time, and Cloud provisioning information. The consistent result
-across these six scenarios supports the role of state- and
-preference-dependent local correction in the full method.
+This ablation examines the effects of the risk mode and FiLM conditioning while keeping the retained GP rule pool and scalarization scheme unchanged. Across the six representative scenarios, \emph{w/o Risk} records 0/0/6 against PRS-GPDRL for both metrics, showing the largest degradation among the three variants. Each retained GP rule provides a resource ranking, while the risk mode applies a bounded local correction according to the current state and preference. The consistent losses after removing this mode support its contribution to the final performance.
 
-By comparison, the \emph{w/o FiLM} variant records 0/3/3 for HV and 0/4/2 for IGD and
-retains the vector-valued action costs and augmented weighted Tchebycheff
-scalarization, so preference information remains available to action
-evaluation. The mixture of statistically comparable outcomes and losses
-suggests that FiLM is not the only way in which preference information enters
-the policy. Its additional preference-dependent modulation of the shared state
-representation is consistent with complementary improvements in trade-off
-coverage and proximity.
+The \emph{w/o FiLM} variant records 0/3/3 for HV and 0/4/2 for IGD. Since this variant still uses vector-valued action costs and augmented weighted Tchebycheff scalarization, preference information remains available in action evaluation. The results suggest that FiLM provides additional preference-dependent modulation, although it is not the only channel through which preference information affects rule-mode selection.
 
 \subsubsection{Rule-Pool Size}
 
-The $K=3$ result is 0/5/1 for both metrics and is statistically comparable in
-five of six scenarios. This indicates that the main capability does not arise
-simply from increasing the number of available actions, since a small set of
-behaviorally complementary rules preserves most of the performance. Within the
-tested settings, performance is reasonably robust to pool size when
-behaviorally diverse rule roles are retained. The $K=5$ design targets both
-endpoints, their neighboring regions, and the balanced anchor, and obtains the best
-average ranks. The comparison supports the motivation for quality- and
-behavior-aware filtering: coverage of complementary global ranking roles is
-more important than rule count alone.
+This ablation examines the sensitivity to the size of the retained resource-selection rule pool. The $K=3$ variant records 0/5/1 for both metrics and is statistically comparable to PRS-GPDRL in five of the six scenarios. This result indicates that a smaller pool can retain much of the performance when the two endpoint rules and the balanced anchor rule are preserved. The $K=5$ setting still obtains the best average ranks, which is consistent with using additional neighboring rules to cover nearby trade-off regions.
 
-The ablations organize the main components into distinct roles. Risk provides
-state- and preference-dependent local correction, FiLM adds
-preference-dependent modulation of the shared representation, and the
-resource-selection rule pool provides complementary global ranking coverage.
-These roles are complementary within the proposed decision process.
+Taken together, the ablation results show different effects of the three design choices. The risk mode gives the clearest component-level contribution, FiLM adds preference-dependent modulation to the state representation, and the pool-size comparison indicates that performance is not determined by action count alone.
 
-\subsubsection{Task-Sequencing and Resource-Selection Ablation}
+\subsubsection{Task-Sequencing and Resource-Selection Diagnostics}
 \label{Sec: task sequencing design}
 
-Table~\ref{Table: combined GP task sequencing} reports two diagnostic comparisons
-across the 12 scenarios. CCGP-UR replaces the GP task-sequencing rule of CCGP
-with upward-rank sequencing while retaining the GP resource-selection rule,
-whereas CCGP-EFT retains the GP task-sequencing rule but replaces the GP
-resource-selection rule with earliest-finish-time (EFT) resource selection.
+This diagnostic comparison examines how performance changes when either the task-sequencing or resource-selection component of CCGP is replaced by the corresponding component of the Heterogeneous Earliest Finish Time (HEFT) algorithm \cite{Topcuoglu2002}. Table~\ref{Table: combined GP task sequencing} reports two CCGP-based diagnostic comparisons across the 12 scenarios. CCGP-UR replaces the GP task-sequencing rule of CCGP with upward-rank sequencing, and CCGP-EFT replaces the GP resource-selection rule with the earliest-finish-time (EFT) criterion while retaining the GP task-sequencing rule.
 
 \begin{table}[!t]
 \caption{The mean and standard deviation of the HV and IGD values obtained using CCGP-EFT, CCGP-UR, and CCGP over 30 independent runs.}
@@ -873,34 +839,15 @@ AverageRank & 3.000 & 1.564 & 1.436 & 3.000 & 1.556 & 1.444 \\
 \end{tabular}}
 \end{table}
 
-CCGP-UR records 0/11/1 against CCGP for both metrics, with similar average
-ranks, indicating that the GP task-sequencing rule and upward-rank sequencing are
-statistically comparable in 11 of 12 scenarios. In contrast, CCGP-EFT records
-0/0/12 against CCGP for both metrics and yields substantially worse performance.
-Within the evaluated scenarios, this contrast indicates that the
-resource-selection design is more consequential than replacing the GP
-task-sequencing rule with upward-rank sequencing.
+CCGP-UR records 0/11/1 against CCGP for both metrics and has close average ranks. In contrast, CCGP-EFT records 0/0/12 against CCGP for both metrics and has the worst average rank. This contrast indicates that replacing the GP resource-selection rule with the EFT criterion leads to a much larger performance loss than replacing the GP task-sequencing rule with upward-rank sequencing.
 
-This pattern is consistent with the decision structure considered here: VMs can
-execute tasks concurrently, resource selection is required for every dispatched
-task, and task sequencing is needed only when multiple tasks become ready at the
-same decision point. Task-sequencing decisions are relatively sparse, so each
-scheduling episode provides fewer task-sequencing decisions than resource-selection
-decisions. Their effects on the two objectives are also realized through later
-resource allocations and downstream workflow progress, which makes credit
-assignment for task-sequencing learning less direct. Learning task sequencing as
-well would introduce an additional offline learning process and further increase
-training cost beyond the current resource-selection learning process. These
-results support the design
-choice in Section~\ref{Sec: PRS-GPDRL overall}: PRS-GPDRL retains upward-rank
-sequencing for ready-task sequencing and concentrates learning on resource
-selection.
+The diagnostic results are consistent with the decision structure considered in this work. VMs can execute multiple tasks concurrently, resource selection is required for every dispatched task, and task sequencing is only needed when more than one task is ready at the same decision point. Moreover, treating task-sequencing rules as additional learned actions would introduce combinations of task-sequencing and resource-selection choices, which can increase training cost and may make policy learning more difficult. Thus, these results support the design choice in Section~\ref{Sec: PRS-GPDRL overall}: PRS-GPDRL retains upward-rank sequencing for ready-task sequencing and concentrates the learned action space on resource selection. They do not imply that task sequencing is unimportant in general, but indicate that it is not the main source of performance difference in the evaluated scenarios.
 
 \subsection{Overall Performance}
 \label{Sec: overall performance}
-
-Table~\ref{Table: main results} presents the mean and standard deviation of
-the HV and IGD values over the 30 independent runs of the compared algorithms.
+% The overall comparison examines whether PRS-GPDRL improves the quality of the obtained approximation sets over representative GP hyper-heuristic, graph-based learning, and constructive heuristic baselines. 
+Table~\ref{Table: main results} presents the mean and standard deviation of the HV and IGD values over the 30 independent runs of the compared algorithms.
+PRS-GPDRL obtains the best HV average rank (1.406), while CCGP records 1/1/10 relative to it. PRS-GPDRL is statistically better than or comparable to CCGP throughout $\mathrm{wfNum}\leq 50$, with clear gains in several small- and medium-scale scenarios. At $\mathrm{wfNum}=100$, PRS-GPDRL is better than CCGP at $\langle100,0.2\rangle$ but worse at $\langle100,0.8\rangle$, indicating that its advantage is less consistent under the largest workflow count with the higher arrival rate.
 
 \begin{table*}[!t]
 \caption{The mean and standard deviation of the HV and IGD values over the 30
@@ -963,34 +910,16 @@ AverageRank & 3.603 & 3.017 & 1.975 & 1.406
 \end{tabular}}
 \end{table*}
 
-PRS-GPDRL obtains the best HV average rank (1.406), while CCGP records 1/1/10
-relative to it. HV gains are clearest at $\mathrm{wfNum}=10$. PRS-GPDRL is
-statistically better than or comparable to CCGP throughout
-$\mathrm{wfNum}\leq 50$. At $\mathrm{wfNum}=100$, the outcome depends on the
-arrival rate: an additional gain occurs at $\langle100,0.2\rangle$, but not at
-$\langle100,0.8\rangle$, where the maximum workflow scale and higher arrival
-rate coincide.
 
-PRS-GPDRL also obtains the best IGD average rank (1.486), with CCGP recording
-1/4/7 relative to it. IGD improvements are again clearest at
-$\mathrm{wfNum}=10$. PRS-GPDRL is statistically better than or comparable to
-CCGP throughout $\mathrm{wfNum}\leq 50$, whereas the $\mathrm{wfNum}=100$
-outcomes depend on the arrival rate. The adapted GATES and LWFF baselines are
-statistically worse than or comparable to PRS-GPDRL in at least 11 scenarios
-per metric.
 
-Because PRS-GPDRL extracts its resource-selection rule pool from the
-corresponding CCGP run, the comparison with CCGP controls the source of GP
-rules. The ablation results above further show that the comparison is not
-explained simply by replacing the GP task-sequencing rule or by increasing the
-number of retained rules. These observations motivate a closer analysis of the
-obtained trade-off profiles and the policy behavior under different
-preferences.
+PRS-GPDRL also obtains the best IGD average rank (1.486), with CCGP recording 1/4/7 relative to it. The IGD results follow a similar pattern: PRS-GPDRL is better than or comparable to CCGP throughout $\mathrm{wfNum}\leq 50$, whereas the two $\mathrm{wfNum}=100$ scenarios show mixed outcomes. GATES and LWFF are statistically better than PRS-GPDRL in at most one scenario for each metric, and their average ranks are higher than those of PRS-GPDRL and CCGP.
+
+Because PRS-GPDRL extracts its resource-selection rule pool from the corresponding CCGP archive, the comparison with CCGP helps separate the source of GP rules from their online use. Together with the risk mode and $K=3$ ablations and the CCGP-UR/CCGP-EFT diagnostics, the results support the interpretation that preference-aware online selection of resource-selection rules and bounded local correction are important to the performance gain in the evaluated scenarios. The next section further examines the obtained trade-off profiles and the preference-dependent behavior of the learned policy.
 
 \section{Further Analysis}
 \label{Sec: further analysis}
 
-This section further analyzes the obtained trade-off profiles and the behavior of the learned policy. The analysis focuses on whether PRS-GPDRL improves the distribution of nondominated solutions and how the selected resource-selection rules and Risk mode change with the requested preference.
+This section further analyzes the obtained trade-off profiles and the behavior of the learned policy. The analysis focuses on whether PRS-GPDRL improves the distribution of non-dominated solutions and how the selected resource-selection rules and risk mode change with the requested preference.
 
 \subsection{50\% Empirical Attainment Curves}
 
@@ -1006,10 +935,7 @@ for six representative scenarios.
     \label{Fig: tradeoff profiles}
 \end{figure}
 
-PRS-GPDRL lies below CCGP over most of their shared tardiness range in five
-panels, with the clearest separation in the two $\mathrm{wfNum}=10$ scenarios.
-Because the separation spans the trade-off interior, the HV and IGD gains
-reflect broad set-quality improvements rather than a few endpoint solutions.
+PRS-GPDRL lies below CCGP over most of their shared tardiness range in five panels, with the clearest separation in the two $\mathrm{wfNum}=10$ scenarios. Since the separation appears over the trade-off interior, the HV and IGD improvements are not limited to endpoint solutions.
 
 \subsection{Objective Response to Preference}
 \label{Sec: preference controllability}
@@ -1040,18 +966,9 @@ Weighted tardiness is plotted against $w_T$, and energy against $w_E=1-w_T$.
     \label{Fig: preference responses}
 \end{figure*}
 
-At the outcome level, increasing an objective's weight changes the schedule in
-the intended direction. Median reductions at weight 0.5 are 89.7\% for weighted
-tardiness and 20.5\% for energy. Over the full range, they reach 96.9\% and
-51.1\%. The steeper tardiness response is consistent with urgency-oriented
-decisions avoiding deadline penalties immediately, whereas energy savings
-accumulate through assignments that alter utilization and resource active time.
+At the outcome level, increasing an objective's weight changes the schedule in the expected direction. Median reductions at weight 0.5 are 89.7\% for weighted tardiness and 20.5\% for energy. Over the full range, they reach 96.9\% and 51.1\%. The stronger response of weighted tardiness may be related to the threshold nature of tardiness penalties, where earlier completion near deadlines can sharply reduce the objective, whereas energy changes accumulate over resource active intervals.
 
-The median correlations between each raw objective and its own weight are
-$\rho_T=-0.968$ and $\rho_E=-0.955$. All tardiness curves and 99.4\% of energy
-curves have the expected direction. In addition, 99.4\% of runs shift correctly between
-the endpoints. These results show that one network produces preference-dependent scheduling
-outcomes rather than relabeling the same outcome with different weights.
+The median correlations between each raw objective and its own weight are $\rho_T=-0.968$ and $\rho_E=-0.955$. All tardiness curves and 99.4\% of energy curves have the expected direction. In addition, 99.4\% of runs shift correctly between the endpoints. These results show that the learned policy generates preference-dependent scheduling outcomes across the tested preference grid.
 
 \subsection{Preference-Dependent Resource-Selection Rule Usage}
 
@@ -1071,12 +988,7 @@ minimum-tardiness endpoint.
     \label{Fig: tree role frequency}
 \end{figure*}
 
-At the rule level, the minimum-energy rule and its neighbor account for 61.7\%
-of decisions at $w_T=0$, while the minimum-tardiness pair accounts for 50.3\%
-at $w_T=1$. The median weight--role correlation is $\rho_g=0.738$, and 90.4\%
-of included runs shift as expected. This pattern is consistent with
-Fig.~\ref{Fig: preference responses}: increasing $w_T$ moves selection from
-energy-oriented roles through the balanced anchor toward tardiness-oriented roles.
+At the rule level, the minimum-energy rule and its neighbor account for 61.7\% of decisions at $w_T=0$, while the minimum-tardiness pair accounts for 50.3\% at $w_T=1$. The median weight--role correlation is $\rho_g=0.738$, and 90.4\% of included runs shift as expected. This pattern is consistent with Fig.~\ref{Fig: preference responses}: increasing $w_T$ moves rule selection from energy-oriented roles through the balanced anchor toward tardiness-oriented roles.
 
 \subsection{Risk-Mode Usage}
 
@@ -1095,36 +1007,11 @@ count.
     \label{Fig: risk frequency}
 \end{figure}
 
-At the mode level, the Risk mode is selected in 42.5\% of decisions. Away from
-balance, non-zero correction is activated in 41.2\%, ranging from 26.1\% to
-56.6\% across preferences and scenarios. These values indicate that the Risk mode
-is used in a substantial fraction of decisions. At the same time, the remaining
-base-mode decisions indicate that local correction is not always required. The
-policy adaptively chooses between using the
-unmodified GP ranking and applying a local correction as the state and
-preference vary.
+At the mode level, the risk mode is selected in 42.5\% of decisions. Away from balance, non-zero correction is activated in 41.2\% of decisions, ranging from 26.1\% to 56.6\% across preferences and scenarios. These values indicate that the risk mode is used in a substantial fraction of decisions, while the remaining base-mode selections show that the unmodified GP ranking is still selected in many decisions.
 
-Figs.~\ref{Fig: tree role frequency} and~\ref{Fig: risk frequency} capture two
-distinct levels of adaptation. Rule selection changes the main orientation of
-the resource ranking by moving from energy-oriented roles through the balanced anchor
-toward tardiness-oriented roles as $w_T$ increases. Risk-mode selection instead
-determines whether the current decision requires a bounded local modification
-of that ranking. Its frequency need not vary monotonically with $w_T$, because
-the need for correction depends jointly on the requested preference, task
-urgency, CPU sharing, resource active time, Cloud provisioning, and the current
-feasible-resource state. This frequency reflects the conditional use of local
-correction under the current state and preference rather than serving as a
-direct proxy for the preference weight.
+Figs.~\ref{Fig: tree role frequency} and~\ref{Fig: risk frequency} describe two different levels of adaptation. Rule selection changes the main orientation of the resource ranking by moving from energy-oriented roles through the balanced anchor toward tardiness-oriented roles as $w_T$ increases. Risk-mode selection determines whether the selected rule should be locally corrected for the current decision. Its frequency does not need to vary monotonically with $w_T$, because the decision to apply correction can also depend on the current workflow and feasible-resource states.
 
-Within the evaluated preference grid, the three figures describe policy
-behavior at different levels. Fig.~\ref{Fig: preference responses} shows the
-objective response to preference changes. Fig.~\ref{Fig: tree role frequency}
-shows the corresponding migration of global rule roles.
-Fig.~\ref{Fig: risk frequency} shows whether local correction is selected at the
-mode level. Taken together, these observations support the interpretation that
-preference conditioning changes both the resulting objectives and the internal
-decisions that produce them: which global ranking is used and whether it is
-locally corrected for the current state.
+Within the evaluated preference grid, the three figures analyze policy behavior at three levels. Fig.~\ref{Fig: preference responses} shows the objective response to preference changes, Fig.~\ref{Fig: tree role frequency} shows the corresponding change in resource-selection rule usage, and Fig.~\ref{Fig: risk frequency} shows when local correction is selected. Taken together, these observations indicate that preference conditioning is reflected in both the obtained objective values and the online decisions used to generate them.
 
 \section{Conclusion}
 \label{Sec: conclusion}
@@ -1136,12 +1023,7 @@ a quality- and behavior-aware procedure extracts a compact pool of evolved
 resource-selection rules, and a preference-conditioned DDQN adaptively selects
 rule-mode actions according to the current scheduling state and requested
 tardiness--energy trade-off. Experimental results show that PRS-GPDRL achieves
-the best overall HV and IGD performance among the compared methods. The
-behavioral and ablation analyses further confirm that complementary GP rules,
-preference conditioning, and state-dependent local correction jointly
-contribute to its adaptive scheduling performance, while fixed upward-rank
-sequencing provides performance comparable to GP-based task sequencing in most
-scenarios.
+the best overall HV and IGD performance among the compared methods. The behavioral, ablation, and diagnostic analyses further indicate that complementary GP rules, preference conditioning, and state-dependent local correction are important to its adaptive scheduling performance. They also show that fixed upward-rank sequencing remains close to GP-based task sequencing in most scenarios, while the diagnostic comparison highlights the importance of GP-based resource selection in the evaluated setting.
 
 The current framework still relies on an offline fixed rule pool, fixed
 upward-rank task sequencing, and a predefined CPU-sharing mechanism. Future work
