@@ -44,7 +44,7 @@
 
 \hypersetup{
     hidelinks,
-    colorlinks=false
+    colorlinks=true,
 }
 
 \allowdisplaybreaks
@@ -374,12 +374,6 @@ Function set & $+$, $-$, $\times$, protected~/, Max, and Min. & T/R & -- \\
 \multicolumn{4}{p{0.95\linewidth}}{In the GP column, T and R denote task- and resource-selection rule terminals. In the DDQN column, T, R, and P denote task, feasible resource, and preference attributes, respectively.}
 \end{tabular}
 \vspace{-1em}
-% \end{tabular}
-% \vspace{1pt}
-
-% \parbox{\columnwidth}{\scriptsize In the GP column, T and R denote task- and
-% resource-selection rule terminals. In the DDQN column, T, R, and P denote task,
-% feasible resource, and preference attributes, respectively.}
 \end{table}
 
 \textbf{Action extraction.} After CCGP training, PRS-GPDRL constructs $\mathcal{G}$ from the first non-dominated front retained from $AS$. For a complete heuristic $i$ in this front, let $g_i$ denote its resource-selection rule. Different heuristics may contain resource-selection rules that make the same choices at representative decision points. Therefore, the extraction procedure retains rules from different regions of the validation trade-off front and removes behaviorally duplicate rules. It consists of validation evaluation, decision point sampling, behavioral representation, and anchor selection.
@@ -526,6 +520,13 @@ Each transition stores the two-dimensional immediate cost
     \label{Eq: vector cost}
 \end{equation}
 where $\Delta T_t$ and $\Delta E_t$ are the tardiness-related cost and energy increment from the simulator transition, respectively, and $\kappa$ aligns their numerical scales during training. Evaluation uses the original objective values.
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.78\textwidth]{figures/DRL.pdf}
+\caption{Multi-objective DDQN for rule-mode action selection in PRS-GPDRL.}
+\label{Fig: PRS-GPDRL DDQN}
+\vspace{-1em}
+\end{figure*}
 
 \subsection{Preference-Aware Multi-Objective DDQN}
 \label{Sec: MO-DDQN}
@@ -533,12 +534,7 @@ where $\Delta T_t$ and $\Delta E_t$ are the tardiness-related cost and energy in
 PRS-GPDRL uses a multi-objective DDQN \cite{vanhasselt2016} to estimate the cumulative tardiness-related and energy-related costs of each rule-mode action. The current preference scalarizes these two estimates for both action selection and network update. Because the DDQN selects rule-mode actions rather than resources directly, its action space remains fixed while the selected action is applied to the feasible resources observed at each decision point.
 
 Fig.~\ref{Fig: PRS-GPDRL DDQN} illustrates the state encoder and rule-mode action selection. The raw observation $s_t$ contains task features, feasible-resource features, and preference weights. The encoder maps $s_t$ to $\mathbf{z}_t$, and augmented weighted Tchebycheff scalarization selects $a_t^*=(g^*,m^*)$ from the vector action costs over $\mathcal{A}$. The selected rule and mode are then applied to the feasible resources according to Section~\ref{Sec: risk stratified actions} to obtain $r_t^*$.
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=0.78\textwidth]{figures/DRL.pdf}
-\caption{Multi-objective DDQN for rule-mode action selection in PRS-GPDRL.}
-\label{Fig: PRS-GPDRL DDQN}
-\end{figure*}
+
 
 Let $\mathbf{x}_t^{\mathrm{task}}$, $\mathbf{X}_t^{\mathrm{res}}$, and $\mathbf{w}$ denote the task features, feasible-resource features, and preference vector, respectively. Continuous task and resource attributes use signed logarithmic scaling, while categorical indicators remain unchanged. The task encoder contains two 64-unit layers with exponential linear unit (ELU) activations. For each resource tier, two 64-unit ELU layers produce key representations, and a 64-dimensional linear projection produces value representations. Single-head masked scaled dot-product attention uses the task embedding as the query and the resource keys to aggregate each tier into a 64-dimensional representation. The task and two tier-level representations are then fused by two 128-unit layers, with an ELU activation after the first, to produce $\mathbf{h}_{\mathrm{fuse}}\in\mathbb{R}^{128}$.
 
