@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.11.27)  26 AUG 2026 22:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.11.27)  27 AUG 2026 14:44
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -513,7 +513,7 @@ Package: relsize 2013/03/29 ver 4.1
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/graphics/dvipsnam.def
 File: dvipsnam.def 2016/06/17 v3.0m Driver-dependent file (DPC,SPQR)
 )
-Package hyperref Info: Option `colorlinks' set `false' on input line 48.
+Package hyperref Info: Option `colorlinks' set `true' on input line 48.
  (./PRS-GPDRL.aux)
 \openout1 = `PRS-GPDRL.aux'.
 
@@ -556,7 +556,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
  (/usr/local/texlive/2025/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package hyperref Info: Link coloring OFF on input line 52.
+Package hyperref Info: Link coloring ON on input line 52.
  (./PRS-GPDRL.out) (./PRS-GPDRL.out)
 \@outlinefile=\write3
 \openout3 = `PRS-GPDRL.out'.
@@ -617,6 +617,11 @@ File: figures/framework.pdf Graphic file (type pdf)
 Package pdftex.def Info: figures/framework.pdf  used on input line 316.
 (pdftex.def)             Requested size: 221.76123pt x 155.60767pt.
 
+Underfull \hbox (badness 5563) in paragraph at lines 324--325
+[]\OT1/ptm/b/n/10 CCGP train-ing. \OT1/ptm/m/n/10 CCGP co-op-er-a-tively evolves task-
+ []
+
+
 
 
 
@@ -642,7 +647,7 @@ Package pdftex.def Info: figures/DRL.pdf  used on input line 538.
 
 
 Underfull \hbox (badness 10000) in paragraph at lines 649--649
-[][][][]$\OT1/ptm/m/n/8 https : / / engineering . teads . com / sustainability / carbon -[] footprint -[] estimator -[]
+[][][][][]$\OT1/ptm/m/n/8 https : / / engineering . teads . com / sustainability / carbon -[] footprint -[] estimator -[]
  []
 
 
@@ -657,55 +662,49 @@ Underfull \hbox (badness 10000) in paragraph at lines 649--649
 
 [10]
 
-<figures/tradeoff_profile_50.pdf, id=446, 261.23944pt x 392.27756pt>
+<figures/tradeoff_profile_50.pdf, id=446, 264.08737pt x 366.44101pt>
 File: figures/tradeoff_profile_50.pdf Graphic file (type pdf)
 <use figures/tradeoff_profile_50.pdf>
-Package pdftex.def Info: figures/tradeoff_profile_50.pdf  used on input line 1015.
-(pdftex.def)             Requested size: 221.76123pt x 333.00053pt.
+Package pdftex.def Info: figures/tradeoff_profile_50.pdf  used on input line 1003.
+(pdftex.def)             Requested size: 221.76123pt x 307.71887pt.
+<figures/preference_response_tardiness.pdf, id=448, 252.945pt x 184.28851pt>
+File: figures/preference_response_tardiness.pdf Graphic file (type pdf)
+<use figures/preference_response_tardiness.pdf>
+Package pdftex.def Info: figures/preference_response_tardiness.pdf  used on input line 1029.
+(pdftex.def)             Requested size: 217.95766pt x 158.79997pt.
+<figures/preference_response_energy.pdf, id=449, 252.945pt x 184.28851pt>
+File: figures/preference_response_energy.pdf Graphic file (type pdf)
+<use figures/preference_response_energy.pdf>
+Package pdftex.def Info: figures/preference_response_energy.pdf  used on input line 1034.
+(pdftex.def)             Requested size: 217.95766pt x 158.79997pt.
 
 
 [11]
-Underfull \vbox (badness 10000) has occurred while \output is active []
 
-
-
-<figures/preference_response_tardiness.pdf, id=454, 252.945pt x 184.28851pt>
-File: figures/preference_response_tardiness.pdf Graphic file (type pdf)
-<use figures/preference_response_tardiness.pdf>
-Package pdftex.def Info: figures/preference_response_tardiness.pdf  used on input line 1041.
-(pdftex.def)             Requested size: 217.95766pt x 158.79997pt.
-<figures/preference_response_energy.pdf, id=455, 252.945pt x 184.28851pt>
-File: figures/preference_response_energy.pdf Graphic file (type pdf)
-<use figures/preference_response_energy.pdf>
-Package pdftex.def Info: figures/preference_response_energy.pdf  used on input line 1046.
-(pdftex.def)             Requested size: 217.95766pt x 158.79997pt.
-<figures/tree_role_frequency.pdf, id=457, 490.58551pt x 259.46375pt>
+<figures/tree_role_frequency.pdf, id=458, 490.58551pt x 259.46375pt>
 File: figures/tree_role_frequency.pdf Graphic file (type pdf)
 <use figures/tree_role_frequency.pdf>
-Package pdftex.def Info: figures/tree_role_frequency.pdf  used on input line 1077.
+Package pdftex.def Info: figures/tree_role_frequency.pdf  used on input line 1065.
 (pdftex.def)             Requested size: 402.47937pt x 212.8725pt.
+<figures/risk_frequency.pdf, id=461, 261.62508pt x 366.44101pt>
+File: figures/risk_frequency.pdf Graphic file (type pdf)
+<use figures/risk_frequency.pdf>
+Package pdftex.def Info: figures/risk_frequency.pdf  used on input line 1089.
+(pdftex.def)             Requested size: 221.76123pt x 310.62082pt.
 
 
 [12 <./figures/tradeoff_profile_50.pdf>]
-<figures/risk_frequency.pdf, id=474, 261.23944pt x 378.23909pt>
-File: figures/risk_frequency.pdf Graphic file (type pdf)
-<use figures/risk_frequency.pdf>
-Package pdftex.def Info: figures/risk_frequency.pdf  used on input line 1101.
-(pdftex.def)             Requested size: 221.76123pt x 321.08342pt.
-
-
-
-
-[13 <./figures/preference_response_tardiness.pdf> <./figures/preference_response_energy.pdf> <./figures/tree_role_frequency.pdf>]
-Underfull \hbox (badness 1354) in paragraph at lines 1144--1157
+Underfull \hbox (badness 1354) in paragraph at lines 1132--1145
 \OT1/ptm/m/n/10 ing: a quality- and behavior-aware pro-ce-dure ex-tracts a
  []
 
 
 
-(./PRS-GPDRL.bbl
+
+
+[13 <./figures/preference_response_tardiness.pdf> <./figures/preference_response_energy.pdf> <./figures/tree_role_frequency.pdf>] (./PRS-GPDRL.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 34--36
-[]$\OT1/ptm/m/n/8 https : / / www . gartner . com / en / newsroom / press -[] releases / 2025 -[] 08 -[] 26 -[]
+[][]$\OT1/ptm/m/n/8 https : / / www . gartner . com / en / newsroom / press -[] releases / 2025 -[] 08 -[] 26 -[]
  []
 
 
@@ -715,28 +714,32 @@ Underfull \hbox (badness 10000) in paragraph at lines 34--36
 
 
 
-[14 <./figures/risk_frequency.pdf>]
 
-)
 
-[15] (./PRS-GPDRL.aux)
+[14 <./figures/risk_frequency.pdf>])
+
+
+
+[15
+
+] (./PRS-GPDRL.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `PRS-GPDRL.out' has not changed.
-(rerunfilecheck)             Checksum: B7B0FA3E6E88681A5F2288A2FA18874E;5634.
+(rerunfilecheck)             Checksum: A0317E56E973D6A99602CF8DABCFDE0D;5765.
  ) 
 Here is how much of TeX's memory you used:
- 15163 strings out of 473190
- 259794 string characters out of 5715799
- 721433 words of memory out of 5000000
- 38079 multiletter control sequences out of 15000+600000
+ 15166 strings out of 473190
+ 259853 string characters out of 5715799
+ 727520 words of memory out of 5000000
+ 38082 multiletter control sequences out of 15000+600000
  607768 words of font info for 131 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,23n,79p,1900b,590s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,23n,79p,1900b,588s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on PRS-GPDRL.pdf (15 pages, 557613 bytes).
+Output written on PRS-GPDRL.pdf (15 pages, 558136 bytes).
 PDF statistics:
  729 PDF objects out of 1000 (max. 8388607)
  604 compressed objects within 7 object streams
