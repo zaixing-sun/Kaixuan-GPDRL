@@ -505,6 +505,14 @@ For a selected rule $g^*$ and mode $m^*$,
 $r_t^*=\arg\min_{r\in\mathcal{R}_t}p_{m^*}(r;g^*)$.
 In the risk mode, the normalized GP score is combined with a preference-dependent bounded penalty, with $\beta_{\mathrm{risk}}(\mathbf{w})$ controlling the adjustment strength.
 
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.78\textwidth]{figures/DRL.pdf}
+\caption{Multi-objective DDQN for rule-mode action selection in PRS-GPDRL.}
+\label{Fig: PRS-GPDRL DDQN}
+\end{figure*}
+
 \subsection{Markov Decision Process Formulation for Preference-Aware Rule Selection}
 \label{Sec: PRS-GPDRL MDP}
 
@@ -534,12 +542,7 @@ where $\Delta T_t$ and $\Delta E_t$ are the tardiness-related cost and energy in
 PRS-GPDRL uses a multi-objective DDQN \cite{vanhasselt2016} to estimate the cumulative tardiness-related and energy-related costs of each rule-mode action. The current preference scalarizes these two estimates for both action selection and network update. Because the DDQN selects rule-mode actions rather than resources directly, its action space remains fixed while the selected action is applied to the feasible resources observed at each decision point.
 
 Fig.~\ref{Fig: PRS-GPDRL DDQN} illustrates the state encoder and rule-mode action selection. The raw observation $s_t$ contains task features, feasible-resource features, and preference weights. The encoder maps $s_t$ to $\mathbf{z}_t$, and augmented weighted Tchebycheff scalarization selects $a_t^*=(g^*,m^*)$ from the vector action costs over $\mathcal{A}$. The selected rule and mode are then applied to the feasible resources according to Section~\ref{Sec: risk stratified actions} to obtain $r_t^*$.
-\begin{figure*}[!t]
-\centering
-\includegraphics[width=0.78\textwidth]{figures/DRL.pdf}
-\caption{Multi-objective DDQN for rule-mode action selection in PRS-GPDRL.}
-\label{Fig: PRS-GPDRL DDQN}
-\end{figure*}
+
 
 Let $\mathbf{x}_t^{\mathrm{task}}$, $\mathbf{X}_t^{\mathrm{res}}$, and $\mathbf{w}$ denote the task features, feasible-resource features, and preference vector, respectively. Continuous task and resource attributes use signed logarithmic scaling, while categorical indicators remain unchanged. The task encoder contains two 64-unit layers with exponential linear unit (ELU) activations. For each resource tier, two 64-unit ELU layers produce key representations, and a 64-dimensional linear projection produces value representations. Single-head masked scaled dot-product attention uses the task embedding as the query and the resource keys to aggregate each tier into a 64-dimensional representation. The task and two tier-level representations are then fused by two 128-unit layers, with an ELU activation after the first, to produce $\mathbf{h}_{\mathrm{fuse}}\in\mathbb{R}^{128}$.
 
@@ -602,16 +605,6 @@ The checkpoint with the lowest mean $C^{\mathrm{val}}(\mathbf{w})$ across the va
 
 After action extraction, training and testing are performed separately for each scenario $\langle\mathrm{wfNum},\lambda\rangle$ using its corresponding fixed rule pool and rule-mode action space. The DDQN learns from vector-cost transitions under sampled preferences using Eq.~\eqref{Eq: tchebycheff scalarization}, and the trained DDQN together with the fixed action space constitutes the PRS-GPDRL agent. During inference, upward-rank sequencing resolves simultaneous ready tasks when needed, after which the DDQN selects a rule-mode action and assigns the current task to the feasible resource with the minimum priority score.
 
-
-\section{Experimental Design}
-\label{Sec: experimental design}
-
-\subsection{Experimental Setup}
-\label{Sec: experimental environment}
-
-We conduct the experiments using an event-driven simulator adapted from the workflow scheduling simulator in \cite{ccgp} to match the problem model in Section~\ref{Sec: problem modeling}.
-Table~\ref{Table: resource configurations} lists five representative resource types for each tier. The configurations are derived from Amazon EC2\footnotemark[1], with CPU capacity measured in EC2 Compute Units (ECUs), and the power parameters follow the Teads model\footnotemark[2]. The Edge tier contains 19 fixed Edge Nodes, whereas Cloud Servers of the listed types can be provisioned on demand. Each task incurs a 50~ms container initialization delay \cite{Ranjan2020}, and provisioning a new Cloud Server takes 55.9~s. Following \cite{Goudarzi2021,Pallewatta2022}, the bandwidths of local-area and wide-area networks are set to 2.0 and 0.5~GB/s, and their communication latencies are 0.5 and 30~ms, respectively.
-
 \begin{table*}[!t]
 \caption{Configurations of Edge Nodes and Cloud Servers.}
 \label{Table: resource configurations}
@@ -644,6 +637,16 @@ m4.16xlarge & 188 & 31.09 & 249.90 & 51.6 \\
 \vspace{-1em}
 \end{table*}
 
+
+\section{Experimental Design}
+\label{Sec: experimental design}
+
+\subsection{Experimental Setup}
+\label{Sec: experimental environment}
+
+We conduct the experiments using an event-driven simulator adapted from the workflow scheduling simulator in \cite{ccgp} to match the problem model in Section~\ref{Sec: problem modeling}.
+Table~\ref{Table: resource configurations} lists five representative resource types for each tier. The configurations are derived from Amazon EC2\footnotemark[1], with CPU capacity measured in EC2 Compute Units (ECUs), and the power parameters follow the Teads model\footnotemark[2]. The Edge tier contains 19 fixed Edge Nodes, whereas Cloud Servers of the listed types can be provisioned on demand. Each task incurs a 50~ms container initialization delay \cite{Ranjan2020}, and provisioning a new Cloud Server takes 55.9~s. Following \cite{Goudarzi2021,Pallewatta2022}, the bandwidths of local-area and wide-area networks are set to 2.0 and 0.5~GB/s, and their communication latencies are 0.5 and 30~ms, respectively.
+
 Workflow templates are sampled from Alibaba Cluster-trace-v2018\footnotemark[3]. The public trace provides task dependencies and execution information, and the simulator reconstructs workflows from these data. Task input and output data sizes follow a discrete uniform distribution between 500 and 5000~MB. Each task is independently classified as CPU-sensitive or CPU-insensitive with equal probability. Workflow weights are independently sampled from $\{1,2,4\}$ with probabilities $0.2$, $0.6$, and $0.2$, respectively, following \cite{Hi2015ousgp}.
 \footnotetext[1]{\url{https://aws.amazon.com/ec2/}}
 \footnotetext[2]{\url{https://engineering.teads.com/sustainability/
@@ -653,14 +656,6 @@ carbon-footprint-estimator-for-aws-instances/}}
 Workflow arrivals follow a Poisson process with rate $\lambda$, and the inter-arrival time is exponentially distributed with mean $1/\lambda$ \cite{Sahoo2021}. Following \cite{ccgp}, reference execution times and Edge transfer times are propagated along each DAG to obtain the largest earliest finish time $L_{\omega}$. The workflow deadline is set as $\rho^d(\omega)=\rho^a(\omega)+\delta_{\omega}L_{\omega}$, where the deadline factor $\delta_{\omega}$ is sampled uniformly from $\{0.8,1.0,1.5,1.8\}$.
 
 Each scenario is denoted by $\langle\mathrm{wfNum},\lambda\rangle$, where $\mathrm{wfNum}$ is the total number of submitted workflows and $\lambda$ is the arrival rate. The main evaluation consists of the 12 combinations of $\mathrm{wfNum}\in\{10,15,20,30,50,100\}$ and $\lambda\in\{0.2,0.8\}$. For each scenario, 30 independent runs are conducted. In each run, every solution is evaluated on the same 30 unseen instances, and the objective values are averaged over these instances before the performance measures are calculated. The tables report the mean and standard deviation over the 30 runs.
-
-\subsection{Compared Algorithms}
-\label{Sec: compared methods}
-
-Under the above experimental setting, the performance comparison includes CCGP, GATES, and LWFF, which represent GP hyper-heuristic, graph-based learning, and constructive heuristic methods, respectively. CCGP \cite{ccgp} coevolves task-sequencing, resource-selection, and container-scaling rules, and returns non-dominated scheduling heuristics. GATES \cite{gates} uses graph attention to encode ready tasks, workflow dependencies, and virtual machines, and learns an allocation policy through an evolution strategy. LWFF \cite{lwff} constructs non-dominated candidate resources and selects a resource according to resource waste and completion speed.
-
-Because the original problem settings of these algorithms differ from the present model, necessary adaptations are made for a fair comparison. The adapted versions follow the experimental setup in Section~\ref{Sec: experimental environment} and use the objective definitions in Section~\ref{Sec: problem modeling}. For CCGP, task-sequencing and resource-selection rules are evolved, while the container-scaling rule is not used because CPU allocation is specified by Eq.~\eqref{Eq: cpu allocation}. For GATES, the learned policies are evaluated using weighted tardiness and energy consumption, and the final non-dominated policies form the approximation set. LWFF is evaluated on the same preference grid as PRS-GPDRL using upward-rank task sequencing and preference-weighted normalized estimates of weighted tardiness and energy.
-The CCGP parameters follow \cite{ccgp} and are listed in Table~\ref{Table: CCGP parameters}. GATES uses a population of 100 policy networks and runs for 51 generations. The main DDQN and risk-stratified action augmentation parameters of PRS-GPDRL are listed in Table~\ref{Table: DDQN risk parameters}.
 
 \begin{table}[!t]
 \caption{Parameter settings of CCGP.}
@@ -758,6 +753,18 @@ AverageRank & 3.222 & 2.511 & 2.164 & 2.103
 \bottomrule
 \end{tabular}}
 \end{table*}
+
+
+\subsection{Compared Algorithms}
+\label{Sec: compared methods}
+
+Under the above experimental setting, the performance comparison includes CCGP, GATES, and LWFF, which represent GP hyper-heuristic, graph-based learning, and constructive heuristic methods, respectively. CCGP \cite{ccgp} coevolves task-sequencing, resource-selection, and container-scaling rules, and returns non-dominated scheduling heuristics. GATES \cite{gates} uses graph attention to encode ready tasks, workflow dependencies, and virtual machines, and learns an allocation policy through an evolution strategy. LWFF \cite{lwff} constructs non-dominated candidate resources and selects a resource according to resource waste and completion speed.
+
+Because the original problem settings of these algorithms differ from the present model, necessary adaptations are made for a fair comparison. The adapted versions follow the experimental setup in Section~\ref{Sec: experimental environment} and use the objective definitions in Section~\ref{Sec: problem modeling}. For CCGP, task-sequencing and resource-selection rules are evolved, while the container-scaling rule is not used because CPU allocation is specified by Eq.~\eqref{Eq: cpu allocation}. For GATES, the learned policies are evaluated using weighted tardiness and energy consumption, and the final non-dominated policies form the approximation set. LWFF is evaluated on the same preference grid as PRS-GPDRL using upward-rank task sequencing and preference-weighted normalized estimates of weighted tardiness and energy.
+The CCGP parameters follow \cite{ccgp} and are listed in Table~\ref{Table: CCGP parameters}. GATES uses a population of 100 policy networks and runs for 51 generations. The main DDQN and risk-stratified action augmentation parameters of PRS-GPDRL are listed in Table~\ref{Table: DDQN risk parameters}.
+
+
+
 
 \subsection{Performance Measures}
 \label{Sec: evaluation metrics}

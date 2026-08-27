@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.11.27)  27 AUG 2026 19:30
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.11.27)  27 AUG 2026 19:34
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -636,32 +636,32 @@ Underfull \hbox (badness 10000) in paragraph at lines 503--507
 \OT1/ptm/m/n/10 For a se-lected rule $\OML/cmm/m/it/10 g[]$ \OT1/ptm/m/n/10 and mode $\OML/cmm/m/it/10 m[]$\OT1/ptm/m/n/10 , $\OML/cmm/m/it/10 r[] \OT1/cmr/m/n/10 =
  []
 
-<figures/DRL.pdf, id=342, 1836.8625pt x 535.03888pt>
+<figures/DRL.pdf, id=337, 1836.8625pt x 535.03888pt>
 File: figures/DRL.pdf Graphic file (type pdf)
 <use figures/DRL.pdf>
-Package pdftex.def Info: figures/DRL.pdf  used on input line 539.
+Package pdftex.def Info: figures/DRL.pdf  used on input line 511.
 (pdftex.def)             Requested size: 402.47937pt x 117.22723pt.
 
 
 [7]
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 650--650
+
+[8 <./figures/DRL.pdf>]
+Underfull \hbox (badness 10000) in paragraph at lines 653--653
 [][][][][]$\OT1/ptm/m/n/8 https : / / engineering . teads . com / sustainability / carbon -[] footprint -[] estimator -[]
  []
 
 
 
-[8]
 
 
-
-[9 <./figures/DRL.pdf>]
+[9]
 
 
 
 [10]
-Underfull \hbox (badness 3199) in paragraph at lines 912--913
+Underfull \hbox (badness 3199) in paragraph at lines 919--920
 \OT1/ptm/m/n/10 This di-ag-nos-tic com-par-i-son ex-am-ines how per-for-mance
  []
 
@@ -673,45 +673,39 @@ Underfull \hbox (badness 3199) in paragraph at lines 912--913
 <figures/tradeoff_profile_50.pdf, id=452, 264.08737pt x 366.44101pt>
 File: figures/tradeoff_profile_50.pdf Graphic file (type pdf)
 <use figures/tradeoff_profile_50.pdf>
-Package pdftex.def Info: figures/tradeoff_profile_50.pdf  used on input line 943.
+Package pdftex.def Info: figures/tradeoff_profile_50.pdf  used on input line 950.
 (pdftex.def)             Requested size: 221.76123pt x 307.71887pt.
 <figures/preference_response_tardiness.pdf, id=454, 252.945pt x 184.28851pt>
 File: figures/preference_response_tardiness.pdf Graphic file (type pdf)
 <use figures/preference_response_tardiness.pdf>
-Package pdftex.def Info: figures/preference_response_tardiness.pdf  used on input line 966.
+Package pdftex.def Info: figures/preference_response_tardiness.pdf  used on input line 973.
 (pdftex.def)             Requested size: 217.95766pt x 158.79997pt.
 <figures/preference_response_energy.pdf, id=455, 252.945pt x 184.28851pt>
 File: figures/preference_response_energy.pdf Graphic file (type pdf)
 <use figures/preference_response_energy.pdf>
-Package pdftex.def Info: figures/preference_response_energy.pdf  used on input line 971.
+Package pdftex.def Info: figures/preference_response_energy.pdf  used on input line 978.
 (pdftex.def)             Requested size: 217.95766pt x 158.79997pt.
 
 
 <figures/tree_role_frequency.pdf, id=457, 490.58551pt x 259.46375pt>
 File: figures/tree_role_frequency.pdf Graphic file (type pdf)
 <use figures/tree_role_frequency.pdf>
-Package pdftex.def Info: figures/tree_role_frequency.pdf  used on input line 993.
+Package pdftex.def Info: figures/tree_role_frequency.pdf  used on input line 1000.
 (pdftex.def)             Requested size: 402.47937pt x 212.8725pt.
-
-Underfull \vbox (badness 1917) has occurred while \output is active []
-
 
 
 [12 <./figures/tradeoff_profile_50.pdf> <./figures/preference_response_tardiness.pdf> <./figures/preference_response_energy.pdf>]
 <figures/risk_frequency.pdf, id=505, 261.62508pt x 366.44101pt>
 File: figures/risk_frequency.pdf Graphic file (type pdf)
 <use figures/risk_frequency.pdf>
-Package pdftex.def Info: figures/risk_frequency.pdf  used on input line 1012.
+Package pdftex.def Info: figures/risk_frequency.pdf  used on input line 1019.
 (pdftex.def)             Requested size: 221.76123pt x 310.62082pt.
 
-Underfull \hbox (badness 1354) in paragraph at lines 1030--1038
+Underfull \hbox (badness 1354) in paragraph at lines 1037--1045
 \OT1/ptm/m/n/10 ing: a quality- and behavior-aware pro-ce-dure ex-tracts a
  []
 
 
-
-
-Underfull \vbox (badness 3219) has occurred while \output is active []
 
 
 
@@ -746,13 +740,13 @@ Package rerunfilecheck Info: File `PRS-GPDRL.out' has not changed.
 Here is how much of TeX's memory you used:
  15166 strings out of 473190
  259853 string characters out of 5715799
- 727653 words of memory out of 5000000
+ 728756 words of memory out of 5000000
  38082 multiletter control sequences out of 15000+600000
  607768 words of font info for 131 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,23n,79p,1900b,588s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,23n,79p,1900b,590s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on PRS-GPDRL.pdf (15 pages, 557853 bytes).
+Output written on PRS-GPDRL.pdf (15 pages, 558031 bytes).
 PDF statistics:
  730 PDF objects out of 1000 (max. 8388607)
  605 compressed objects within 7 object streams
