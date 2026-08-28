@@ -73,36 +73,7 @@
 
 
 \begin{abstract}
-Online workflow scheduling in heterogeneous Cloud--Edge systems must allocate
-resources before future workflow arrivals are known. Resource choices have
-state-dependent effects on both workflow tardiness and energy consumption.
-Edge Nodes avoid Cloud provisioning and reduce wide-area communication delays
-but have limited capacity, whereas Cloud
-Servers provide elastic and powerful computing capacity but incur additional
-provisioning and communication overheads. Their relative benefits further
-depend on task characteristics, workflow dependencies, and energy efficiency.
-Therefore, scheduling policies must adapt to user-requested objective
-trade-offs and evolving system states. Genetic
-programming (GP) hyper-heuristics have demonstrated effectiveness in evolving
-resource-selection rules for dynamic workflow scheduling, but usually apply
-them as fixed policies. Deep reinforcement learning enables adaptive control,
-yet directly treating a variable set of feasible resources as actions while
-handling multiple preferences complicates policy learning. We propose
-Preference-Aware Risk-Stratified Genetic Programming-assisted Deep
-Reinforcement Learning (PRS-GPDRL). Cooperative coevolution genetic programming (CCGP)
-first evolves coupled task-sequencing and resource-selection rules. Quality- and
-behavior-aware filtering then retains a compact resource-selection rule pool
-from the final CCGP archive. Each retained rule is paired with base and risk
-modes. A multi-objective double deep Q-network then selects a rule-mode action
-under the requested preference at each allocation decision. Across 12 scenarios
-(30 independent runs each), PRS-GPDRL achieves the best average ranks for
-hypervolume (HV) and inverted generational distance (IGD), with ranks of 1.406
-and 1.486, respectively, and
-statistically outperforms or matches CCGP in 11 scenarios per metric. Gains are
-clearest on small- and medium-scale sets, and selected large-scale scenarios show
-additional HV gains. Behavioral, ablation, and diagnostic results support
-preference-dependent rule selection, risk-stratified adjustment, and the focus
-on resource selection.
+Learning an effective scheduling policy for multi-objective dynamic workflow scheduling requires adapting online resource allocation to the current workflow and resource states and to the requested trade-off between weighted tardiness and energy consumption. In heterogeneous Cloud--Edge systems, this is challenging because future workflow arrivals are unknown, feasible resources vary with task requirements, resource availability, and Cloud provisioning, and an allocation can affect successor release times, the progress of running tasks, and resource active time. Genetic programming (GP) hyper-heuristics can automatically evolve scheduling rules for online decisions, but the evolved heuristics are usually applied as fixed policies. Deep reinforcement learning (DRL) can learn adaptive rule selection, yet directly using feasible resources as actions is difficult when the action set varies over time. This paper proposes Preference-Aware Risk-Stratified Genetic Programming-assisted Deep Reinforcement Learning (PRS-GPDRL). Cooperative coevolution genetic programming (CCGP) first evolves complete scheduling heuristics with task-sequencing and resource-selection rules. A quality- and behavior-aware extraction procedure then selects a compact pool of complementary resource-selection rules. Each retained rule is paired with a base mode and a risk mode to form a fixed rule-mode action space, and a multi-objective double deep Q-network selects rule-mode actions according to the current state and requested preference. Experimental results on 12 scenarios with 30 independent runs per scenario show that PRS-GPDRL obtains the best average ranks for hypervolume (HV) and inverted generational distance (IGD), with ranks of 1.406 and 1.486, respectively. PRS-GPDRL is statistically better than or comparable to CCGP in 11 of 12 scenarios for each metric. Further analyses show that objective values, resource-selection rule usage, and risk-mode usage change with the requested preference. Ablation and diagnostic results show the importance of risk-stratified local correction, preference conditioning, and GP-based resource selection.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -123,14 +94,25 @@ Deep reinforcement learning (DRL) offers a way to learn online selection policie
 To address these gaps, this paper proposes Preference-Aware Risk-Stratified Genetic Programming-assisted Deep Reinforcement Learning (PRS-GPDRL). Cooperative coevolution genetic programming (CCGP) is used to generate a multi-objective archive of scheduling heuristics. A quality- and behavior-aware extraction procedure then constructs a compact pool of complementary resource-selection rules from this archive. Each retained resource-selection rule is paired with a base mode and a risk mode. The base mode follows the selected GP rule, while the risk mode adds a bounded preference-aware local correction. Pairing the retained rules with these two modes gives a fixed rule-mode action space for the DRL agent. A multi-objective double deep Q-network (DDQN) learns to select rule-mode actions according to the current system state and requested preference.
 The main contributions are as follows:
 \begin{itemize}
-    \item We establish a CCGP-to-DRL knowledge interface that extracts high-quality and behaviorally complementary resource-selection rules from a CCGP archive. Pairing the compact rule pool with base and risk modes converts these executable heuristics into a fixed rule-mode action space that ranks the variable feasible-resource set at each allocation decision.
+    \item We establish a dynamic workflow scheduling model for heterogeneous Cloud--Edge systems with total weighted tardiness and energy consumption as the two objectives. The model jointly considers online workflow arrivals, workflow weights and deadlines, precedence and data dependencies, heterogeneous Edge and Cloud resources, and runtime CPU sharing among tasks running on the same resource.
 
-    \item We develop two-level adaptive resource selection through risk-stratified action augmentation. A selected GP rule supplies the global ranking direction, while the risk mode conditionally applies a bounded local correction using the current state and requested preference. Feature-wise linear modulation (FiLM) conditioning, vector-valued action costs, and augmented weighted Tchebycheff scalarization enable one DDQN to serve different tardiness--energy preferences.
+    \item We propose PRS-GPDRL, a preference-aware framework that connects CCGP-based rule generation with DRL-based online resource selection. CCGP produces complete scheduling heuristics with task-sequencing and resource-selection rules, and a quality- and behavior-aware extraction procedure retains a compact pool of complementary resource-selection rules. The resulting action design enables the learned policy to select among GP-evolved resource-selection rules without treating the varying feasible-resource set as the DDQN action set.
 
-    \item Across 12 dynamic scheduling scenarios, with 30 independent runs conducted per scenario, PRS-GPDRL obtains the best average ranks for hypervolume (HV) and inverted generational distance (IGD), with ranks of 1.406 and 1.486, respectively. It is statistically better than or comparable to CCGP in 11 of 12 scenarios and to GATES and LWFF in at least 11 of 12 scenarios for each metric. The clearest advantages occur on small- and medium-scale workflow sets, with additional HV gains in selected large-scale scenarios.
+    \item We develop risk-stratified action augmentation and preference-aware multi-objective DDQN learning for resource selection. Each retained rule is paired with a base mode and a risk mode. The risk mode keeps the normalized GP priority score as the main ranking term and adds a bounded correction based on tardiness-related and energy-related local costs under the requested preference. Feature-wise linear modulation (FiLM), vector-valued action costs, and augmented weighted Tchebycheff scalarization enable one DDQN to select rule-mode actions under different tardiness--energy preferences.
 
-    \item Behavioral analyses show preference-aligned changes at the outcome, rule, and mode levels: objective values respond to the requested preference, online selection migrates between energy- and tardiness-oriented rule roles, and local risk correction is activated selectively. Ablation and diagnostic results further distinguish the contributions of complementary rule coverage, preference-dependent representation, local correction, and task sequencing.
+    \item We conduct extensive simulation experiments on 12 dynamic scheduling scenarios with 30 independent runs per scenario. PRS-GPDRL obtains the best average ranks for hypervolume (HV) and inverted generational distance (IGD), with ranks of 1.406 and 1.486, respectively, and is statistically better than or comparable to CCGP in 11 of 12 scenarios for each metric. Further analyses show that objective values, resource-selection rule usage, and risk-mode usage change with the requested preference. Ablation and diagnostic results further support the roles of risk-stratified correction, FiLM conditioning, rule-pool size, and GP-based resource selection.
 \end{itemize}
+
+
+
+    % \item We propose PRS-GPDRL, a preference-aware GP-assisted DRL framework for multi-objective dynamic workflow scheduling in Cloud--Edge computing. CCGP produces complete scheduling heuristics with task-sequencing and resource-selection rules, and a quality- and behavior-aware extraction procedure retains a compact pool of complementary resource-selection rules from the non-dominated archive. The learned policy selects among these GP-evolved rules without treating the varying feasible-resource set as the DDQN action set.
+
+    % \item We develop risk-stratified rule-mode actions and preference-aware multi-objective DDQN learning for online resource selection. Each retained rule is paired with a base mode and a risk mode. The risk mode keeps the normalized GP priority score as the main ranking term and adds a bounded correction based on tardiness-related and energy-related local costs under the requested preference. Feature-wise linear modulation (FiLM), vector-valued action costs, and augmented weighted Tchebycheff scalarization enable one DDQN to select rule-mode actions under different tardiness--energy preferences.
+
+    % \item We conduct extensive simulation experiments under a dynamic Cloud--Edge workflow model with online arrivals, workflow weights and deadlines, precedence and data dependencies, heterogeneous resources, and runtime CPU sharing. Across 12 scenarios with 30 independent runs per scenario, PRS-GPDRL obtains the best average ranks for hypervolume (HV) and inverted generational distance (IGD), with ranks of 1.406 and 1.486, respectively, and is statistically better than or comparable to CCGP in 11 of 12 scenarios for each metric.
+
+    % \item We analyze the learned policy from objective outcomes, rule usage, and mode usage. The preference-response analysis shows that the obtained objective values change with the requested preference, while the rule-usage and risk-mode analyses show corresponding changes in internal decisions. Ablation and diagnostic comparisons further support the roles of risk-stratified correction, FiLM conditioning, rule-pool size, and GP-evolved resource selection.
+
 
 \section{Related Work}
 \label{Sec: related work}
@@ -1034,22 +1016,9 @@ Within the evaluated preference grid, the three figures analyze policy behavior 
 \section{Conclusion}
 \label{Sec: conclusion}
 
-This paper proposes PRS-GPDRL for preference-aware online scheduling of
-dynamic workflows in heterogeneous Cloud--Edge systems. PRS-GPDRL combines
-CCGP-based rule discovery with multi-objective deep reinforcement learning:
-a quality- and behavior-aware procedure extracts a compact pool of evolved
-resource-selection rules, and a preference-conditioned DDQN adaptively selects
-rule-mode actions according to the current scheduling state and requested
-tardiness--energy trade-off. Experimental results show that PRS-GPDRL achieves
-the best overall HV and IGD performance among the compared methods. The behavioral, ablation, and diagnostic analyses further indicate that complementary GP rules, preference conditioning, and state-dependent local correction are important to its adaptive scheduling performance. They also show that fixed upward-rank sequencing remains close to GP-based task sequencing in most scenarios, while the diagnostic comparison highlights the importance of GP-based resource selection in the evaluated setting.
+This paper studied preference-aware dynamic workflow scheduling in heterogeneous Cloud--Edge systems with total weighted tardiness and energy consumption as the two objectives. PRS-GPDRL combines CCGP-based rule discovery with DRL-based online resource selection. CCGP produces an archive of complete scheduling heuristics, and a quality- and behavior-aware procedure extracts a compact pool of complementary resource-selection rules from this archive. Pairing each retained rule with a base mode and a risk mode gives a fixed rule-mode action space for the preference-aware multi-objective DDQN. Upward-rank sequencing is used when multiple ready tasks need to be ordered, and the DDQN learns to select resource-selection rule-mode actions. The experimental results on 12 dynamic scheduling scenarios with 30 independent runs per scenario show that PRS-GPDRL achieves the best overall HV and IGD performance among the compared methods. It obtains average ranks of 1.406 for HV and 1.486 for IGD, and is statistically better than or comparable to CCGP in 11 of 12 scenarios for each metric. Further analyses show that the requested preference is reflected in the obtained objective values, selected resource-selection rules, and risk-mode usage. The ablation study shows that removing the risk mode causes the largest degradation among the tested variants, while FiLM provides additional preference-dependent modulation. The CCGP-EFT and CCGP-UR diagnostic comparison shows that replacing the GP resource-selection rule causes a much larger loss than replacing the GP task-sequencing rule with upward-rank sequencing in the evaluated scenarios. These results support the effectiveness of preference-aware online selection among GP-evolved resource-selection rules and bounded local correction.
 
-The current framework still relies on an offline fixed rule pool, fixed
-upward-rank task sequencing, and a predefined CPU-sharing mechanism. Future work
-will investigate continual GP--DRL integration to update the rule pool during
-deployment, hierarchical or multi-timescale learning for adaptive task sequencing
-and resource selection, and fine-grained CPU allocation that dynamically
-determines task-level CPU shares according to task characteristics, system
-states, and scheduling preferences.
+The study has several limitations that suggest future research directions. The extracted resource-selection rule pool is fixed for each scenario after offline CCGP training, and the CPU allocation follows the predefined sharing rule in the problem model. In addition, PRS-GPDRL concentrates learning on resource selection, while task sequencing is handled by upward rank according to the diagnostic results. Future work will study adaptive updating of the rule pool and transfer across workload settings, joint learning of task sequencing and resource selection without substantially increasing the number of action combinations, and preference-aware CPU allocation policies that can be optimized together with scheduling decisions.
 
 \bibliographystyle{IEEEtran}
 \bibliography{Bibliography}
