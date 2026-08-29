@@ -7,11 +7,11 @@
 \citation{IEA2025EnergyAI,CSO2026DataCentres}
 \citation{Ranjan2020}
 \citation{Kubernetes2026Resize,DockerUpdate2026,DockerResourceConstraints2026}
+\citation{ohds,rmes,li2024,lou2023,lwff}
+\citation{escott2020gphh,yu2022mogp,xu2023mtgp,sun2024mtgp,yang2025dtgp,ccgp}
 \providecommand \oddpage@label [2]{}
 \@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{section.1}\protected@file@percent }
 \newlabel{Sec: introduction}{{I}{1}{Introduction}{section.1}{}}
-\citation{ohds,rmes,li2024,lou2023,lwff}
-\citation{escott2020gphh,yu2022mogp,xu2023mtgp,sun2024mtgp,yang2025dtgp,ccgp}
 \citation{jayanetti2022,xiao2025,gates}
 \citation{liu2022rules,xu2024niching,zhao2025tdrl}
 \citation{he2026evolved}
@@ -20,6 +20,9 @@
 \citation{ohds}
 \citation{rmes}
 \citation{lwff}
+\@writefile{toc}{\contentsline {section}{\numberline {II}Related Work}{2}{section.2}\protected@file@percent }
+\newlabel{Sec: related work}{{II}{2}{Related Work}{section.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-A}}Rule-Based Dynamic Workflow Scheduling}{2}{subsection.2.1}\protected@file@percent }
 \citation{jayanetti2022,zhang2024,xiao2025}
 \citation{gates}
 \citation{li2025qphh}
@@ -40,12 +43,9 @@
 \citation{reymond2022pcn,wu2026e2morl,yang2025pcrl}
 \citation{lin2022psl}
 \citation{xu2026pslgp}
-\@writefile{toc}{\contentsline {section}{\numberline {II}Related Work}{3}{section.2}\protected@file@percent }
-\newlabel{Sec: related work}{{II}{3}{Related Work}{section.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-A}}Rule-Based Dynamic Workflow Scheduling}{3}{subsection.2.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-B}}Preference-Aware Multi-Objective Learning}{3}{subsection.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {III}Problem Modeling}{4}{section.3}\protected@file@percent }
-\newlabel{Sec: problem modeling}{{III}{4}{Problem Modeling}{section.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {III}Problem Modeling}{3}{section.3}\protected@file@percent }
+\newlabel{Sec: problem modeling}{{III}{3}{Problem Modeling}{section.3}{}}
 \newlabel{Eq: Objective Energy}{{1}{4}{Problem Modeling}{equation.1}{}}
 \newlabel{Eq: Objective Tardiness}{{2}{4}{Problem Modeling}{equation.2}{}}
 \newlabel{Eq: Arrival time constraint}{{3}{4}{Problem Modeling}{equation.3}{}}
@@ -57,11 +57,11 @@
 \newlabel{Eq: communication time between tasks}{{9}{4}{Problem Modeling}{equation.9}{}}
 \newlabel{Eq: running set}{{10}{4}{Problem Modeling}{equation.10}{}}
 \newlabel{Eq: remaining cpu}{{11}{4}{Problem Modeling}{equation.11}{}}
+\newlabel{Eq: cpu allocation}{{12}{4}{Problem Modeling}{equation.12}{}}
+\newlabel{Eq: Utilization at time t}{{13}{4}{Problem Modeling}{equation.13}{}}
+\newlabel{Eq: power at time t}{{14}{4}{Problem Modeling}{equation.14}{}}
 \citation{Topcuoglu2002}
 \citation{ccgp}
-\newlabel{Eq: cpu allocation}{{12}{5}{Problem Modeling}{equation.12}{}}
-\newlabel{Eq: Utilization at time t}{{13}{5}{Problem Modeling}{equation.13}{}}
-\newlabel{Eq: power at time t}{{14}{5}{Problem Modeling}{equation.14}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {IV}The Proposed PRS-GPDRL Algorithm}{5}{section.4}\protected@file@percent }
 \newlabel{Sec: PRS-GPDRL}{{IV}{5}{The Proposed PRS-GPDRL Algorithm}{section.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Overall Framework of PRS-GPDRL}{5}{subsection.4.1}\protected@file@percent }
@@ -74,8 +74,9 @@
 \newlabel{Table:scheduling-attributes}{{I}{6}{Terminal, function, and state-encoder attributes used by PRS-GPDRL}{table.1}{}}
 \newlabel{Eq: behavior vector}{{15}{6}{CCGP Training and Action Extraction}{equation.15}{}}
 \newlabel{Eq: balanced anchor}{{16}{6}{CCGP Training and Action Extraction}{equation.16}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Risk-Stratified Action Augmentation}{7}{subsection.4.3}\protected@file@percent }
-\newlabel{Sec: risk stratified actions}{{\mbox  {IV-C}}{7}{Risk-Stratified Action Augmentation}{subsection.4.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Risk-Stratified Action Augmentation}{6}{subsection.4.3}\protected@file@percent }
+\newlabel{Sec: risk stratified actions}{{\mbox  {IV-C}}{6}{Risk-Stratified Action Augmentation}{subsection.4.3}{}}
+\citation{vanhasselt2016}
 \newlabel{Eq: tardiness local cost}{{17}{7}{Risk-Stratified Action Augmentation}{equation.17}{}}
 \newlabel{Eq: dynamic energy increment}{{18}{7}{Risk-Stratified Action Augmentation}{equation.18}{}}
 \newlabel{Eq: static energy increment}{{19}{7}{Risk-Stratified Action Augmentation}{equation.19}{}}
@@ -86,23 +87,28 @@
 \newlabel{Eq: risk priority}{{24}{7}{Risk-Stratified Action Augmentation}{equation.24}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-D}}Markov Decision Process Formulation for Preference-Aware Rule Selection}{7}{subsection.4.4}\protected@file@percent }
 \newlabel{Sec: PRS-GPDRL MDP}{{\mbox  {IV-D}}{7}{Markov Decision Process Formulation for Preference-Aware Rule Selection}{subsection.4.4}{}}
-\citation{vanhasselt2016}
+\newlabel{Eq: action pair}{{25}{7}{Markov Decision Process Formulation for Preference-Aware Rule Selection}{equation.25}{}}
+\newlabel{Eq: vector cost}{{26}{7}{Markov Decision Process Formulation for Preference-Aware Rule Selection}{equation.26}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}Preference-Aware Multi-Objective DDQN}{7}{subsection.4.5}\protected@file@percent }
+\newlabel{Sec: MO-DDQN}{{\mbox  {IV-E}}{7}{Preference-Aware Multi-Objective DDQN}{subsection.4.5}{}}
 \citation{perez2018film}
 \citation{vanhasselt2016}
+\citation{ccgp}
+\citation{Ranjan2020}
+\citation{Goudarzi2021,Pallewatta2022}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Multi-objective DDQN for rule-mode action selection in PRS-GPDRL.}}{8}{figure.2}\protected@file@percent }
 \newlabel{Fig: PRS-GPDRL DDQN}{{2}{8}{Multi-objective DDQN for rule-mode action selection in PRS-GPDRL}{figure.2}{}}
-\newlabel{Eq: action pair}{{25}{8}{Markov Decision Process Formulation for Preference-Aware Rule Selection}{equation.25}{}}
-\newlabel{Eq: vector cost}{{26}{8}{Markov Decision Process Formulation for Preference-Aware Rule Selection}{equation.26}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-E}}Preference-Aware Multi-Objective DDQN}{8}{subsection.4.5}\protected@file@percent }
-\newlabel{Sec: MO-DDQN}{{\mbox  {IV-E}}{8}{Preference-Aware Multi-Objective DDQN}{subsection.4.5}{}}
 \newlabel{Eq: film state embedding}{{27}{8}{Preference-Aware Multi-Objective DDQN}{equation.27}{}}
 \newlabel{Eq: vector Q}{{28}{8}{Preference-Aware Multi-Objective DDQN}{equation.28}{}}
 \newlabel{Eq: tchebycheff scalarization}{{29}{8}{Preference-Aware Multi-Objective DDQN}{equation.29}{}}
 \newlabel{Eq: greedy action}{{30}{8}{Preference-Aware Multi-Objective DDQN}{equation.30}{}}
 \newlabel{Eq: evaluation preference grid}{{31}{8}{Preference-Aware Multi-Objective DDQN}{equation.31}{}}
-\citation{ccgp}
-\citation{Ranjan2020}
-\citation{Goudarzi2021,Pallewatta2022}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Training and Inference Procedure}{8}{subsection.4.6}\protected@file@percent }
+\newlabel{Sec: training inference}{{\mbox  {IV-F}}{8}{Training and Inference Procedure}{subsection.4.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {V}Experimental Design}{8}{section.5}\protected@file@percent }
+\newlabel{Sec: experimental design}{{V}{8}{Experimental Design}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Experimental Setup}{8}{subsection.5.1}\protected@file@percent }
+\newlabel{Sec: experimental environment}{{\mbox  {V-A}}{8}{Experimental Setup}{subsection.5.1}{}}
 \citation{Hi2015ousgp}
 \citation{Sahoo2021}
 \citation{ccgp}
@@ -110,60 +116,55 @@
 \citation{gates}
 \citation{lwff}
 \citation{ccgp}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-F}}Training and Inference Procedure}{9}{subsection.4.6}\protected@file@percent }
-\newlabel{Sec: training inference}{{\mbox  {IV-F}}{9}{Training and Inference Procedure}{subsection.4.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {V}Experimental Design}{9}{section.5}\protected@file@percent }
-\newlabel{Sec: experimental design}{{V}{9}{Experimental Design}{section.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Experimental Setup}{9}{subsection.5.1}\protected@file@percent }
-\newlabel{Sec: experimental environment}{{\mbox  {V-A}}{9}{Experimental Setup}{subsection.5.1}{}}
+\citation{Topcuoglu2002}
+\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Configurations of Edge Nodes and Cloud Servers.}}{9}{table.2}\protected@file@percent }
+\newlabel{Table: resource configurations}{{II}{9}{Configurations of Edge Nodes and Cloud Servers}{table.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces Parameter settings of CCGP.}}{9}{table.3}\protected@file@percent }
+\newlabel{Table: CCGP parameters}{{III}{9}{Parameter settings of CCGP}{table.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces Parameter settings of DDQN and risk-stratified action augmentation.}}{9}{table.4}\protected@file@percent }
+\newlabel{Table: DDQN risk parameters}{{IV}{9}{Parameter settings of DDQN and risk-stratified action augmentation}{table.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-B}}Compared Algorithms}{9}{subsection.5.2}\protected@file@percent }
 \newlabel{Sec: compared methods}{{\mbox  {V-B}}{9}{Compared Algorithms}{subsection.5.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}Performance Measures}{9}{subsection.5.3}\protected@file@percent }
-\newlabel{Sec: evaluation metrics}{{\mbox  {V-C}}{9}{Performance Measures}{subsection.5.3}{}}
-\newlabel{Eq: objective normalization}{{32}{9}{Performance Measures}{equation.32}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {II}{\ignorespaces Configurations of Edge Nodes and Cloud Servers.}}{10}{table.2}\protected@file@percent }
-\newlabel{Table: resource configurations}{{II}{10}{Configurations of Edge Nodes and Cloud Servers}{table.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {III}{\ignorespaces Parameter settings of CCGP.}}{10}{table.3}\protected@file@percent }
-\newlabel{Table: CCGP parameters}{{III}{10}{Parameter settings of CCGP}{table.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {IV}{\ignorespaces Parameter settings of DDQN and risk-stratified action augmentation.}}{10}{table.4}\protected@file@percent }
-\newlabel{Table: DDQN risk parameters}{{IV}{10}{Parameter settings of DDQN and risk-stratified action augmentation}{table.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces The mean and standard deviation of the HV and IGD values for PRS-GPDRL and its ablation variants over 30 independent runs.}}{10}{table.5}\protected@file@percent }
+\newlabel{Table: combined ablation results}{{V}{10}{The mean and standard deviation of the HV and IGD values for PRS-GPDRL and its ablation variants over 30 independent runs}{table.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-C}}Performance Measures}{10}{subsection.5.3}\protected@file@percent }
+\newlabel{Sec: evaluation metrics}{{\mbox  {V-C}}{10}{Performance Measures}{subsection.5.3}{}}
+\newlabel{Eq: objective normalization}{{32}{10}{Performance Measures}{equation.32}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces The mean and standard deviation of the HV and IGD values obtained using CCGP-EFT, CCGP-UR, and CCGP over 30 independent runs.}}{10}{table.6}\protected@file@percent }
+\newlabel{Table: combined GP task sequencing}{{VI}{10}{The mean and standard deviation of the HV and IGD values obtained using CCGP-EFT, CCGP-UR, and CCGP over 30 independent runs}{table.6}{}}
 \newlabel{Eq: IGD}{{33}{10}{Performance Measures}{equation.33}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {VI}Experimental Results}{10}{section.6}\protected@file@percent }
 \newlabel{Sec: experimental results}{{VI}{10}{Experimental Results}{section.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Ablation Study}{10}{subsection.6.1}\protected@file@percent }
 \newlabel{Sec: ablation design analysis}{{\mbox  {VI-A}}{10}{Ablation Study}{subsection.6.1}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-A}1}Risk-Stratified Action Augmentation and FiLM Conditioning}{10}{subsubsection.6.1.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-A}2}Rule-Pool Size}{10}{subsubsection.6.1.2}\protected@file@percent }
-\citation{Topcuoglu2002}
-\@writefile{lot}{\contentsline {table}{\numberline {V}{\ignorespaces The mean and standard deviation of the HV and IGD values for PRS-GPDRL and its ablation variants over 30 independent runs.}}{11}{table.5}\protected@file@percent }
-\newlabel{Table: combined ablation results}{{V}{11}{The mean and standard deviation of the HV and IGD values for PRS-GPDRL and its ablation variants over 30 independent runs}{table.5}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {VI}{\ignorespaces The mean and standard deviation of the HV and IGD values obtained using CCGP-EFT, CCGP-UR, and CCGP over 30 independent runs.}}{11}{table.6}\protected@file@percent }
-\newlabel{Table: combined GP task sequencing}{{VI}{11}{The mean and standard deviation of the HV and IGD values obtained using CCGP-EFT, CCGP-UR, and CCGP over 30 independent runs}{table.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces The mean and standard deviation of the HV and IGD values over the 30 independent runs of the compared algorithms.}}{11}{table.7}\protected@file@percent }
+\newlabel{Table: main results}{{VII}{11}{The mean and standard deviation of the HV and IGD values over the 30 independent runs of the compared algorithms}{table.7}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-A}2}Rule-Pool Size}{11}{subsubsection.6.1.2}\protected@file@percent }
 \newlabel{Sec: task sequencing design}{{\mbox  {VI-A}3}{11}{Task-Sequencing and Resource-Selection Diagnostics}{subsubsection.6.1.3}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {\mbox  {VI-A}3}Task-Sequencing and Resource-Selection Diagnostics}{11}{subsubsection.6.1.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Overall Performance}{11}{subsection.6.2}\protected@file@percent }
 \newlabel{Sec: overall performance}{{\mbox  {VI-B}}{11}{Overall Performance}{subsection.6.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {VII}Further Analysis}{11}{section.7}\protected@file@percent }
-\newlabel{Sec: further analysis}{{VII}{11}{Further Analysis}{section.7}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {VII}{\ignorespaces The mean and standard deviation of the HV and IGD values over the 30 independent runs of the compared algorithms.}}{12}{table.7}\protected@file@percent }
-\newlabel{Table: main results}{{VII}{12}{The mean and standard deviation of the HV and IGD values over the 30 independent runs of the compared algorithms}{table.7}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces The 50\% empirical attainment curves of the compared algorithms in six representative scenarios.}}{12}{figure.3}\protected@file@percent }
 \newlabel{Fig: tradeoff profiles}{{3}{12}{The 50\% empirical attainment curves of the compared algorithms in six representative scenarios}{figure.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Further Analysis}{12}{section.7}\protected@file@percent }
+\newlabel{Sec: further analysis}{{VII}{12}{Further Analysis}{section.7}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-A}}50\% Empirical Attainment Curves}{12}{subsection.7.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-B}}Objective Response to Preference}{12}{subsection.7.2}\protected@file@percent }
 \newlabel{Sec: preference controllability}{{\mbox  {VII-B}}{12}{Objective Response to Preference}{subsection.7.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Relative reductions in weighted tardiness and energy consumption under different preference weights. Each curve shows the median over 30 independent runs for one scenario.}}{12}{figure.4}\protected@file@percent }
+\newlabel{Fig: preference responses}{{4}{12}{Relative reductions in weighted tardiness and energy consumption under different preference weights. Each curve shows the median over 30 independent runs for one scenario}{figure.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-C}}Preference-Dependent Resource-Selection Rule Usage}{12}{subsection.7.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Mean selection frequencies over the included independent runs for each of the 12 scenarios under different tardiness preferences. Results include 332/360 scenario--run cases (92.2\%) retaining all five rules. The roles are the minimum-energy endpoint $g_1$, its neighbor $g_2$, the balanced anchor $g_3$, the minimum-tardiness neighbor $g_4$, and the minimum-tardiness endpoint $g_5$.}}{13}{figure.5}\protected@file@percent }
+\newlabel{Fig: tree role frequency}{{5}{13}{Mean selection frequencies over the included independent runs for each of the 12 scenarios under different tardiness preferences. Results include 332/360 scenario--run cases (92.2\%) retaining all five rules. The roles are the minimum-energy endpoint $g_1$, its neighbor $g_2$, the balanced anchor $g_3$, the minimum-tardiness neighbor $g_4$, and the minimum-tardiness endpoint $g_5$}{figure.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-D}}Risk-Mode Usage}{13}{subsection.7.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Mean risk-mode selection frequency over 30 independent runs for each of the 12 scenarios. Gray markers denote the balanced preference $w_T=w_E=0.5$. At the balanced preference, risk-mode selections are counted although their priority scores coincide with those of the base mode.}}{13}{figure.6}\protected@file@percent }
+\newlabel{Fig: risk frequency}{{6}{13}{Mean risk-mode selection frequency over 30 independent runs for each of the 12 scenarios. Gray markers denote the balanced preference $w_T=w_E=0.5$. At the balanced preference, risk-mode selections are counted although their priority scores coincide with those of the base mode}{figure.6}{}}
 \bibstyle{IEEEtran}
 \bibdata{Bibliography}
 \bibcite{Li2026}{1}
 \bibcite{Bouabdallah2024}{2}
 \bibcite{Coleman2022WfCommons}{3}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Relative reductions in weighted tardiness and energy consumption under different preference weights. Each curve shows the median over 30 independent runs for one scenario.}}{13}{figure.4}\protected@file@percent }
-\newlabel{Fig: preference responses}{{4}{13}{Relative reductions in weighted tardiness and energy consumption under different preference weights. Each curve shows the median over 30 independent runs for one scenario}{figure.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-D}}Risk-Mode Usage}{13}{subsection.7.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {VIII}Conclusion}{13}{section.8}\protected@file@percent }
-\newlabel{Sec: conclusion}{{VIII}{13}{Conclusion}{section.8}{}}
-\@writefile{toc}{\contentsline {section}{References}{13}{section*.1}\protected@file@percent }
 \bibcite{Gartner2025AgenticAI}{4}
 \bibcite{IEA2025EnergyAI}{5}
 \bibcite{CSO2026DataCentres}{6}
@@ -179,10 +180,6 @@
 \bibcite{escott2020gphh}{16}
 \bibcite{yu2022mogp}{17}
 \bibcite{xu2023mtgp}{18}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Mean selection frequencies over the included independent runs for each of the 12 scenarios under different tardiness preferences (runs retaining five rules). The roles are the minimum-energy endpoint $g_1$, its neighbor $g_2$, the balanced anchor $g_3$, the minimum-tardiness neighbor $g_4$, and the minimum-tardiness endpoint $g_5$.}}{14}{figure.5}\protected@file@percent }
-\newlabel{Fig: tree role frequency}{{5}{14}{Mean selection frequencies over the included independent runs for each of the 12 scenarios under different tardiness preferences (runs retaining five rules). The roles are the minimum-energy endpoint $g_1$, its neighbor $g_2$, the balanced anchor $g_3$, the minimum-tardiness neighbor $g_4$, and the minimum-tardiness endpoint $g_5$}{figure.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Mean risk-mode selection frequency over 30 independent runs for each of the 12 scenarios. Gray markers denote the balanced preference $w_T=w_E=0.5$. At the balanced preference, risk-mode selections are counted although their priority scores coincide with those of the base mode.}}{14}{figure.6}\protected@file@percent }
-\newlabel{Fig: risk frequency}{{6}{14}{Mean risk-mode selection frequency over 30 independent runs for each of the 12 scenarios. Gray markers denote the balanced preference $w_T=w_E=0.5$. At the balanced preference, risk-mode selections are counted although their priority scores coincide with those of the base mode}{figure.6}{}}
 \bibcite{sun2024mtgp}{19}
 \bibcite{yang2025dtgp}{20}
 \bibcite{ccgp}{21}
@@ -192,6 +189,9 @@
 \bibcite{liu2022rules}{25}
 \bibcite{xu2024niching}{26}
 \bibcite{zhao2025tdrl}{27}
+\@writefile{toc}{\contentsline {section}{\numberline {VIII}Conclusion}{14}{section.8}\protected@file@percent }
+\newlabel{Sec: conclusion}{{VIII}{14}{Conclusion}{section.8}{}}
+\@writefile{toc}{\contentsline {section}{References}{14}{section*.1}\protected@file@percent }
 \bibcite{he2026evolved}{28}
 \bibcite{roijers2013morl}{29}
 \bibcite{hayes2022morl}{30}

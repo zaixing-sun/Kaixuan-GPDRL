@@ -53,23 +53,23 @@
 
 \title{Preference-Aware Deep Reinforcement Learning with GP-Evolved Actions for Dynamic Workflow Scheduling in Cloud--Edge Computing}
 
-% \author{Anonymous Authors}
+\author{Anonymous Authors}
 
 
-\author{Zaixing~Sun, 
-        Kaixuan~Ma,
-        Bin~Wang,
-        Meng~Xu,
-        Hejiao~Huang,
-        Chonglin~Gu,
-        and~Yi~Mei,~\IEEEmembership{Senior Member,~IEEE,}
-\thanks{~~Manuscript received *; revised *; accepted *.
-This work was supported in part by the Major Key Project of PCL, China under Grant PCL2025A13, and in part by the China Postdoctoral Science Foundation under Grant Number 2026M791634, in part by Shenzhen Science and Technology Program under Grant No. JCYJ20250604145359059, and No. ZDSY20120613125016389. (Corresponding author: Chonglin~Gu.)}
-\thanks{~~Zaixing Sun and Bin Wang are with the Department of New Networks, Pengcheng Laboratory, Shenzhen, 518066, China. E-mail: \nolinkurl{zaixing.sun@micc.hitsz.edu.cn}, wangb02@pcl.ac.cn.}
-\thanks{~~Kaixuan Ma, Chonglin Gu and Hejiao Huang are with the Shenzhen Key Laboratory of Internet Information Collaboration, School of Computer Science and Technology, Harbin Institute of Technology (Shenzhen), Shenzhen, 518055, China. E-mail: m2018617714@gmail.com, guchonglin@hit.edu.cn, huanghejiao@hit.edu.cn.}
-\thanks{~~Meng Xu is with Beijing Key Laboratory of Lightweight Intelligent System, Beijing Institute of Technology, Beijing, 100081, China. E-mail: mengxu@bit.edu.cn.}
-\thanks{~~Yi Mei is with the Evolutionary Computation and Machine Learning Research Group, {Centre for Data Science and Artificial Intelligence \rm\&} School of Engineering and Computer Science, Victoria University of Wellington, Wellington 6140, New Zealand. E-mail: {yi.mei@ecs.vuw.ac.nz.}}
-}
+% \author{Zaixing~Sun, 
+%         Kaixuan~Ma,
+%         Bin~Wang,
+%         Meng~Xu,
+%         Hejiao~Huang,
+%         Chonglin~Gu,
+%         and~Yi~Mei,~\IEEEmembership{Senior Member,~IEEE,}
+% \thanks{~~Manuscript received *; revised *; accepted *.
+% This work was supported in part by the Major Key Project of PCL, China under Grant PCL2025A13, and in part by the China Postdoctoral Science Foundation under Grant Number 2026M791634, in part by Shenzhen Science and Technology Program under Grant No. JCYJ20250604145359059, and No. ZDSY20120613125016389. (Corresponding author: Chonglin~Gu.)}
+% \thanks{~~Zaixing Sun and Bin Wang are with the Department of New Networks, Pengcheng Laboratory, Shenzhen, 518066, China. E-mail: \nolinkurl{zaixing.sun@micc.hitsz.edu.cn}, wangb02@pcl.ac.cn.}
+% \thanks{~~Kaixuan Ma, Chonglin Gu and Hejiao Huang are with the Shenzhen Key Laboratory of Internet Information Collaboration, School of Computer Science and Technology, Harbin Institute of Technology (Shenzhen), Shenzhen, 518055, China. E-mail: m2018617714@gmail.com, guchonglin@hit.edu.cn, huanghejiao@hit.edu.cn.}
+% \thanks{~~Meng Xu is with Beijing Key Laboratory of Lightweight Intelligent System, Beijing Institute of Technology, Beijing, 100081, China. E-mail: mengxu@bit.edu.cn.}
+% \thanks{~~Yi Mei is with the Evolutionary Computation and Machine Learning Research Group, {Centre for Data Science and Artificial Intelligence \rm\&} School of Engineering and Computer Science, Victoria University of Wellington, Wellington 6140, New Zealand. E-mail: {yi.mei@ecs.vuw.ac.nz.}}
+% }
 
 
 
@@ -77,8 +77,9 @@ This work was supported in part by the Major Key Project of PCL, China under Gra
 
 
 \begin{abstract}
-Learning an effective scheduling policy for multi-objective dynamic workflow scheduling requires adapting online resource allocation to the current workflow and resource states and to the requested trade-off between weighted tardiness and energy consumption. In heterogeneous Cloud--Edge systems, this is challenging because future workflow arrivals are unknown, feasible resources vary with task requirements, resource availability, and Cloud provisioning, and an allocation can affect successor release times, the progress of running tasks, and resource active time. Genetic programming (GP) hyper-heuristics can automatically evolve scheduling rules for online decisions, but the evolved heuristics are usually applied as fixed policies. Deep reinforcement learning (DRL) can learn adaptive rule selection, yet directly using feasible resources as actions is difficult when the action set varies over time. This paper proposes Preference-Aware Risk-Stratified Genetic Programming-assisted Deep Reinforcement Learning (PRS-GPDRL). Cooperative coevolution genetic programming (CCGP) first evolves complete scheduling heuristics with task-sequencing and resource-selection rules. A quality- and behavior-aware extraction procedure then selects a compact pool of complementary resource-selection rules. Each retained rule is paired with a base mode and a risk mode to form a fixed rule-mode action space, and a multi-objective double deep Q-network selects rule-mode actions according to the current state and requested preference. Experimental results on 12 scenarios with 30 independent runs per scenario show that PRS-GPDRL obtains the best average ranks for hypervolume (HV) and inverted generational distance (IGD), with ranks of 1.406 and 1.486, respectively. PRS-GPDRL is statistically better than or comparable to CCGP in 11 of 12 scenarios for each metric. Further analyses show that objective values, resource-selection rule usage, and risk-mode usage change with the requested preference. Ablation and diagnostic results show the importance of risk-stratified local correction, preference conditioning, and GP-based resource selection.
+Learning an effective scheduling policy for multi-objective dynamic workflow scheduling requires online resource allocation to adapt to workflow and resource states and to the requested trade-off between weighted tardiness and energy consumption. In heterogeneous Cloud--Edge systems, this is challenging because future workflow arrivals are unknown, feasible resources vary over time, and each allocation can affect successor release times, the progress of running tasks under CPU sharing, and resource active duration. Genetic programming (GP) hyper-heuristics can evolve scheduling rules, but the obtained heuristics are usually applied as fixed policies. Deep reinforcement learning (DRL) can support adaptive rule selection, but directly using feasible resources as actions leads to a time-varying action set. This paper proposes Preference-Aware Risk-Stratified Genetic Programming-assisted Deep Reinforcement Learning (PRS-GPDRL). Cooperative coevolution genetic programming (CCGP) first evolves complete scheduling heuristics with task-sequencing and resource-selection rules, and a quality- and behavior-aware procedure extracts a compact pool of complementary resource-selection rules. Each rule is paired with a base mode and a risk mode to form a fixed rule-mode action space, where the risk mode applies bounded preference-aware local correction. A preference-aware multi-objective double deep Q-network selects rule-mode actions using feature-wise linear modulation and augmented weighted Tchebycheff scalarization. Experiments on 12 scenarios with 30 independent runs show that PRS-GPDRL obtains the best average ranks of 1.406 for hypervolume and 1.486 for inverted generational distance, and is statistically better than or comparable to CCGP in 11 of 12 scenarios for each metric. Further analyses and ablation results show preference-dependent policy behavior and identify risk-mode correction and GP-evolved resource selection as the main sources of improvement.
 \end{abstract}
+
 
 \begin{IEEEkeywords}
 Cloud--Edge computing, dynamic workflow scheduling, genetic programming,
@@ -547,7 +548,7 @@ where $\boldsymbol{\gamma}_{\mathrm{film}}(\mathbf{w})$ and
 $\boldsymbol{\delta}_{\mathrm{film}}(\mathbf{w})$ are preference-dependent scale
 and shift vectors.
 
-The 128-dimensional embedding $\mathbf{z}_t$ is processed by a shared 256--128 ReLU MLP and a linear output layer that produces a two-dimensional cost estimate for every rule-mode action:
+The 128-dimensional embedding $\mathbf{z}_t$ is processed by a shared 256--128 rectified linear unit (ReLU) MLP and a linear output layer that produces a two-dimensional cost estimate for every rule-mode action:
 \begin{equation}
     \mathbf{Q}_{\theta}(s_t,a) =
     \left(Q_{\theta}^{T}(s_t,a), Q_{\theta}^{E}(s_t,a)\right),
@@ -589,7 +590,7 @@ The checkpoint with the lowest mean $C^{\mathrm{val}}(\mathbf{w})$ across the va
 \subsection{Training and Inference Procedure}
 \label{Sec: training inference}
 
-After action extraction, training and testing are performed separately for each scenario $\langle\mathrm{wfNum},\lambda\rangle$ using its corresponding fixed rule pool and rule-mode action space. The DDQN learns from vector-cost transitions under sampled preferences using Eq.~\eqref{Eq: tchebycheff scalarization}, and the trained DDQN together with the fixed action space constitutes the PRS-GPDRL agent. During inference, upward-rank sequencing resolves simultaneous ready tasks when needed, after which the DDQN selects a rule-mode action and assigns the current task to the feasible resource with the minimum priority score.
+After action extraction, training and testing are performed separately for each scenario using its corresponding fixed rule pool and rule-mode action space. The DDQN learns from vector-cost transitions under sampled preferences using Eq.~\eqref{Eq: tchebycheff scalarization}, and the trained DDQN together with the fixed action space constitutes the PRS-GPDRL agent. During inference, upward-rank sequencing resolves simultaneous ready tasks when needed, after which the DDQN selects a rule-mode action and assigns the current task to the feasible resource with the minimum priority score.
 
 \begin{table*}[!t]
 \caption{Configurations of Edge Nodes and Cloud Servers.}
@@ -694,6 +695,8 @@ Tchebycheff augmentation $\zeta$ & 0.05 \\
 \end{tabular}
 \end{table}
 
+For each scenario and metric, statistical comparisons are performed using the Iman--Davenport-corrected Friedman test and two-sided paired Wilcoxon signed-rank tests at the 0.05 significance level. In the result tables, the arrows indicate that a result is statistically better ($\uparrow$), worse ($\downarrow$), or similar ($\approx$) compared with the preceding methods. The win/draw/loss (W/D/L) row summarizes the number of scenarios in which the reported method is statistically better than, similar to, or worse than the reference method in the corresponding comparison. AverageRank reports the mean rank over the 30 runs, and a smaller value is better.
+
 
 
 
@@ -747,7 +750,7 @@ AverageRank & 3.222 & 2.511 & 2.164 & 2.103
 Under the above experimental setting, the performance comparison includes CCGP, GATES, and LWFF, which represent GP hyper-heuristic, graph-based learning, and constructive heuristic methods, respectively. CCGP \cite{ccgp} coevolves task-sequencing, resource-selection, and container-scaling rules, and returns non-dominated scheduling heuristics. GATES \cite{gates} uses graph attention to encode ready tasks, workflow dependencies, and virtual machines, and learns an allocation policy through an evolution strategy. LWFF \cite{lwff} constructs non-dominated candidate resources and selects a resource according to resource waste and completion speed.
 
 Because the original problem settings of these algorithms differ from the present model, necessary adaptations are made for a fair comparison. The adapted versions follow the experimental setup in Section~\ref{Sec: experimental environment} and use the objective definitions in Section~\ref{Sec: problem modeling}. For CCGP, task-sequencing and resource-selection rules are evolved, while the container-scaling rule is not used because CPU allocation is specified by Eq.~\eqref{Eq: cpu allocation}. For GATES, the learned policies are evaluated using weighted tardiness and energy consumption, and the final non-dominated policies form the approximation set. LWFF is evaluated on the same preference grid as PRS-GPDRL using upward-rank task sequencing and preference-weighted normalized estimates of weighted tardiness and energy.
-The CCGP parameters follow \cite{ccgp} and are listed in Table~\ref{Table: CCGP parameters}. GATES uses a population of 100 policy networks and runs for 51 generations. The main DDQN and risk-stratified action augmentation parameters of PRS-GPDRL are listed in Table~\ref{Table: DDQN risk parameters}.
+The CCGP parameters follow \cite{ccgp} and are listed in Table~\ref{Table: CCGP parameters}. GATES uses a population of 100 policy networks and runs for 51 generations. The main DDQN and risk-stratified action augmentation parameters of PRS-GPDRL are listed in Table~\ref{Table: DDQN risk parameters}. For the diagnostic study, CCGP with upward-rank task sequencing (CCGP-UR) retains the GP resource-selection rule, whereas CCGP with earliest-finish-time (EFT) resource selection (CCGP-EFT) retains the GP task-sequencing rule; both replacement components follow the Heterogeneous Earliest Finish Time (HEFT) algorithm \cite{Topcuoglu2002}.
 
 
 
@@ -772,10 +775,6 @@ where $f_j^{\min}$ and $f_j^{\max}$ are the minimum and maximum values of object
     \min_{p\in P}\lVert p-q\rVert_2.
     \label{Eq: IGD}
 \end{equation}
-
-For each scenario and metric, statistical comparisons are performed using the Iman--Davenport-corrected Friedman test and two-sided paired Wilcoxon signed-rank tests at the 0.05 significance level. In the result tables, the arrows indicate that a result is statistically better ($\uparrow$), worse ($\downarrow$), or similar ($\approx$) compared with the preceding methods. W/D/L summarizes the number of scenarios in which the reported method is statistically better than, similar to, or worse than the reference method in the corresponding comparison. AverageRank reports the mean rank over the 30 runs, and a smaller value is better.
-
-
 
 \begin{table}[!t]
 \caption{The mean and standard deviation of the HV and IGD values obtained using CCGP-EFT, CCGP-UR, and CCGP over 30 independent runs.}
@@ -902,7 +901,7 @@ Taken together, the ablation results show different effects of the three design 
 \subsubsection{Task-Sequencing and Resource-Selection Diagnostics}
 \label{Sec: task sequencing design}
 
-This diagnostic comparison examines how performance changes when either the task-sequencing or resource-selection component of CCGP is replaced by the corresponding component of the Heterogeneous Earliest Finish Time (HEFT) algorithm \cite{Topcuoglu2002}. Table~\ref{Table: combined GP task sequencing} reports two CCGP-based diagnostic comparisons across the 12 scenarios. CCGP-UR replaces the GP task-sequencing rule of CCGP with upward-rank sequencing, and CCGP-EFT replaces the GP resource-selection rule with the earliest-finish-time (EFT) criterion while retaining the GP task-sequencing rule.
+This diagnostic comparison examines how performance changes when either the task-sequencing or resource-selection component of CCGP is replaced by the corresponding HEFT component. Table~\ref{Table: combined GP task sequencing} reports the two CCGP-based diagnostic comparisons across the 12 scenarios.
 
 CCGP-UR records 0/11/1 against CCGP for both metrics and has close average ranks. In contrast, CCGP-EFT records 0/0/12 against CCGP for both metrics and has the worst average rank. This contrast indicates that replacing the GP resource-selection rule with the EFT criterion leads to a much larger performance loss than replacing the GP task-sequencing rule with upward-rank sequencing.
 
@@ -985,8 +984,9 @@ minimum-tardiness endpoint.
     \centering
     \includegraphics[width=.78\textwidth]{figures/tree_role_frequency.pdf}
     \caption{Mean selection frequencies over the included independent runs for
-    each of the 12 scenarios under different tardiness preferences (runs
-    retaining five rules). The roles are the minimum-energy endpoint $g_1$, its
+    each of the 12 scenarios under different tardiness preferences. Results
+    include 332/360 scenario--run cases (92.2\%) retaining all five rules. The
+    roles are the minimum-energy endpoint $g_1$, its
     neighbor $g_2$, the balanced anchor $g_3$, the minimum-tardiness neighbor $g_4$, and
     the minimum-tardiness endpoint $g_5$.}
     \label{Fig: tree role frequency}
