@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.11.27)  29 AUG 2026 11:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.11.27)  31 AUG 2026 09:42
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -513,28 +513,28 @@ Package: relsize 2013/03/29 ver 4.1
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/graphics/dvipsnam.def
 File: dvipsnam.def 2016/06/17 v3.0m Driver-dependent file (DPC,SPQR)
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 48.
+Package hyperref Info: Option `colorlinks' set `true' on input line 26.
  (./PRS-GPDRL.aux)
 \openout1 = `PRS-GPDRL.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 52.
-LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 30.
+LaTeX Font Info:    ... okay on input line 30.
 
 -- Lines per column: 58 (exact).
 (/usr/local/texlive/2025/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
@@ -556,7 +556,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
  (/usr/local/texlive/2025/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package hyperref Info: Link coloring ON on input line 52.
+Package hyperref Info: Link coloring ON on input line 30.
  (./PRS-GPDRL.out) (./PRS-GPDRL.out)
 \@outlinefile=\write3
 \openout3 = `PRS-GPDRL.out'.
@@ -566,7 +566,7 @@ Package: ninecolors 2022-02-13 v2022D Select colors with proper color contrast
  (/usr/local/texlive/2025/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
 Package: xparse 2024-08-16 L3 Experimental document command parser
 ))
-Underfull \hbox (badness 1558) in paragraph at lines 84--87
+Underfull \hbox (badness 1558) in paragraph at lines 46--49
 []\OT1/ptm/b/it/9 Index Terms\OT1/ptm/b/n/9 ---Cloud--Edge com-put-ing, dy-namic work-flow
  []
 
@@ -578,17 +578,17 @@ Underfull \hbox (badness 1558) in paragraph at lines 84--87
 
 
 ]
-LaTeX Font Info:    Trying to load font information for U+msa on input line 102.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 64.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 102.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 64.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 
 
-Underfull \hbox (badness 3039) in paragraph at lines 106--107
+Underfull \hbox (badness 3039) in paragraph at lines 68--69
 []\OT1/ptm/m/n/10 We de-velop risk-stratified ac-tion aug-men-ta-tion and
  []
 
@@ -599,7 +599,7 @@ Underfull \hbox (badness 3039) in paragraph at lines 106--107
 
 
 [3]
-Overfull \hbox (2.18065pt too wide) detected at line 235
+Overfull \hbox (2.18065pt too wide) detected at line 197
 []
  []
 
@@ -611,10 +611,10 @@ Overfull \hbox (2.18065pt too wide) detected at line 235
 <figures/framework.pdf, id=299, 231.74579pt x 162.6075pt>
 File: figures/framework.pdf Graphic file (type pdf)
 <use figures/framework.pdf>
-Package pdftex.def Info: figures/framework.pdf  used on input line 304.
+Package pdftex.def Info: figures/framework.pdf  used on input line 266.
 (pdftex.def)             Requested size: 221.76123pt x 155.60767pt.
 
-Underfull \hbox (badness 5563) in paragraph at lines 312--313
+Underfull \hbox (badness 5563) in paragraph at lines 274--275
 []\OT1/ptm/b/n/10 CCGP train-ing. \OT1/ptm/m/n/10 CCGP co-op-er-a-tively evolves task-
  []
 
@@ -629,14 +629,14 @@ Underfull \hbox (badness 5563) in paragraph at lines 312--313
 [6]
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 490--494
+Underfull \hbox (badness 10000) in paragraph at lines 452--456
 \OT1/ptm/m/n/10 For a se-lected rule $\OML/cmm/m/it/10 g[]$ \OT1/ptm/m/n/10 and mode $\OML/cmm/m/it/10 m[]$\OT1/ptm/m/n/10 , $\OML/cmm/m/it/10 r[] \OT1/cmr/m/n/10 =
  []
 
 <figures/DRL.pdf, id=336, 1836.8625pt x 535.03888pt>
 File: figures/DRL.pdf Graphic file (type pdf)
 <use figures/DRL.pdf>
-Package pdftex.def Info: figures/DRL.pdf  used on input line 498.
+Package pdftex.def Info: figures/DRL.pdf  used on input line 460.
 (pdftex.def)             Requested size: 402.47937pt x 117.22723pt.
 
 
@@ -645,7 +645,7 @@ Package pdftex.def Info: figures/DRL.pdf  used on input line 498.
 
 
 [8 <./figures/DRL.pdf>]
-Underfull \hbox (badness 10000) in paragraph at lines 640--640
+Underfull \hbox (badness 10000) in paragraph at lines 602--602
 [][][][][]$\OT1/ptm/m/n/8 https : / / engineering . teads . com / sustainability / carbon -[] footprint -[] estimator -[]
  []
 
@@ -658,7 +658,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 640--640
 
 
 [10]
-Underfull \hbox (badness 3199) in paragraph at lines 904--905
+Underfull \hbox (badness 3199) in paragraph at lines 866--867
 \OT1/ptm/m/n/10 This di-ag-nos-tic com-par-i-son ex-am-ines how per-for-mance
  []
 
@@ -670,24 +670,24 @@ Underfull \hbox (badness 3199) in paragraph at lines 904--905
 <figures/tradeoff_profile_50.pdf, id=452, 264.08737pt x 366.44101pt>
 File: figures/tradeoff_profile_50.pdf Graphic file (type pdf)
 <use figures/tradeoff_profile_50.pdf>
-Package pdftex.def Info: figures/tradeoff_profile_50.pdf  used on input line 935.
+Package pdftex.def Info: figures/tradeoff_profile_50.pdf  used on input line 897.
 (pdftex.def)             Requested size: 221.76123pt x 307.71887pt.
 <figures/preference_response_tardiness.pdf, id=454, 252.945pt x 184.28851pt>
 File: figures/preference_response_tardiness.pdf Graphic file (type pdf)
 <use figures/preference_response_tardiness.pdf>
-Package pdftex.def Info: figures/preference_response_tardiness.pdf  used on input line 958.
+Package pdftex.def Info: figures/preference_response_tardiness.pdf  used on input line 920.
 (pdftex.def)             Requested size: 217.95766pt x 158.79997pt.
 <figures/preference_response_energy.pdf, id=455, 252.945pt x 184.28851pt>
 File: figures/preference_response_energy.pdf Graphic file (type pdf)
 <use figures/preference_response_energy.pdf>
-Package pdftex.def Info: figures/preference_response_energy.pdf  used on input line 963.
+Package pdftex.def Info: figures/preference_response_energy.pdf  used on input line 925.
 (pdftex.def)             Requested size: 217.95766pt x 158.79997pt.
 
 
 <figures/tree_role_frequency.pdf, id=457, 477.98297pt x 232.34805pt>
 File: figures/tree_role_frequency.pdf Graphic file (type pdf)
 <use figures/tree_role_frequency.pdf>
-Package pdftex.def Info: figures/tree_role_frequency.pdf  used on input line 985.
+Package pdftex.def Info: figures/tree_role_frequency.pdf  used on input line 947.
 (pdftex.def)             Requested size: 402.47937pt x 195.64964pt.
 
 
@@ -695,7 +695,7 @@ Package pdftex.def Info: figures/tree_role_frequency.pdf  used on input line 985
 <figures/risk_frequency.pdf, id=505, 261.62508pt x 366.44101pt>
 File: figures/risk_frequency.pdf Graphic file (type pdf)
 <use figures/risk_frequency.pdf>
-Package pdftex.def Info: figures/risk_frequency.pdf  used on input line 1005.
+Package pdftex.def Info: figures/risk_frequency.pdf  used on input line 967.
 (pdftex.def)             Requested size: 221.76123pt x 310.62082pt.
 
 
