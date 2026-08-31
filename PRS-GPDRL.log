@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.11.27)  31 AUG 2026 14:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.11.27)  31 AUG 2026 15:59
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -513,7 +513,7 @@ Package: relsize 2013/03/29 ver 4.1
 ) (/usr/local/texlive/2025/texmf-dist/tex/latex/graphics/dvipsnam.def
 File: dvipsnam.def 2016/06/17 v3.0m Driver-dependent file (DPC,SPQR)
 )
-Package hyperref Info: Option `colorlinks' set `true' on input line 26.
+Package hyperref Info: Option `colorlinks' set `false' on input line 26.
  (./PRS-GPDRL.aux)
 \openout1 = `PRS-GPDRL.aux'.
 
@@ -556,7 +556,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
  (/usr/local/texlive/2025/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-Package hyperref Info: Link coloring ON on input line 30.
+Package hyperref Info: Link coloring OFF on input line 30.
  (./PRS-GPDRL.out) (./PRS-GPDRL.out)
 \@outlinefile=\write3
 \openout3 = `PRS-GPDRL.out'.
@@ -651,7 +651,7 @@ Package pdftex.def Info: figures/DRL.pdf  used on input line 450.
 
 [8 <./figures/DRL.pdf>]
 Underfull \hbox (badness 10000) in paragraph at lines 592--592
-[][][][][]$\OT1/ptm/m/n/8 https : / / engineering . teads . com / sustainability / carbon -[] footprint -[] estimator -[]
+[][][][]$\OT1/ptm/m/n/8 https : / / engineering . teads . com / sustainability / carbon -[] footprint -[] estimator -[]
  []
 
 
@@ -711,7 +711,7 @@ Package pdftex.def Info: figures/risk_frequency.pdf  used on input line 957.
 
 [13 <./figures/tree_role_frequency.pdf> <./figures/risk_frequency.pdf>] (./PRS-GPDRL.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 34--36
-[][]$\OT1/ptm/m/n/8 https : / / www . gartner . com / en / newsroom / press -[] releases / 2025 -[] 08 -[] 26 -[]
+[]$\OT1/ptm/m/n/8 https : / / www . gartner . com / en / newsroom / press -[] releases / 2025 -[] 08 -[] 26 -[]
  []
 
 
@@ -738,15 +738,15 @@ Package rerunfilecheck Info: File `PRS-GPDRL.out' has not changed.
 (rerunfilecheck)             Checksum: 307EAB1BE0720E6DB1B2DA477B497251;5709.
  ) 
 Here is how much of TeX's memory you used:
- 15166 strings out of 473190
- 259853 string characters out of 5715799
- 728397 words of memory out of 5000000
- 38082 multiletter control sequences out of 15000+600000
+ 15163 strings out of 473190
+ 259798 string characters out of 5715799
+ 728267 words of memory out of 5000000
+ 38079 multiletter control sequences out of 15000+600000
  607768 words of font info for 131 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,23n,79p,1929b,588s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on PRS-GPDRL.pdf (15 pages, 558347 bytes).
+Output written on PRS-GPDRL.pdf (15 pages, 557648 bytes).
 PDF statistics:
  737 PDF objects out of 1000 (max. 8388607)
  612 compressed objects within 7 object streams
