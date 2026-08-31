@@ -111,7 +111,7 @@ R.~Liu, R.~Piplani, and C.~Toro, ``Deep reinforcement learning for dynamic sched
 M.~Xu, Y.~Mei, F.~Zhang, and M.~Zhang, ``Niching genetic programming to learn actions for deep reinforcement learning in dynamic flexible scheduling,'' \emph{IEEE Trans. Evol. Comput.}, vol.~30, no.~1, pp. 61--75, 2026.
 
 \bibitem{zhao2025tdrl}
-F.~Zhao, C.~Zhao, L.~Wang, and H.~Sang, ``A deep reinforcement learning framework assisted by genetic programming for dynamic flexible job shop scheduling,'' \emph{IEEE Trans. Evol. Comput.}, 2025.
+F.~Zhao, C.~Zhao, L.~Wang, and H.~Sang, ``A deep reinforcement learning framework assisted by genetic programming for dynamic flexible job shop scheduling,'' \emph{IEEE Trans. Evol. Comput.}, pp. 1--15, 2025, doi: 10.1109/TEVC.2025.3649289.
 
 \bibitem{he2026evolved}
 Y.~He, Z.~Xu, J.~Lin, Y.~Li, and S.~Zhang, ``Deep reinforcement learning with evolved actions for dynamic workflow scheduling in distributed fog computing,'' \emph{Neurocomputing}, vol. 677, p. 133115, 2026.
@@ -150,7 +150,7 @@ S.~Parisi, M.~Pirotta, and M.~Restelli, ``Multi-objective reinforcement learning
 M.~Reymond, E.~Bargiacchi, and A.~Now{\'{e}}, ``{Pareto} conditioned networks,'' in \emph{Proc. 21st Int. Conf. Auton. Agents Multiagent Syst.}, 2022, pp. 1110--1118.
 
 \bibitem{wu2026e2morl}
-X.~Wu, Q.~Zhu, Q.~Lin, K.-C. Wong, W.-N. Chen, and C.~A. Coello~Coello, ``Experience evolution-guided multi-objective reinforcement learning,'' \emph{IEEE Trans. Evol. Comput.}, 2026.
+X.~Wu, Q.~Zhu, Q.~Lin, K.-C. Wong, W.-N. Chen, and C.~A. Coello~Coello, ``Experience evolution-guided multi-objective reinforcement learning,'' \emph{IEEE Trans. Evol. Comput.}, pp. 1--15, 2026, doi: 10.1109/TEVC.2026.3673422.
 
 \bibitem{yang2025pcrl}
 Y.~Yang, T.~Zhou, M.~Pechenizkiy, and M.~Fang, ``Preference controllable reinforcement learning with advanced multi-objective optimization,'' in \emph{Proc. 42nd Int. Conf. Mach. Learn.}, vol. 267, 2025, pp. 71\,612--71\,647.
